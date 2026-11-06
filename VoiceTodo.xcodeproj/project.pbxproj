@@ -1,0 +1,1245 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		177991C8C55D6010160AF9AA /* DictationProbeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F7237511A050EA8283AB26E /* DictationProbeView.swift */; };
+		188C5769BD86D2D160B17A55 /* VoxoDesign in Frameworks */ = {isa = PBXBuildFile; productRef = 428E0DB43EE5DBB906EE604D /* VoxoDesign */; };
+		316B57172F3C77AF003CC81A /* CoreDataKit in Frameworks */ = {isa = PBXBuildFile; productRef = 316B57162F3C77AF003CC81A /* CoreDataKit */; };
+		316B57192F3C7827003CC81A /* CoreDataKit in Frameworks */ = {isa = PBXBuildFile; productRef = 316B57182F3C7827003CC81A /* CoreDataKit */; };
+		31D13728DC3D7208149FF14C /* VoiceTodoWatch.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 1B924CA9DBB481D402305354 /* VoiceTodoWatch.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		37994BB7F0BCB80190F9DF0C /* WatchTodoStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A00CCF66D37340AC7FCCDFA /* WatchTodoStore.swift */; };
+		4C0BE3F51E3B2511F977FB2C /* VoxoShared in Frameworks */ = {isa = PBXBuildFile; productRef = 3F1295D1ABA2FB02D3A46CC2 /* VoxoShared */; };
+		60489009ACCA86433043272D /* DictationProbe.swift in Sources */ = {isa = PBXBuildFile; fileRef = 926FF717CACC94CB6EF1F068 /* DictationProbe.swift */; };
+		77A2C7E1A99AF46D3DC0E8F7 /* VoxoDesign in Frameworks */ = {isa = PBXBuildFile; productRef = 60879D63D9AE2F88B14BA666 /* VoxoDesign */; };
+		7C0206119F39CD4333B9956D /* Pods_VoiceTodo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 90196740DAF07B4FE4315BF8 /* Pods_VoiceTodo.framework */; };
+		86BBF8F72C0318AEB4D664AF /* WatchSessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AFEA65617B6EBC7BE1B5FDD /* WatchSessionManager.swift */; };
+		9D045CAE73F47D632817D410 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 92AD1A977D519C78F573C51E /* Assets.xcassets */; };
+		A3730B9DC4074448AF698147 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C9AFD15B86AA03570BF43629 /* Foundation.framework */; };
+		A728730B2EFE68760092169A /* BottomSheet in Frameworks */ = {isa = PBXBuildFile; productRef = A728730A2EFE68760092169A /* BottomSheet */; };
+		A76313BF2E7170D70098E06E /* FlagAndCountryCode in Frameworks */ = {isa = PBXBuildFile; productRef = A76313BE2E7170D70098E06E /* FlagAndCountryCode */; };
+		A785DEF32F35D38200D71B5E /* CoreDataKit in Frameworks */ = {isa = PBXBuildFile; productRef = A785DEF22F35D38200D71B5E /* CoreDataKit */; };
+		A7A9E07C2E8E27FF0064EDDC /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = A7A9E07B2E8E27FF0064EDDC /* Kingfisher */; };
+		A7FB83B32E98F82800C4E1A5 /* MijickTimer in Frameworks */ = {isa = PBXBuildFile; productRef = A7FB83B22E98F82800C4E1A5 /* MijickTimer */; };
+		AF073AC32DF71A920077DB7B /* SwiftUIIntrospect in Frameworks */ = {isa = PBXBuildFile; productRef = AF073AC22DF71A920077DB7B /* SwiftUIIntrospect */; };
+		AFB8D1212E0EFB5A009EC42F /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = AFB8D1202E0EFB5A009EC42F /* FirebaseAnalytics */; };
+		AFB8D1232E0EFB5A009EC42F /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = AFB8D1222E0EFB5A009EC42F /* FirebaseAuth */; };
+		AFB8D1252E0EFB5A009EC42F /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = AFB8D1242E0EFB5A009EC42F /* FirebaseCrashlytics */; };
+		AFB8D1272E0EFB5A009EC42F /* FirebaseRemoteConfig in Frameworks */ = {isa = PBXBuildFile; productRef = AFB8D1262E0EFB5A009EC42F /* FirebaseRemoteConfig */; };
+		B04CF2DA3654363F8A1A4A92 /* WatchAddTodoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0580A7F9A8B6C1E401D7DF5 /* WatchAddTodoView.swift */; };
+		B0D22ED790DC9B226807545F /* VoxoShared in Frameworks */ = {isa = PBXBuildFile; productRef = 23DD5D0CDE61F10B0D99455B /* VoxoShared */; };
+		C5EF7181CAB46E79D017BFA4 /* WordDiff.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E99FC341BA8CB57DB46A6A0 /* WordDiff.swift */; };
+		D01038F3DDEBEA6AE4D93323 /* WatchTodoListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B4CBC44C4A1EDBEB881C56E /* WatchTodoListView.swift */; };
+		F23483586F6605DD450B7F66 /* WatchTodoDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25B779FD1FBFC575C576BA44 /* WatchTodoDetailView.swift */; };
+		FD938112EE119E7A65F63027 /* VoiceTodoWatchApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE6C8B038E9E05328A8B7546 /* VoiceTodoWatchApp.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		9BCB5F4A5343457B46D55EF7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = AFB7AB112CEB790D007C8CD4 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = CDD9FF8BC1990901D5D7617C;
+			remoteInfo = VoiceTodoWatch;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		98A5FBF0726928F2110568D8 /* Embed Watch Content */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "$(CONTENTS_FOLDER_PATH)/Watch";
+			dstSubfolderSpec = 16;
+			files = (
+				31D13728DC3D7208149FF14C /* VoiceTodoWatch.app in Embed Watch Content */,
+			);
+			name = "Embed Watch Content";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		1B924CA9DBB481D402305354 /* VoiceTodoWatch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VoiceTodoWatch.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		25B779FD1FBFC575C576BA44 /* WatchTodoDetailView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WatchTodoDetailView.swift; sourceTree = "<group>"; };
+		3AFEA65617B6EBC7BE1B5FDD /* WatchSessionManager.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WatchSessionManager.swift; sourceTree = "<group>"; };
+		5E3E3CDF0B3C9BF73343CF1F /* Pods-VoiceTodo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VoiceTodo.release.xcconfig"; path = "Target Support Files/Pods-VoiceTodo/Pods-VoiceTodo.release.xcconfig"; sourceTree = "<group>"; };
+		6F7237511A050EA8283AB26E /* DictationProbeView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = DictationProbeView.swift; sourceTree = "<group>"; };
+		791B905D6C0B6ECA917A1CD5 /* Pods-VoiceTodo.dev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VoiceTodo.dev.xcconfig"; path = "Target Support Files/Pods-VoiceTodo/Pods-VoiceTodo.dev.xcconfig"; sourceTree = "<group>"; };
+		7A00CCF66D37340AC7FCCDFA /* WatchTodoStore.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WatchTodoStore.swift; sourceTree = "<group>"; };
+		7B4CBC44C4A1EDBEB881C56E /* WatchTodoListView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WatchTodoListView.swift; sourceTree = "<group>"; };
+		8E99FC341BA8CB57DB46A6A0 /* WordDiff.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WordDiff.swift; sourceTree = "<group>"; };
+		90196740DAF07B4FE4315BF8 /* Pods_VoiceTodo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_VoiceTodo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		926FF717CACC94CB6EF1F068 /* DictationProbe.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = DictationProbe.swift; sourceTree = "<group>"; };
+		92AD1A977D519C78F573C51E /* Assets.xcassets */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		AE6C8B038E9E05328A8B7546 /* VoiceTodoWatchApp.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = VoiceTodoWatchApp.swift; sourceTree = "<group>"; };
+		AFB7AB192CEB790D007C8CD4 /* VoiceTodo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VoiceTodo.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		C9AFD15B86AA03570BF43629 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/WatchOS.platform/Developer/SDKs/WatchOS26.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
+		E0580A7F9A8B6C1E401D7DF5 /* WatchAddTodoView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WatchAddTodoView.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		AFCA52C12CEE1C7000212B4E /* Exceptions for "VoiceTodo" folder in "VoiceTodo" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Resources/Info.plist,
+			);
+			target = AFB7AB182CEB790D007C8CD4 /* VoiceTodo */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		AFB7AB1B2CEB790D007C8CD4 /* VoiceTodo */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				AFCA52C12CEE1C7000212B4E /* Exceptions for "VoiceTodo" folder in "VoiceTodo" target */,
+			);
+			path = VoiceTodo;
+			sourceTree = "<group>";
+		};
+/* End PBXFileSystemSynchronizedRootGroup section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		84A73F109233F7B124922688 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A3730B9DC4074448AF698147 /* Foundation.framework in Frameworks */,
+				B0D22ED790DC9B226807545F /* VoxoShared in Frameworks */,
+				188C5769BD86D2D160B17A55 /* VoxoDesign in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		AFB7AB162CEB790D007C8CD4 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AFB8D1212E0EFB5A009EC42F /* FirebaseAnalytics in Frameworks */,
+				A76313BF2E7170D70098E06E /* FlagAndCountryCode in Frameworks */,
+				316B57192F3C7827003CC81A /* CoreDataKit in Frameworks */,
+				A7A9E07C2E8E27FF0064EDDC /* Kingfisher in Frameworks */,
+				AF073AC32DF71A920077DB7B /* SwiftUIIntrospect in Frameworks */,
+				316B57172F3C77AF003CC81A /* CoreDataKit in Frameworks */,
+				AFB8D1252E0EFB5A009EC42F /* FirebaseCrashlytics in Frameworks */,
+				A7FB83B32E98F82800C4E1A5 /* MijickTimer in Frameworks */,
+				AFB8D1232E0EFB5A009EC42F /* FirebaseAuth in Frameworks */,
+				A728730B2EFE68760092169A /* BottomSheet in Frameworks */,
+				AFB8D1272E0EFB5A009EC42F /* FirebaseRemoteConfig in Frameworks */,
+				A785DEF32F35D38200D71B5E /* CoreDataKit in Frameworks */,
+				7C0206119F39CD4333B9956D /* Pods_VoiceTodo.framework in Frameworks */,
+				4C0BE3F51E3B2511F977FB2C /* VoxoShared in Frameworks */,
+				77A2C7E1A99AF46D3DC0E8F7 /* VoxoDesign in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		6F885531A0D9FFF4172DC046 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				90196740DAF07B4FE4315BF8 /* Pods_VoiceTodo.framework */,
+				9FD749143E8415D44E633DDF /* watchOS */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		9FD749143E8415D44E633DDF /* watchOS */ = {
+			isa = PBXGroup;
+			children = (
+				C9AFD15B86AA03570BF43629 /* Foundation.framework */,
+			);
+			name = watchOS;
+			sourceTree = "<group>";
+		};
+		AFB7AB102CEB790D007C8CD4 = {
+			isa = PBXGroup;
+			children = (
+				AFB7AB1B2CEB790D007C8CD4 /* VoiceTodo */,
+				AFB7AB1A2CEB790D007C8CD4 /* Products */,
+				B45E515686952EF0E12AA2DB /* Pods */,
+				6F885531A0D9FFF4172DC046 /* Frameworks */,
+				C062177A7C29EADF98FEE37B /* VoiceTodoWatch */,
+			);
+			sourceTree = "<group>";
+		};
+		AFB7AB1A2CEB790D007C8CD4 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				AFB7AB192CEB790D007C8CD4 /* VoiceTodo.app */,
+				1B924CA9DBB481D402305354 /* VoiceTodoWatch.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		B45E515686952EF0E12AA2DB /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				791B905D6C0B6ECA917A1CD5 /* Pods-VoiceTodo.dev.xcconfig */,
+				5E3E3CDF0B3C9BF73343CF1F /* Pods-VoiceTodo.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
+		C062177A7C29EADF98FEE37B /* VoiceTodoWatch */ = {
+			isa = PBXGroup;
+			children = (
+				926FF717CACC94CB6EF1F068 /* DictationProbe.swift */,
+				6F7237511A050EA8283AB26E /* DictationProbeView.swift */,
+				AE6C8B038E9E05328A8B7546 /* VoiceTodoWatchApp.swift */,
+				8E99FC341BA8CB57DB46A6A0 /* WordDiff.swift */,
+				92AD1A977D519C78F573C51E /* Assets.xcassets */,
+				E0580A7F9A8B6C1E401D7DF5 /* WatchAddTodoView.swift */,
+				25B779FD1FBFC575C576BA44 /* WatchTodoDetailView.swift */,
+				7B4CBC44C4A1EDBEB881C56E /* WatchTodoListView.swift */,
+				7A00CCF66D37340AC7FCCDFA /* WatchTodoStore.swift */,
+				3AFEA65617B6EBC7BE1B5FDD /* WatchSessionManager.swift */,
+			);
+			path = VoiceTodoWatch;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		AFB7AB182CEB790D007C8CD4 /* VoiceTodo */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = AFB7AB272CEB790E007C8CD4 /* Build configuration list for PBXNativeTarget "VoiceTodo" */;
+			buildPhases = (
+				B3C7937B42AAEFE45E83C72A /* [CP] Check Pods Manifest.lock */,
+				AFB7AB152CEB790D007C8CD4 /* Sources */,
+				AFB7AB162CEB790D007C8CD4 /* Frameworks */,
+				AFB7AB172CEB790D007C8CD4 /* Resources */,
+				98A5FBF0726928F2110568D8 /* Embed Watch Content */,
+				AF2ECFAD2D809A520025B167 /* SwiftLint */,
+				A765059D2E868EC900553001 /* Upload dSyms */,
+				6E9ACADC8307A74784703F48 /* [CP] Embed Pods Frameworks */,
+				9D8A615585C11A0051244AF3 /* [CP] Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				214D9BE3469222FD4018F0DC /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				AFB7AB1B2CEB790D007C8CD4 /* VoiceTodo */,
+			);
+			name = VoiceTodo;
+			packageProductDependencies = (
+				3F1295D1ABA2FB02D3A46CC2 /* VoxoShared */,
+				60879D63D9AE2F88B14BA666 /* VoxoDesign */,
+			);
+			productName = VoiceTodo;
+			productReference = AFB7AB192CEB790D007C8CD4 /* VoiceTodo.app */;
+			productType = "com.apple.product-type.application";
+		};
+		CDD9FF8BC1990901D5D7617C /* VoiceTodoWatch */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 9F6634FAC8AF9842E48BA199 /* Build configuration list for PBXNativeTarget "VoiceTodoWatch" */;
+			buildPhases = (
+				1575482B4FB83114D49D1A89 /* Sources */,
+				84A73F109233F7B124922688 /* Frameworks */,
+				5842A11B2F19C862962B6B33 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = VoiceTodoWatch;
+			packageProductDependencies = (
+				23DD5D0CDE61F10B0D99455B /* VoxoShared */,
+				428E0DB43EE5DBB906EE604D /* VoxoDesign */,
+			);
+			productName = VoiceTodoWatch;
+			productReference = 1B924CA9DBB481D402305354 /* VoiceTodoWatch.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		AFB7AB112CEB790D007C8CD4 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				KnownAssetTags = (
+					location,
+					travelView,
+					travelViewVideo,
+				);
+				LastSwiftUpdateCheck = 1600;
+				LastUpgradeCheck = 1600;
+				TargetAttributes = {
+					AFB7AB182CEB790D007C8CD4 = {
+						CreatedOnToolsVersion = 16.0;
+					};
+				};
+			};
+			buildConfigurationList = AFB7AB142CEB790D007C8CD4 /* Build configuration list for PBXProject "VoiceTodo" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				es,
+				fr,
+				hi,
+				"pt-PT",
+				pt,
+				de,
+				ko,
+				ja,
+				ar,
+				bn,
+				id,
+				it,
+				pa,
+				ru,
+				sw,
+				"zh-Hans",
+			);
+			mainGroup = AFB7AB102CEB790D007C8CD4;
+			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				AF073AC12DF71A920077DB7B /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */,
+				AFB8D11F2E0EFB5A009EC42F /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				A76313BD2E7170D70098E06E /* XCRemoteSwiftPackageReference "FlagAndCountryCode" */,
+				A7A9E07A2E8E27FF0064EDDC /* XCRemoteSwiftPackageReference "Kingfisher" */,
+				A7FB83B12E98F82800C4E1A5 /* XCRemoteSwiftPackageReference "Timer" */,
+				A72873092EFE68760092169A /* XCRemoteSwiftPackageReference "BottomSheet" */,
+				A785DEF12F35D38200D71B5E /* XCRemoteSwiftPackageReference "CoreDataKit" */,
+				F1DBEE729EB14FD29F1CEC0E /* XCLocalSwiftPackageReference "Shared" */,
+			);
+			preferredProjectObjectVersion = 77;
+			productRefGroup = AFB7AB1A2CEB790D007C8CD4 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				AFB7AB182CEB790D007C8CD4 /* VoiceTodo */,
+				CDD9FF8BC1990901D5D7617C /* VoiceTodoWatch */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		5842A11B2F19C862962B6B33 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9D045CAE73F47D632817D410 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		AFB7AB172CEB790D007C8CD4 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		6E9ACADC8307A74784703F48 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-VoiceTodo/Pods-VoiceTodo-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-VoiceTodo/Pods-VoiceTodo-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-VoiceTodo/Pods-VoiceTodo-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		9D8A615585C11A0051244AF3 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-VoiceTodo/Pods-VoiceTodo-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-VoiceTodo/Pods-VoiceTodo-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-VoiceTodo/Pods-VoiceTodo-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		A765059D2E868EC900553001 /* Upload dSyms */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}",
+				"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}/Contents/Resources/DWARF/${PRODUCT_NAME}",
+				"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}/Contents/Info.plist",
+				"$(TARGET_BUILD_DIR)/$(UNLOCALIZED_RESOURCES_FOLDER_PATH)/GoogleService-Info.plist",
+				"$(TARGET_BUILD_DIR)/$(EXECUTABLE_PATH)",
+				"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}/Contents/Resources/DWARF/${PRODUCT_NAME}.debug.dylib",
+			);
+			name = "Upload dSyms";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n\"${BUILD_DIR%/Build/*}/SourcePackages/checkouts/firebase-ios-sdk/Crashlytics/run\"\n";
+		};
+		AF2ECFAD2D809A520025B167 /* SwiftLint */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = SwiftLint;
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "export PATH=\"$PATH:/opt/homebrew/bin\"\n#alias swiftlint=\"/opt/homebrew/bin/swiftlint\"\n\nswiftlint\n\n# Update a temporary file so that Xcode recognizes the process as completed\ntouch \"$DERIVED_FILE_DIR/swiftlint.timestamp\"\n";
+		};
+		B3C7937B42AAEFE45E83C72A /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-VoiceTodo-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		1575482B4FB83114D49D1A89 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				60489009ACCA86433043272D /* DictationProbe.swift in Sources */,
+				177991C8C55D6010160AF9AA /* DictationProbeView.swift in Sources */,
+				FD938112EE119E7A65F63027 /* VoiceTodoWatchApp.swift in Sources */,
+				C5EF7181CAB46E79D017BFA4 /* WordDiff.swift in Sources */,
+				B04CF2DA3654363F8A1A4A92 /* WatchAddTodoView.swift in Sources */,
+				F23483586F6605DD450B7F66 /* WatchTodoDetailView.swift in Sources */,
+				D01038F3DDEBEA6AE4D93323 /* WatchTodoListView.swift in Sources */,
+				37994BB7F0BCB80190F9DF0C /* WatchTodoStore.swift in Sources */,
+				86BBF8F72C0318AEB4D664AF /* WatchSessionManager.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		AFB7AB152CEB790D007C8CD4 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		214D9BE3469222FD4018F0DC /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = VoiceTodoWatch;
+			target = CDD9FF8BC1990901D5D7617C /* VoiceTodoWatch */;
+			targetProxy = 9BCB5F4A5343457B46D55EF7 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		10A4C288DDF5002C2A2A64D1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = VQ8W82PQ94;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = VoiceTodo;
+				INFOPLIST_KEY_WKApplication = YES;
+				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = com.limgrow.voxo;
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_BUNDLE_IDENTIFIER = com.limgrow.voxo.watchkitapp;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = RELEASE;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				VALIDATE_PRODUCT = YES;
+				WATCHOS_DEPLOYMENT_TARGET = 10.0;
+			};
+			name = Release;
+		};
+		AFB7AB252CEB790E007C8CD4 /* Dev */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReferenceAnchor = AFB7AB1B2CEB790D007C8CD4 /* VoiceTodo */;
+			baseConfigurationReferenceRelativePath = Enviroments/Dev.xcconfig;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Dev;
+		};
+		AFB7AB262CEB790E007C8CD4 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReferenceAnchor = AFB7AB1B2CEB790D007C8CD4 /* VoiceTodo */;
+			baseConfigurationReferenceRelativePath = Enviroments/Release.xcconfig;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		AFB7AB282CEB790E007C8CD4 /* Dev */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 791B905D6C0B6ECA917A1CD5 /* Pods-VoiceTodo.dev.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GENERATE_ASSET_SYMBOLS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = NO;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_ASSET_PATHS = "\"VoiceTodo/Preview Content\"";
+				DEVELOPMENT_TEAM = VQ8W82PQ94;
+				ENABLE_PREVIEWS = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = VoiceTodo/Resources/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = VoiceTodo;
+				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
+				INFOPLIST_KEY_NSCameraUsageDescription = "$(PRODUCT_NAME) needs access to your camera to capture photos and videos.";
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "$(PRODUCT_NAME) uses your location to provide location-based features.";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "$(PRODUCT_NAME) uses your location to provide location-based features.";
+				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "$(PRODUCT_NAME) needs permission to save photos to your photo library.";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "$(PRODUCT_NAME) needs access to your photo library to select photos.";
+				INFOPLIST_KEY_NSUserTrackingUsageDescription = "This identifier will be used to deliver personalized ads and to improve our services.";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UIRequiresFullScreen = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					/usr/lib/swift,
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SDKROOT)/usr/lib/swift",
+					"$(TOOLCHAIN_DIR)/usr/lib/swift/$(PLATFORM_NAME)",
+					"$(TOOLCHAIN_DIR)/usr/lib/swift-5.0/$(PLATFORM_NAME)",
+				);
+				MARKETING_VERSION = 1.0.0;
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+					"-l\"c++\"",
+					"-l\"sqlite3\"",
+					"-l\"xml2\"",
+					"-l\"z\"",
+					"-framework",
+					"\"ASN1Swift\"",
+					"-framework",
+					"\"AVFAudio\"",
+					"-framework",
+					"\"AVFoundation\"",
+					"-framework",
+					"\"Accelerate\"",
+					"-framework",
+					"\"AdSupport\"",
+					"-framework",
+					"\"AdjustSdk\"",
+					"-framework",
+					"\"AdjustSigSdk\"",
+					"-framework",
+					"\"Alamofire\"",
+					"-framework",
+					"\"AppLovinAdapter\"",
+					"-framework",
+					"\"AppLovinSDK\"",
+					"-framework",
+					"\"AppTrackingTransparency\"",
+					"-framework",
+					"\"AudioToolbox\"",
+					"-framework",
+					"\"CFNetwork\"",
+					"-framework",
+					"\"CoreFoundation\"",
+					"-framework",
+					"\"CoreGraphics\"",
+					"-framework",
+					"\"CoreHaptics\"",
+					"-framework",
+					"\"CoreImage\"",
+					"-framework",
+					"\"CoreMedia\"",
+					"-framework",
+					"\"CoreMotion\"",
+					"-framework",
+					"\"CoreTelephony\"",
+					"-framework",
+					"\"CoreVideo\"",
+					"-framework",
+					"\"FBAEMKit\"",
+					"-framework",
+					"\"FBAudienceNetwork\"",
+					"-framework",
+					"\"FBSDKCoreKit\"",
+					"-framework",
+					"\"FBSDKCoreKit_Basics\"",
+					"-framework",
+					"\"Foundation\"",
+					"-framework",
+					"\"GoogleMobileAds\"",
+					"-framework",
+					"\"Google_Mobile_Ads_SDK\"",
+					"-framework",
+					"\"JavaScriptCore\"",
+					"-framework",
+					"\"KeychainAccess\"",
+					"-framework",
+					"\"Kingfisher\"",
+					"-framework",
+					"\"LBTATools\"",
+					"-framework",
+					"\"Lottie\"",
+					"-framework",
+					"\"Mantis\"",
+					"-framework",
+					"\"MediaPlayer\"",
+					"-framework",
+					"\"MessageUI\"",
+					"-framework",
+					"\"MetaAdapter\"",
+					"-framework",
+					"\"MobileCoreServices\"",
+					"-framework",
+					"\"Network\"",
+					"-framework",
+					"\"QuartzCore\"",
+					"-framework",
+					"\"SafariServices\"",
+					"-framework",
+					"\"Security\"",
+					"-framework",
+					"\"StoreKit\"",
+					"-framework",
+					"\"SystemConfiguration\"",
+					"-framework",
+					"\"TPInAppReceipt\"",
+					"-framework",
+					"\"UIKit\"",
+					"-framework",
+					"\"UnityAdapter\"",
+					"-framework",
+					"\"UnityAds\"",
+					"-framework",
+					"\"UserMessagingPlatform\"",
+					"-framework",
+					"\"WebKit\"",
+					"-weak_framework",
+					"\"AdSupport\"",
+					"-weak_framework",
+					"\"AppTrackingTransparency\"",
+					"-weak_framework",
+					"\"CFNetwork\"",
+					"-weak_framework",
+					"\"Combine\"",
+					"-weak_framework",
+					"\"CoreMotion\"",
+					"-weak_framework",
+					"\"CoreTelephony\"",
+					"-weak_framework",
+					"\"JavaScriptCore\"",
+					"-weak_framework",
+					"\"LocalAuthentication\"",
+					"-weak_framework",
+					"\"SafariServices\"",
+					"-weak_framework",
+					"\"SwiftUI\"",
+					"-weak_framework",
+					"\"SystemConfiguration\"",
+					"-weak_framework",
+					"\"VideoToolbox\"",
+					"-weak_framework",
+					Webkit,
+					"-lswift_Concurrency",
+					"-Wl,-U,_swift_coroFrameAlloc",
+				);
+				OTHER_SWIFT_FLAGS = "$(inherited) -D COCOAPODS";
+				PRODUCT_BUNDLE_IDENTIFIER = com.limgrow.voxo;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Dev;
+		};
+		AFB7AB292CEB790E007C8CD4 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 5E3E3CDF0B3C9BF73343CF1F /* Pods-VoiceTodo.release.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GENERATE_ASSET_SYMBOLS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = NO;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"VoiceTodo/Preview Content\"";
+				DEVELOPMENT_TEAM = VQ8W82PQ94;
+				ENABLE_PREVIEWS = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = VoiceTodo/Resources/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = VoiceTodo;
+				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
+				INFOPLIST_KEY_NSCameraUsageDescription = "$(PRODUCT_NAME) needs access to your camera to capture photos and videos.";
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "$(PRODUCT_NAME) uses your location to provide location-based features.";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "$(PRODUCT_NAME) uses your location to provide location-based features.";
+				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "$(PRODUCT_NAME) needs permission to save photos to your photo library.";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "$(PRODUCT_NAME) needs access to your photo library to select photos.";
+				INFOPLIST_KEY_NSUserTrackingUsageDescription = "This identifier will be used to deliver personalized ads and to improve our services.";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UIRequiresFullScreen = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					/usr/lib/swift,
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SDKROOT)/usr/lib/swift",
+					"$(TOOLCHAIN_DIR)/usr/lib/swift/$(PLATFORM_NAME)",
+					"$(TOOLCHAIN_DIR)/usr/lib/swift-5.0/$(PLATFORM_NAME)",
+				);
+				MARKETING_VERSION = 1.0.0;
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+					"-l\"c++\"",
+					"-l\"sqlite3\"",
+					"-l\"xml2\"",
+					"-l\"z\"",
+					"-framework",
+					"\"ASN1Swift\"",
+					"-framework",
+					"\"AVFAudio\"",
+					"-framework",
+					"\"AVFoundation\"",
+					"-framework",
+					"\"Accelerate\"",
+					"-framework",
+					"\"AdSupport\"",
+					"-framework",
+					"\"AdjustSdk\"",
+					"-framework",
+					"\"AdjustSigSdk\"",
+					"-framework",
+					"\"Alamofire\"",
+					"-framework",
+					"\"AppLovinAdapter\"",
+					"-framework",
+					"\"AppLovinSDK\"",
+					"-framework",
+					"\"AppTrackingTransparency\"",
+					"-framework",
+					"\"AudioToolbox\"",
+					"-framework",
+					"\"CFNetwork\"",
+					"-framework",
+					"\"CoreFoundation\"",
+					"-framework",
+					"\"CoreGraphics\"",
+					"-framework",
+					"\"CoreHaptics\"",
+					"-framework",
+					"\"CoreImage\"",
+					"-framework",
+					"\"CoreMedia\"",
+					"-framework",
+					"\"CoreMotion\"",
+					"-framework",
+					"\"CoreTelephony\"",
+					"-framework",
+					"\"CoreVideo\"",
+					"-framework",
+					"\"FBAEMKit\"",
+					"-framework",
+					"\"FBAudienceNetwork\"",
+					"-framework",
+					"\"FBSDKCoreKit\"",
+					"-framework",
+					"\"FBSDKCoreKit_Basics\"",
+					"-framework",
+					"\"Foundation\"",
+					"-framework",
+					"\"GoogleMobileAds\"",
+					"-framework",
+					"\"Google_Mobile_Ads_SDK\"",
+					"-framework",
+					"\"JavaScriptCore\"",
+					"-framework",
+					"\"KeychainAccess\"",
+					"-framework",
+					"\"Kingfisher\"",
+					"-framework",
+					"\"LBTATools\"",
+					"-framework",
+					"\"Lottie\"",
+					"-framework",
+					"\"Mantis\"",
+					"-framework",
+					"\"MediaPlayer\"",
+					"-framework",
+					"\"MessageUI\"",
+					"-framework",
+					"\"MetaAdapter\"",
+					"-framework",
+					"\"MobileCoreServices\"",
+					"-framework",
+					"\"Network\"",
+					"-framework",
+					"\"QuartzCore\"",
+					"-framework",
+					"\"SafariServices\"",
+					"-framework",
+					"\"Security\"",
+					"-framework",
+					"\"StoreKit\"",
+					"-framework",
+					"\"SystemConfiguration\"",
+					"-framework",
+					"\"TPInAppReceipt\"",
+					"-framework",
+					"\"UIKit\"",
+					"-framework",
+					"\"UnityAdapter\"",
+					"-framework",
+					"\"UnityAds\"",
+					"-framework",
+					"\"UserMessagingPlatform\"",
+					"-framework",
+					"\"WebKit\"",
+					"-weak_framework",
+					"\"AdSupport\"",
+					"-weak_framework",
+					"\"AppTrackingTransparency\"",
+					"-weak_framework",
+					"\"CFNetwork\"",
+					"-weak_framework",
+					"\"Combine\"",
+					"-weak_framework",
+					"\"CoreMotion\"",
+					"-weak_framework",
+					"\"CoreTelephony\"",
+					"-weak_framework",
+					"\"JavaScriptCore\"",
+					"-weak_framework",
+					"\"LocalAuthentication\"",
+					"-weak_framework",
+					"\"SafariServices\"",
+					"-weak_framework",
+					"\"SwiftUI\"",
+					"-weak_framework",
+					"\"SystemConfiguration\"",
+					"-weak_framework",
+					"\"VideoToolbox\"",
+					"-weak_framework",
+					Webkit,
+					"-lswift_Concurrency",
+					"-Wl,-U,_swift_coroFrameAlloc",
+				);
+				OTHER_SWIFT_FLAGS = "$(inherited) -D COCOAPODS";
+				PRODUCT_BUNDLE_IDENTIFIER = com.limgrow.voxo;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = RELEASE;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		F88DAEACBAE233D369BC3878 /* Dev */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = VQ8W82PQ94;
+				ENABLE_PREVIEWS = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = VoiceTodo;
+				INFOPLIST_KEY_WKApplication = YES;
+				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = com.limgrow.voxo;
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.limgrow.voxo.watchkitapp;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 10.0;
+			};
+			name = Dev;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		9F6634FAC8AF9842E48BA199 /* Build configuration list for PBXNativeTarget "VoiceTodoWatch" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F88DAEACBAE233D369BC3878 /* Dev */,
+				10A4C288DDF5002C2A2A64D1 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		AFB7AB142CEB790D007C8CD4 /* Build configuration list for PBXProject "VoiceTodo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				AFB7AB252CEB790E007C8CD4 /* Dev */,
+				AFB7AB262CEB790E007C8CD4 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		AFB7AB272CEB790E007C8CD4 /* Build configuration list for PBXNativeTarget "VoiceTodo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				AFB7AB282CEB790E007C8CD4 /* Dev */,
+				AFB7AB292CEB790E007C8CD4 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCLocalSwiftPackageReference section */
+		F1DBEE729EB14FD29F1CEC0E /* XCLocalSwiftPackageReference "Shared" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = Shared;
+		};
+/* End XCLocalSwiftPackageReference section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		A72873092EFE68760092169A /* XCRemoteSwiftPackageReference "BottomSheet" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/lucaszischka/BottomSheet";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.1.1;
+			};
+		};
+		A76313BD2E7170D70098E06E /* XCRemoteSwiftPackageReference "FlagAndCountryCode" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/exyte/FlagAndCountryCode";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.1.3;
+			};
+		};
+		A785DEF12F35D38200D71B5E /* XCRemoteSwiftPackageReference "CoreDataKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/nts-sixblack/CoreDataKit";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
+			};
+		};
+		A7A9E07A2E8E27FF0064EDDC /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/onevcat/Kingfisher";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 8.5.0;
+			};
+		};
+		A7FB83B12E98F82800C4E1A5 /* XCRemoteSwiftPackageReference "Timer" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Mijick/Timer";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.0.0;
+			};
+		};
+		AF073AC12DF71A920077DB7B /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/siteline/SwiftUI-Introspect";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.3.0;
+			};
+		};
+		AFB8D11F2E0EFB5A009EC42F /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 12.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		23DD5D0CDE61F10B0D99455B /* VoxoShared */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = VoxoShared;
+		};
+		316B57162F3C77AF003CC81A /* CoreDataKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A785DEF12F35D38200D71B5E /* XCRemoteSwiftPackageReference "CoreDataKit" */;
+			productName = CoreDataKit;
+		};
+		316B57182F3C7827003CC81A /* CoreDataKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A785DEF12F35D38200D71B5E /* XCRemoteSwiftPackageReference "CoreDataKit" */;
+			productName = CoreDataKit;
+		};
+		3F1295D1ABA2FB02D3A46CC2 /* VoxoShared */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = VoxoShared;
+		};
+		428E0DB43EE5DBB906EE604D /* VoxoDesign */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = VoxoDesign;
+		};
+		60879D63D9AE2F88B14BA666 /* VoxoDesign */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = VoxoDesign;
+		};
+		A728730A2EFE68760092169A /* BottomSheet */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A72873092EFE68760092169A /* XCRemoteSwiftPackageReference "BottomSheet" */;
+			productName = BottomSheet;
+		};
+		A76313BE2E7170D70098E06E /* FlagAndCountryCode */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A76313BD2E7170D70098E06E /* XCRemoteSwiftPackageReference "FlagAndCountryCode" */;
+			productName = FlagAndCountryCode;
+		};
+		A785DEF22F35D38200D71B5E /* CoreDataKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A785DEF12F35D38200D71B5E /* XCRemoteSwiftPackageReference "CoreDataKit" */;
+			productName = CoreDataKit;
+		};
+		A7A9E07B2E8E27FF0064EDDC /* Kingfisher */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A7A9E07A2E8E27FF0064EDDC /* XCRemoteSwiftPackageReference "Kingfisher" */;
+			productName = Kingfisher;
+		};
+		A7FB83B22E98F82800C4E1A5 /* MijickTimer */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A7FB83B12E98F82800C4E1A5 /* XCRemoteSwiftPackageReference "Timer" */;
+			productName = MijickTimer;
+		};
+		AF073AC22DF71A920077DB7B /* SwiftUIIntrospect */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = AF073AC12DF71A920077DB7B /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */;
+			productName = SwiftUIIntrospect;
+		};
+		AFB8D1202E0EFB5A009EC42F /* FirebaseAnalytics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = AFB8D11F2E0EFB5A009EC42F /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAnalytics;
+		};
+		AFB8D1222E0EFB5A009EC42F /* FirebaseAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = AFB8D11F2E0EFB5A009EC42F /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAuth;
+		};
+		AFB8D1242E0EFB5A009EC42F /* FirebaseCrashlytics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = AFB8D11F2E0EFB5A009EC42F /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseCrashlytics;
+		};
+		AFB8D1262E0EFB5A009EC42F /* FirebaseRemoteConfig */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = AFB8D11F2E0EFB5A009EC42F /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseRemoteConfig;
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = AFB7AB112CEB790D007C8CD4 /* Project object */;
+}

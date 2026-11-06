@@ -1,0 +1,124 @@
+PODS:
+  - Adjust (5.8.0):
+    - Adjust/Adjust (= 5.8.0)
+  - Adjust/Adjust (5.8.0):
+    - AdjustSignature (= 5.0.0)
+  - AdjustSignature (5.0.0)
+  - Alamofire (5.12.2)
+  - AppLovinSDK (13.6.4)
+  - ASN1Swift (1.2.7)
+  - FBAEMKit (18.1.1):
+    - FBSDKCoreKit_Basics (= 18.1.1)
+  - FBAudienceNetwork (6.22.0)
+  - FBSDKCoreKit (18.1.1):
+    - FBAEMKit (= 18.1.1)
+    - FBSDKCoreKit_Basics (= 18.1.1)
+  - FBSDKCoreKit_Basics (18.1.1)
+  - Google-Mobile-Ads-SDK (13.9.0):
+    - GoogleUserMessagingPlatform (>= 1.1)
+  - GoogleMobileAdsMediationAppLovin (13.6.4.0):
+    - AppLovinSDK (= 13.6.4)
+    - Google-Mobile-Ads-SDK (~> 13.3)
+  - GoogleMobileAdsMediationFacebook (6.22.0.0):
+    - FBAudienceNetwork (= 6.22.0)
+    - Google-Mobile-Ads-SDK (~> 13.3)
+  - GoogleMobileAdsMediationUnity (4.20.0.0):
+    - Google-Mobile-Ads-SDK (~> 13.3)
+    - UnityAds (= 4.20.0)
+  - GoogleUserMessagingPlatform (3.1.0)
+  - IronSourceAdQualitySDK (9.10.0)
+  - KeychainAccess (4.2.2)
+  - Kingfisher (7.12.0)
+  - LBTATools (1.0.12)
+  - lottie-ios (4.5.2)
+  - Mantis (2.31.2)
+  - TikTokBusinessSDK (1.7.2)
+  - TPInAppReceipt (3.4.1):
+    - TPInAppReceipt/Core (= 3.4.1)
+  - TPInAppReceipt/Core (3.4.1):
+    - ASN1Swift (~> 1.2.6)
+  - UnityAds (4.20.0):
+    - IronSourceAdQualitySDK (< 10.0.0)
+    - UnityCoherenceLib (= 0.1.0)
+  - UnityCoherenceLib (0.1.0)
+
+DEPENDENCIES:
+  - Adjust (= 5.8.0)
+  - Alamofire (~> 5.10)
+  - FBSDKCoreKit (= 18.1.1)
+  - Google-Mobile-Ads-SDK
+  - GoogleMobileAdsMediationAppLovin
+  - GoogleMobileAdsMediationFacebook
+  - GoogleMobileAdsMediationUnity
+  - KeychainAccess (~> 4.2)
+  - Kingfisher (~> 7.0)
+  - LBTATools (from `https://github.com/bhlvoong/LBTATools.git`)
+  - lottie-ios (~> 4.5.2)
+  - Mantis (~> 2.26)
+  - TikTokBusinessSDK (= 1.7.2)
+  - TPInAppReceipt (~> 3.4)
+
+SPEC REPOS:
+  trunk:
+    - Adjust
+    - AdjustSignature
+    - Alamofire
+    - AppLovinSDK
+    - ASN1Swift
+    - FBAEMKit
+    - FBAudienceNetwork
+    - FBSDKCoreKit
+    - FBSDKCoreKit_Basics
+    - Google-Mobile-Ads-SDK
+    - GoogleMobileAdsMediationAppLovin
+    - GoogleMobileAdsMediationFacebook
+    - GoogleMobileAdsMediationUnity
+    - GoogleUserMessagingPlatform
+    - IronSourceAdQualitySDK
+    - KeychainAccess
+    - Kingfisher
+    - lottie-ios
+    - Mantis
+    - TikTokBusinessSDK
+    - TPInAppReceipt
+    - UnityAds
+    - UnityCoherenceLib
+
+EXTERNAL SOURCES:
+  LBTATools:
+    :git: https://github.com/bhlvoong/LBTATools.git
+
+CHECKOUT OPTIONS:
+  LBTATools:
+    :commit: adfebcec7e09f07b184f1eca321dd5ec61c47d5b
+    :git: https://github.com/bhlvoong/LBTATools.git
+
+SPEC CHECKSUMS:
+  Adjust: 688831c353a5ecb137d7e9b20dcfebebb3469780
+  AdjustSignature: 2185aff42830b87214d84bee45da09c65129c12c
+  Alamofire: c5f37d8f438dc1d7fd3ff767f2f80fd01ca381d7
+  AppLovinSDK: 730be87bac90c5b0f7d507c3a2530213f7685370
+  ASN1Swift: bbd56c299b2084ba71bd7d7769c6202451598948
+  FBAEMKit: fbb0a50e13109400d0615e7630a0db26ec6b8206
+  FBAudienceNetwork: b05c65487114aa3bf3a68e865c60937a9fb03b69
+  FBSDKCoreKit: 0063014b3b1f7e975e70b60232b0cf8003839746
+  FBSDKCoreKit_Basics: f4a1e0f38769eb71abaf6395b85e015318fcda49
+  Google-Mobile-Ads-SDK: cec761d0da669c462bcc19cd16c747498b9f39f7
+  GoogleMobileAdsMediationAppLovin: bd2c7430ec7cc319f65139f18edcf48694d0bf81
+  GoogleMobileAdsMediationFacebook: 213c2a7cabd34f2e4115c3e7fa4780256043db42
+  GoogleMobileAdsMediationUnity: 9717cf23332a8d1a4e137b479edbfd4528e1fc3c
+  GoogleUserMessagingPlatform: befe603da6501006420c206222acd449bba45a9c
+  IronSourceAdQualitySDK: 779fc3754f27b3d5fae8da52c5709a2dbdb502a6
+  KeychainAccess: c0c4f7f38f6fc7bbe58f5702e25f7bd2f65abf51
+  Kingfisher: 53a10ea35051a436b5fb626ca2dd8f3144d755e9
+  LBTATools: 389a901a01b9a56bea5682c40cd6e23530f40015
+  lottie-ios: 96784afc26ea031d3e2b6cae342a4b8915072489
+  Mantis: 198166f2e8aaba54bf9c808b164275bd03e7c5f8
+  TikTokBusinessSDK: c8878048daf0c46a0d9e89932359d553ea38096c
+  TPInAppReceipt: 22dbc616bcd6c61672ebe062e60b6329a2af6323
+  UnityAds: aac7752619961224969a1bfea8b5077d2b93005f
+  UnityCoherenceLib: d9be08c5b9c2880cb220c7ecd643f97ebda422b7
+
+PODFILE CHECKSUM: cc8b5d0576090cb9998b0a62c72c891d7897a039
+
+COCOAPODS: 1.17.0
