@@ -2,6 +2,20 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## Working with this user
+
+- **Reply in Vietnamese.** They write in Vietnamese and read replies in Vietnamese.
+- **Expand every abbreviation and piece of jargon in parentheses on first use** — "ACK (acknowledge
+  — báo đã nhận)", "DTO (data transfer object — gói dữ liệu để truyền)". This applies to English
+  abbreviations, Apple/iOS jargon, and names invented in this project. Keep the precise term and add
+  the gloss; do not swap it for something vaguer. They asked for this directly after a reply used
+  "Op" and "ACK" with no explanation and they could not follow it.
+- **Hand over git commands; do not run them.** `add`, `commit`, `push`, `reset`, remote changes —
+  write them in a copy-pasteable block and stop. Reading state (`git status`, `git log`, scanning for
+  secrets before a public push) is fine and useful. They pushed back when these were run for them.
+- This is their first iPhone + Apple Watch app. Prefer a concrete example or a short walkthrough over
+  an abstract definition, and say plainly what has **not** been verified on a real device.
+
 ## The product being built: Voxo
 
 **`PLAN.md` at the repo root is the source of truth for what we are building** — *Voxo: Voice Todo Reminder*, an
