@@ -25,43 +25,22 @@ struct TodoListView: View {
     }
 
     @EnvironmentObject private var store: TodoStore
-    @State private var tab: Tab = .doing
-    @State private var editing: TodoDTO?
-    @State private var isAdding = false
-    @State private var showSettings = false
+    @StateObject private var viewModel = ViewModel()
 
     var body: some View {
-        NavigationStack {
-            VStack(spacing: 0) {
-                picker
-                list
-            }
-            .voxoScreen()
-            .navigationTitle("Voxo")
-            .toolbar { toolbar }
-            .sheet(isPresented: $isAdding) {
-                TodoEditView(mode: .create) { title, interval in
-                    store.add(title: title, intervalOverride: interval)
-                }
-            }
-            .sheet(item: $editing) { todo in
-                TodoEditView(mode: .edit(todo)) { title, interval in
-                    var updated = todo
-                    updated.title = title
-                    updated.intervalOverride = interval
-                    store.update(updated)
-                }
-            }
-            .sheet(isPresented: $showSettings) {
-                VoxoSettingsView()
-            }
+        VStack(spacing: 0) {
+            picker
+            list
         }
+        .voxoScreen()
+        .navigationTitle("Voxo")
+        .toolbar { toolbar }
     }
 
     // MARK: - Pieces
 
     private var picker: some View {
-        Picker("View", selection: $tab) {
+        Picker("View", selection: $viewModel.tab) {
             ForEach(Tab.allCases) { tab in
                 Text(tab.title).tag(tab)
             }
@@ -73,7 +52,7 @@ struct TodoListView: View {
 
     @ViewBuilder
     private var list: some View {
-        let todos = tab == .doing ? store.active : store.completed
+        let todos = viewModel.tab == .doing ? store.active : store.completed
 
         if todos.isEmpty {
             Spacer()
@@ -99,7 +78,7 @@ struct TodoListView: View {
         .listRowBackground(Color.clear)
         .listRowSeparatorTint(VoxoColor.separator)
         .contentShape(Rectangle())
-        .onTapGesture { editing = todo }
+        .onTapGesture { viewModel.edit(todo) }
         .swipeActions(edge: .trailing) {
             Button(role: .destructive) {
                 store.delete(todo)
@@ -121,7 +100,7 @@ struct TodoListView: View {
 
     private var emptyState: some View {
         Group {
-            switch tab {
+            switch viewModel.tab {
             case .doing:
                 VoxoEmptyState(
                     icon: "mic.circle",
@@ -142,7 +121,7 @@ struct TodoListView: View {
     private var toolbar: some ToolbarContent {
         ToolbarItem(placement: .topBarLeading) {
             Button {
-                showSettings = true
+                viewModel.openSettings()
             } label: {
                 Image(systemName: "gearshape")
             }
@@ -151,7 +130,7 @@ struct TodoListView: View {
 
         ToolbarItem(placement: .topBarTrailing) {
             Button {
-                isAdding = true
+                viewModel.addTodo()
             } label: {
                 Image(systemName: "plus")
             }
@@ -159,15 +138,7 @@ struct TodoListView: View {
         }
     }
 
-    /// Reminder cadence for unfinished todos, completion time for finished ones.
     private func subtitle(for todo: TodoDTO) -> String? {
-        if todo.isDone {
-            guard let completedAt = todo.completedAt else { return nil }
-            return "Finished \(completedAt.formatted(date: .abbreviated, time: .shortened))"
-        }
-
-        let minutes = store.interval(for: todo)
-        let suffix = todo.intervalOverride > 0 ? " · custom" : ""
-        return "Every \(minutes.intervalLabel)\(suffix)"
+        viewModel.subtitle(for: todo, intervalMinutes: store.interval(for: todo))
     }
 }

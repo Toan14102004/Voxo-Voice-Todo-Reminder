@@ -63,8 +63,37 @@ struct VoxoRootView: View {
         }
     #endif
 
+    @State private var path = FlowPath()
+
     var body: some View {
-        TodoListView()
+        FlowStack($path, withNavigation: true) {
+            TodoListView()
+                .modifier(NavigatorModifier())
+                .flowDestination(for: TodoListView.Coordinator.Navigation.self) { route in
+                    switch route {
+                    case .settings: VoxoSettingsView()
+                    }
+                }
+                .flowDestination(for: TodoListView.Coordinator.FullScreen.self) { route in
+                    switch route {
+                    case .addTodo:
+                        TodoEditView(mode: .create) { title, interval in
+                            store.add(title: title, intervalOverride: interval)
+                        }
+                    case let .editTodo(id):
+                        // Read the current record, not a snapshot captured when the route was pushed.
+                        if let todo = store.active.first(where: { $0.id == id })
+                            ?? store.completed.first(where: { $0.id == id }) {
+                            TodoEditView(mode: .edit(todo)) { title, interval in
+                                var updated = todo
+                                updated.title = title
+                                updated.intervalOverride = interval
+                                store.update(updated)
+                            }
+                        }
+                    }
+                }
+        }
             .environmentObject(store)
             .environmentObject(session)
             .environmentObject(reminders)

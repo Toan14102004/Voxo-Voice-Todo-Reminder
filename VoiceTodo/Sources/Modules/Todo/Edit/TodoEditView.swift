@@ -26,28 +26,21 @@ struct TodoEditView: View {
     let onSave: (String, Int32) -> Void
 
     @EnvironmentObject private var store: TodoStore
-    @Environment(\.dismiss) private var dismiss
+    @Navigation private var navigation
+    @StateObject private var viewModel = ViewModel()
     @FocusState private var titleFocused: Bool
-
-    @State private var title: String = ""
-    /// Zero means "use the shared interval" (PLAN.md §4).
-    @State private var intervalOverride: Int32 = 0
-
-    private var trimmedTitle: String {
-        title.trimmingCharacters(in: .whitespacesAndNewlines)
-    }
 
     var body: some View {
         NavigationStack {
             Form {
                 Section("Task") {
-                    TextField("What needs doing?", text: $title, axis: .vertical)
+                    TextField("What needs doing?", text: $viewModel.title, axis: .vertical)
                         .font(VoxoFont.body)
                         .lineLimit(1...4)
                         .focused($titleFocused)
                         .submitLabel(.done)
 
-                    if trimmedTitle.count > TodoDTO.maxTitleLength {
+                    if viewModel.isOverLimit {
                         Label(
                             "Only the first \(TodoDTO.maxTitleLength) characters are kept.",
                             systemImage: "exclamationmark.triangle"
@@ -58,7 +51,7 @@ struct TodoEditView: View {
                 }
 
                 Section {
-                    Picker("Reminder", selection: $intervalOverride) {
+                    Picker("Reminder", selection: $viewModel.intervalOverride) {
                         Text("Use shared (\(store.globalIntervalMinutes.intervalLabel))").tag(Int32(0))
                         ForEach(SyncSettings.allowedIntervals, id: \.self) { minutes in
                             Text("Every \(minutes.intervalLabel)").tag(Int32(minutes))
@@ -75,26 +68,17 @@ struct TodoEditView: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
-                    Button("Cancel") { dismiss() }
+                    Button("Cancel") { navigation.goBack() }
                 }
                 ToolbarItem(placement: .confirmationAction) {
                     Button("Save") {
-                        onSave(trimmedTitle, intervalOverride)
-                        dismiss()
+                        onSave(viewModel.trimmedTitle, viewModel.intervalOverride)
+                        navigation.goBack()
                     }
-                    .disabled(trimmedTitle.isEmpty)
+                    .disabled(!viewModel.canSave)
                 }
             }
-            .onAppear(perform: load)
-        }
-    }
-
-    private func load() {
-        if case let .edit(todo) = mode {
-            title = todo.title
-            intervalOverride = todo.intervalOverride
-        } else {
-            titleFocused = true
+            .onAppear { titleFocused = viewModel.load(mode) }
         }
     }
 }

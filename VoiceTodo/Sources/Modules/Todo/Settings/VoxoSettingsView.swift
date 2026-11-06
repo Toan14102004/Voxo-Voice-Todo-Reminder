@@ -14,12 +14,8 @@ struct VoxoSettingsView: View {
     @EnvironmentObject private var store: TodoStore
     @EnvironmentObject private var session: PhoneSessionManager
     @EnvironmentObject private var reminders: ReminderService
-    @Environment(\.dismiss) private var dismiss
-
-    @State private var authorizationStatus: UNAuthorizationStatus = .notDetermined
-    @State private var confirmClear = false
-    @State private var pending: [UNNotificationRequest] = []
-    @State private var delivered: [(id: String, date: Date)] = []
+    @Navigation private var navigation
+    @StateObject private var viewModel = ViewModel()
 
     var body: some View {
         NavigationStack {
@@ -36,13 +32,10 @@ struct VoxoSettingsView: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .confirmationAction) {
-                    Button("Done") { dismiss() }
+                    Button("Done") { navigation.goBack() }
                 }
             }
-            .task {
-                await refreshAuthorization()
-                await loadDiagnostics()
-            }
+            .task { await viewModel.refresh(reminders: reminders) }
         }
     }
 
@@ -63,13 +56,13 @@ struct VoxoSettingsView: View {
     private var notificationSection: some View {
         Section {
             LabeledContent("Notifications") {
-                Label(authorizationText, systemImage: authorizationIcon)
+                Label(viewModel.authorizationText, systemImage: viewModel.authorizationIcon)
                     .labelStyle(.titleAndIcon)
-                    .foregroundStyle(authorizationStatus == .authorized ? VoxoColor.done : VoxoColor.overdue)
+                    .foregroundStyle(viewModel.isAuthorized ? VoxoColor.done : VoxoColor.overdue)
             }
 
-            if authorizationStatus != .authorized {
-                Button("Open Settings", action: openSystemSettings)
+            if !viewModel.isAuthorized {
+                Button("Open Settings", action: viewModel.openSystemSettings)
             }
         } header: {
             Text("Reminders")
@@ -108,7 +101,7 @@ struct VoxoSettingsView: View {
     private var dataSection: some View {
         Section {
             Button("Clear finished tasks", role: .destructive) {
-                confirmClear = true
+                viewModel.confirmClear = true
             }
             .disabled(store.completed.isEmpty)
         } footer: {
@@ -116,7 +109,7 @@ struct VoxoSettingsView: View {
         }
         .confirmationDialog(
             "Clear \(store.completed.count) finished tasks?",
-            isPresented: $confirmClear,
+            isPresented: $viewModel.confirmClear,
             titleVisibility: .visible
         ) {
             Button("Clear", role: .destructive) { store.clearCompleted() }
@@ -128,38 +121,36 @@ struct VoxoSettingsView: View {
         /// Phase 0/2 check: what is actually scheduled, and when reminders actually arrived.
         private var diagnosticsSection: some View {
             Section {
-                LabeledContent("Scheduled now", value: "\(pending.count)")
+                LabeledContent("Scheduled now", value: "\(viewModel.pendingReminders.count)")
 
-                ForEach(pending, id: \.identifier) { request in
+                ForEach(viewModel.pendingReminders, id: \.identifier) { request in
                     VStack(alignment: .leading, spacing: 2) {
                         Text(request.content.body)
                             .font(VoxoFont.caption)
-                        if let trigger = request.trigger as? UNTimeIntervalNotificationTrigger {
-                            Text("mỗi \(Int(trigger.timeInterval / 60)) phút · lặp: \(trigger.repeats ? "có" : "không")")
+                        if let info = viewModel.describe(request) {
+                            Text(info.cadence)
                                 .font(VoxoFont.caption)
                                 .foregroundStyle(VoxoColor.textSecondary)
-                            if let next = trigger.nextTriggerDate() {
-                                Text("lần tới \(next.formatted(date: .omitted, time: .standard))")
-                                    .font(VoxoFont.caption)
-                                    .foregroundStyle(VoxoColor.textSecondary)
-                            }
+                            Text("lần tới \(info.next)")
+                                .font(VoxoFont.caption)
+                                .foregroundStyle(VoxoColor.textSecondary)
                         }
                     }
                 }
 
-                if delivered.isEmpty {
+                if viewModel.deliveredReminders.isEmpty {
                     Text("Chưa nhận được lần nhắc nào")
                         .font(VoxoFont.caption)
                         .foregroundStyle(VoxoColor.textSecondary)
                 } else {
-                    ForEach(delivered, id: \.date) { item in
+                    ForEach(viewModel.deliveredReminders, id: \.date) { item in
                         Text("đã nhận \(item.date.formatted(date: .omitted, time: .standard))")
                             .font(VoxoFont.caption)
                     }
                 }
 
                 Button("Làm mới") {
-                    Task { await loadDiagnostics() }
+                    Task { await viewModel.refresh(reminders: reminders) }
                 }
             } header: {
                 Text("Chẩn đoán nhắc việc")
@@ -169,30 +160,4 @@ struct VoxoSettingsView: View {
         }
     #endif
 
-    private func loadDiagnostics() async {
-        pending = await reminders.pendingRequests()
-        delivered = await reminders.deliveredReminders()
-    }
-
-    private var authorizationText: String {
-        switch authorizationStatus {
-        case .authorized, .provisional, .ephemeral: "On"
-        case .denied: "Off"
-        case .notDetermined: "Not asked"
-        @unknown default: "Unknown"
-        }
-    }
-
-    private var authorizationIcon: String {
-        authorizationStatus == .authorized ? "checkmark.circle" : "exclamationmark.circle"
-    }
-
-    private func refreshAuthorization() async {
-        authorizationStatus = await UNUserNotificationCenter.current().notificationSettings().authorizationStatus
-    }
-
-    private func openSystemSettings() {
-        guard let url = URL(string: UIApplication.openSettingsURLString) else { return }
-        UIApplication.shared.open(url)
-    }
 }
