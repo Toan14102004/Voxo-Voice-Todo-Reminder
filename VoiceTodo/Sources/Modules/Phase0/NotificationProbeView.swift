@@ -81,7 +81,7 @@ struct NotificationProbeView: View {
 
                 Text(run.verdict(now: Date()))
                     .font(.headline)
-                    .foregroundStyle(run.verdict(now: Date()).hasPrefix("ĐẠT") ? VoxoColor.done : VoxoColor.overdue)
+                    .foregroundStyle(run.verdict(now: Date()).hasPrefix("ĐẠT") ? VoxoColor.success : VoxoColor.danger)
 
                 Button("Thu kết quả nhịp lặp") {
                     Task { await probe.collectRepeating() }

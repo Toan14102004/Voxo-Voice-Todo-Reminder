@@ -5,33 +5,47 @@
 //  The Core Data model, built in code.
 //
 //  Why not an .xcdatamodeld: SwiftPM's command-line build never invokes `momc` — it copies the
-//  bundle verbatim — so a visual model cannot be loaded by `swift test` on macOS. Defining it here
-//  keeps one source of truth that both apps and the tests load identically.
+//  bundle verbatim — so a visual model cannot be loaded by `swift test`.
 //
-//  PLAN.md §11 still applies: a schema change means adding a NEW version builder below and
-//  migrating onto it, never editing `version1` in place once anything has shipped.
+//  PLAN.md §11: a schema change adds a NEW version below and migrates onto it. `version1` is
+//  frozen; never edit it, or stores written by it stop migrating.
 //
 
 import CoreData
 import Foundation
 
 public enum VoxoModel {
-    public static let current = version1
+    /// What the app opens today.
+    public static let current = version2
+
+    /// Oldest first. `StoreMigrator` walks this list to find the version a store was written with.
+    public static let allVersions: [NSManagedObjectModel] = [version1, version2]
+
+    // MARK: - Version 1 (frozen)
 
     public static let version1: NSManagedObjectModel = {
         let model = NSManagedObjectModel()
-        model.entities = [makeTodo(), makeSyncOp(), makeProcessedOp()]
+        model.entities = [makeTodoV1(), makeSyncOp(), makeProcessedOp()]
+        return model
+    }()
+
+    // MARK: - Version 2 — Tidy spec (PLAN.md §4)
+
+    /// Adds `priority`, `dueAt`, `listId`, `repeatRule` and `note` to `Todo`, plus `TodoList`.
+    ///
+    /// `note` was added after v2 was first written but before any device ever opened a v2 store,
+    /// so amending in place was still safe. Once a build with v2 ships, this becomes frozen too.
+    /// Purely additive, so Core Data can infer the mapping from version 1.
+    public static let version2: NSManagedObjectModel = {
+        let model = NSManagedObjectModel()
+        model.entities = [makeTodoV2(), makeTodoList(), makeSyncOp(), makeProcessedOp()]
         return model
     }()
 
     // MARK: - Entities
 
-    /// PLAN.md §4, entity `Todo`.
-    private static func makeTodo() -> NSEntityDescription {
-        let entity = NSEntityDescription()
-        entity.name = "Todo"
-        entity.managedObjectClassName = NSStringFromClass(TodoEntity.self)
-        entity.properties = [
+    private static func todoBase() -> [NSAttributeDescription] {
+        [
             attribute("id", .UUIDAttributeType),
             attribute("title", .stringAttributeType),
             attribute("isDone", .booleanAttributeType, defaultValue: false),
@@ -44,7 +58,13 @@ public enum VoxoModel {
             attribute("lastRemindedAt", .dateAttributeType, optional: true),
             attribute("originDevice", .stringAttributeType)
         ]
-        // `id` is the sync key, so a duplicate insert must merge rather than fork.
+    }
+
+    private static func makeTodoV1() -> NSEntityDescription {
+        let entity = NSEntityDescription()
+        entity.name = "Todo"
+        entity.managedObjectClassName = NSStringFromClass(TodoEntity.self)
+        entity.properties = todoBase()
         entity.uniquenessConstraints = [["id"]]
         entity.indexes = [
             index(named: "byIsDone", on: entity, properties: ["isDone"]),
@@ -53,7 +73,52 @@ public enum VoxoModel {
         return entity
     }
 
-    /// PLAN.md §4, entity `SyncOp` — only ever populated on the Watch.
+    private static func makeTodoV2() -> NSEntityDescription {
+        let entity = NSEntityDescription()
+        entity.name = "Todo"
+        entity.managedObjectClassName = NSStringFromClass(TodoEntity.self)
+        entity.properties = todoBase() + [
+            // 0 none · 1 low · 2 medium · 3 high — see TodoPriority.
+            attribute("priority", .integer16AttributeType, defaultValue: Int16(0)),
+            attribute("dueAt", .dateAttributeType, optional: true),
+            attribute("listId", .UUIDAttributeType, optional: true),
+            // "daily" / "weekly" / nil — how often the task itself recurs, which is not the same
+            // as intervalOverride, the cadence of its reminders.
+            attribute("repeatRule", .stringAttributeType, optional: true),
+            // Free text under the title, shown on the detail screen and Quick add.
+            attribute("note", .stringAttributeType, optional: true)
+        ]
+        entity.uniquenessConstraints = [["id"]]
+        entity.indexes = [
+            index(named: "byIsDone", on: entity, properties: ["isDone"]),
+            index(named: "byDeletedAt", on: entity, properties: ["deletedAt"]),
+            index(named: "byDueAt", on: entity, properties: ["dueAt"]),
+            index(named: "byListId", on: entity, properties: ["listId"])
+        ]
+        return entity
+    }
+
+    /// PLAN.md §4, entity `TodoList`.
+    private static func makeTodoList() -> NSEntityDescription {
+        let entity = NSEntityDescription()
+        entity.name = "TodoList"
+        entity.managedObjectClassName = NSStringFromClass(TodoListEntity.self)
+        entity.properties = [
+            attribute("id", .UUIDAttributeType),
+            attribute("name", .stringAttributeType),
+            attribute("colorHex", .stringAttributeType),
+            // SF Symbol name. The design calls this "emoji", but the project ships SF Symbols
+            // (see VoxoIcon), so a symbol name keeps one icon system.
+            attribute("icon", .stringAttributeType),
+            attribute("createdAt", .dateAttributeType),
+            attribute("updatedAt", .dateAttributeType),
+            attribute("deletedAt", .dateAttributeType, optional: true)
+        ]
+        entity.uniquenessConstraints = [["id"]]
+        entity.indexes = [index(named: "byListDeletedAt", on: entity, properties: ["deletedAt"])]
+        return entity
+    }
+
     private static func makeSyncOp() -> NSEntityDescription {
         let entity = NSEntityDescription()
         entity.name = "SyncOp"
@@ -70,7 +135,6 @@ public enum VoxoModel {
         return entity
     }
 
-    /// Dedupe ledger for the phone. Not in PLAN.md §4 — see `ProcessedOpEntity`.
     private static func makeProcessedOp() -> NSEntityDescription {
         let entity = NSEntityDescription()
         entity.name = "ProcessedOp"

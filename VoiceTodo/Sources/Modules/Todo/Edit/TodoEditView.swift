@@ -46,15 +46,15 @@ struct TodoEditView: View {
                             systemImage: "exclamationmark.triangle"
                         )
                         .font(VoxoFont.caption)
-                        .foregroundStyle(VoxoColor.overdue)
+                        .foregroundStyle(VoxoColor.danger)
                     }
                 }
 
                 Section {
                     Picker("Reminder", selection: $viewModel.intervalOverride) {
-                        Text("Use shared (\(store.globalIntervalMinutes.intervalLabel))").tag(Int32(0))
+                        Text("Use shared").tag(Int32(0))
                         ForEach(SyncSettings.allowedIntervals, id: \.self) { minutes in
-                            Text("Every \(minutes.intervalLabel)").tag(Int32(minutes))
+                            Text(IntervalLabel.option(minutes: minutes)).tag(Int32(minutes))
                         }
                     }
                 } header: {

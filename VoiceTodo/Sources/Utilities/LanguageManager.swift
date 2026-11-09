@@ -12,7 +12,7 @@ class LanguageManager: ObservableObject {
     static let shared = LanguageManager()
 
     /// Language codes the app ships translations for (must match `Language.supportedLanguages`).
-    static let supportedCodes = ["en", "ja", "es", "fr", "hi", "pt", "de", "ko", "ar", "bn", "id", "it", "pa", "ru", "sw", "zh-Hans"]
+    static let supportedCodes = ["en", "vi", "ja", "es", "fr", "hi", "pt", "de", "ko", "ar", "bn", "id", "it", "pa", "ru", "sw", "zh-Hans"]
 
     /// Maps a system/locale language code to a supported one, falling back to English.
     static func resolve(_ code: String) -> String {

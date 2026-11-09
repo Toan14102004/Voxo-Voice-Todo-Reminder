@@ -1,34 +1,41 @@
-# Voxo: Voice Todo Reminder: Kế hoạch triển khai
+# Tidy — Personal Todo App: Kế hoạch triển khai
 
 > Tài liệu này là nguồn sự thật cho việc phát triển. Khi có mâu thuẫn giữa code và tài liệu, hỏi người dùng trước khi đổi.
 
-## Trạng thái — cập nhật 06/11/2026
+## Trạng thái — cập nhật 09/11/2026
 
-**Việc tiếp theo: chạy 3 phép đo trên máy thật, rồi ghi kết quả vào mục này.**
-Mọi thứ khác đều đang chờ ba con số đó.
+**Dự án vừa đổi spec: từ "Voxo" tự thiết kế sang design Figma "Tidy".** Xem §1.8.
+Phần nền (model, repository, merge, đồng bộ, lên lịch nhắc) giữ nguyên và dùng lại được;
+phần giao diện phải dựng lại theo design.
+
+### Hai việc song song
+
+**1. Đo trên máy thật — vẫn còn nợ, không phụ thuộc đổi spec**
 
 | Phép đo | Cách chạy | Kết quả |
 |---|---|---|
-| Nhắc việc có nổ đúng giờ không | Mở Voxo trên iPhone, cho phép thông báo, thêm 2–3 việc, để qua đêm. Sáng xem **Cài đặt → Chẩn đoán nhắc việc** | _chưa chạy_ |
-| Đồng bộ Watch ↔ iPhone | Để iPhone xa, thêm 3 việc trên đồng hồ, mở iPhone lên kiểm tra | _chưa chạy_ |
+| Nhắc việc có nổ đúng giờ không | Mở app, cho phép thông báo, thêm 2–3 việc, để qua đêm. Xem **Settings → Chẩn đoán nhắc việc** | _chưa chạy_ |
+| Đồng bộ Watch ↔ iPhone | Để iPhone xa, thêm 3 việc trên đồng hồ, mở iPhone kiểm tra | _chưa chạy_ |
 | Dictation tiếng Việt | Trên đồng hồ, trang 2, đọc 10 câu mẫu | _chưa chạy_ |
 
-Đừng bật Focus và tắt "Tóm tắt theo lịch trình" trước khi đo, nếu không kết quả sai.
-Đừng xoá thông báo Voxo khi chưa thu kết quả.
+Trước khi đo: tắt "Tóm tắt theo lịch trình", không bật Focus, không xoá thông báo của app.
 
-### Đã xong
+**2. Dựng lại giao diện theo Tidy** — đã xong **Giai đoạn A → F**; tiếp theo là **Giai đoạn G
+(Stats)** ở §8.
 
-- **Giai đoạn 1, 3** — Core Data model, `TodoRepository`, `MergeService`, outbox. 37 test, chạy bằng `cd Shared && swift test`
-- **Giai đoạn 2** — `ReminderScheduler` (hàm thuần, có test) + `ReminderService` (đặt lịch thật)
-- **Giai đoạn 4, 6** — giao diện Watch và iPhone, bộ design token dùng chung
-- **Giai đoạn 5** — đồng bộ WCSession hai chiều, chưa chạy thử trên máy thật
+### Đã xong (dùng lại được)
 
-### Chưa làm
+- Core Data model, `TodoRepository`, `MergeService`, outbox — 37 test, chạy bằng `cd Shared && swift test`
+- `ReminderScheduler` (hàm thuần) + `ReminderService` (đặt lịch thật, trigger lặp)
+- Đồng bộ WCSession hai chiều — **chưa chạy thử trên máy thật**
+- Khung giao diện iOS + Watch, điều hướng FlowStacks với Coordinator enum
 
-- **Giai đoạn 7** — hai nút **Xong** và **Nhắc lại sau 15 phút** ngay trên thông báo
-- **Giai đoạn 8** — checklist mục 10
-- Chưa quyết: có gỡ ads / mua hàng trong app / Firebase khỏi template không (xem §1 và CLAUDE.md)
-- Tên hiển thị vẫn là "VoiceTodo", chưa đổi thành "Voxo"
+### Phải làm lại hoặc mở rộng
+
+- Toàn bộ lớp hình ảnh: màu, font **Be Vietnam Pro**, icon, component — `VoxoDesign` hiện dùng indigo tự chọn
+- Model thêm `priority`, `dueAt`, `listId`, `repeatRule` và entity `TodoList` → **Core Data model version 2**
+- Từ 3 màn lên 10 màn, 4 tab
+- Chuyển sang **song ngữ VI / EN** (trước đây plan ghi chỉ tiếng Anh)
 
 ### Chạy thế nào
 
@@ -39,22 +46,46 @@ cd Shared && swift test          # 37 test, không cần simulator
 ```
 
 Scheme `VoiceTodo-Dev` là app thật. `VoiceTodo-SampleData` có dữ liệu mẫu.
-`VoiceTodo-Phase0` là bộ đo notification, sẽ xoá sau khi xong giai đoạn 0.
+`VoiceTodo-Phase0` là bộ đo notification, xoá sau khi đo xong.
 
-Ký app bằng tài khoản Apple miễn phí nên **profile hết hạn sau 7 ngày**, hết hạn thì cắm máy build lại.
+Target vẫn tên `VoiceTodo` / bundle `com.limgrow.voxo` — **chưa đổi theo tên Tidy**, chưa quyết có đổi không.
+
+Ký bằng tài khoản Apple miễn phí nên **profile hết hạn sau 7 ngày**, hết hạn thì cắm máy build lại.
+
+Code mới nhất nằm trên nhánh **`develop`**, không phải `main`.
 
 ## 0. Thông tin dự án
 
 | Mục | Giá trị |
 |---|---|
-| Tên app | Voxo: Voice Todo Reminder |
-| Phụ đề | Speak tasks, get reminders |
-| Nền tảng | iOS 13+, watchOS 6+ |
-| Ngôn ngữ / UI | Swift, SwiftUI |
+| Tên app | Tidy — Personal Todo App |
+| Phụ đề | Minimal todo, nhắc việc lặp lại |
+| Thiết kế | Figma, board **"Tidy – Todo App"** (node `9155:14723`). Design là nguồn sự thật cho giao diện |
+| Nền tảng | iOS 16+, watchOS 10+ |
+| Ngôn ngữ / UI | Swift, SwiftUI. **Song ngữ VI / EN**, mọi chuỗi phải có cả hai |
 | Lưu trữ | Core Data, mỗi thiết bị một store |
 | Đồng bộ | WatchConnectivity (`transferUserInfo`, `updateApplicationContext`) |
-| Giao diện | Tiếng Anh; nhập liệu hỗ trợ tiếng Việt qua dictation |
+| Khung máy | iPhone 390×844 · Apple Watch 46mm 396×484 |
 | Phạm vi | Dùng cá nhân trước, chuẩn bị cho App Store sau |
+
+### Design system (lấy từ Figma, không đoán từ pixel)
+
+| Token | Giá trị |
+|---|---|
+| Primary / tint | `#1E6FD0` / `#EEF5FE` |
+| Chữ | Ink `#1C1917` · phụ `#78716C` · mờ `#A8A29E` |
+| Nền / viền | `#FAFAF9` / `#E7E5E4` |
+| Ưu tiên | Cao `#EF4444` · Vừa `#F59E0B` · Thấp `#3B82F6` |
+| Success | `#16A34A` |
+| Dark mode | nền `#0C0A09` · card `#1C1917` · giữ nguyên màu nhấn |
+| Watch | nền đen tuyệt đối · nhấn `#4D9AF0` / `#8CC0F7` · chữ ≥ 13pt |
+| Font | **Be Vietnam Pro** — Display 28 Bold · Title 24 Bold · Headline 17 SemiBold · Body 15–16 · Caption 12–13 · Overline 12 SemiBold |
+| Icon | **Material Symbols Rounded**, một bộ duy nhất, 20/24px |
+| Lưới | 8pt · lề màn 24 · spacing 4/8/12/16/24/32 |
+| Bo góc | chip 8–18 · task row 14 · card/button 16–20 · sheet 28 |
+| Chạm | tối thiểu 44pt · tương phản WCAG AA |
+
+Font và icon **chưa có trong repo**, phải bổ sung trước khi dựng giao diện.
 
 ## 1. Quyết định kỹ thuật (đã chốt, không đổi nếu không được yêu cầu)
 
@@ -77,6 +108,15 @@ Ký app bằng tài khoản Apple miễn phí nên **profile hết hạn sau 7 n
    Trường hợp xấu nhất: xong hết việc trên Watch mà iPhone chưa nhận tin thì nó vẫn nhắc một lần sai số.
 5. **Xung đột đồng bộ:** last-writer-wins theo `updatedAt`, xóa dùng tombstone (`deletedAt`), giữ 30 ngày.
 6. **Không dùng iCloud sync, widget, Siri Shortcut, Live Activity ở v1.**
+8. **Chuyển sang spec Tidy** (chốt 09/11/2026, thay thiết kế Voxo tự dựng trước đó). Hệ quả:
+   - App đổi tên thành **Tidy**, giao diện bám design Figma.
+   - **Song ngữ VI / EN**, thay cho quy định chỉ tiếng Anh ở §7 bản cũ.
+   - `Todo` thêm **mức ưu tiên**, **ngày đến hạn**, **thuộc danh sách nào**, **luật lặp** (§4).
+   - iPhone có 4 tab: **Today · Calendar · Lists · Stats**, cộng Settings và Onboarding.
+9. **Không làm Wear OS ở v1** dù design có vẽ. Đó là app Android/Kotlin, repo riêng, không phải một target
+   của project này.
+10. **Watch giữ dictation đơn giản** (`TextField` + bàn phím đọc của hệ thống). Phần tách câu nói thành
+   tiêu đề + ngày giờ + danh sách mà design mô tả ở mục 05 **để v2** — nó khó hơn toàn bộ phần còn lại cộng lại.
 
 **Điều kiện mở:** nếu giai đoạn 0 (prototype) cho thấy không thể giữ notification lặp lại đáng tin cậy, dừng lại và báo người dùng để xem xét chuyển sang EventKit. Không tự đổi hướng.
 
@@ -135,8 +175,28 @@ VoiceTodo/
 | `nextRemindAt` | Date | Không | Do Scheduler tính |
 | `lastRemindedAt` | Date | Không | |
 | `originDevice` | String | Có | `"watch"` hoặc `"phone"` |
+| `priority` | Int16 | Có | 0 không đặt · 1 Thấp · 2 Vừa · 3 Cao. Mặc định 0 |
+| `dueAt` | Date | Không | Hạn chót. Không có nghĩa là việc không gắn ngày |
+| `listId` | UUID | Không | Thuộc danh sách nào. Nil nghĩa là chưa phân loại |
+| `repeatRule` | String | Không | `daily` / `weekly` / nil. Khác `intervalOverride` (chu kỳ *nhắc*) |
 
-Index: `id` (unique), `isDone`, `deletedAt`.
+Index: `id` (unique), `isDone`, `deletedAt`, `dueAt`, `listId`.
+
+**4 trường cuối là bổ sung của spec Tidy** so với bản đầu. Theo §11, đây là đổi schema nên phải tạo
+Core Data model version mới, không sửa `version1` tại chỗ.
+
+### Entity `TodoList` (mới, theo spec Tidy)
+
+| Thuộc tính | Kiểu | Bắt buộc | Ghi chú |
+|---|---|---|---|
+| `id` | UUID | Có | |
+| `name` | String | Có | Không rỗng sau trim |
+| `colorHex` | String | Có | Màu nhãn, dùng cho icon và chip |
+| `createdAt` | Date | Có | |
+| `updatedAt` | Date | Có | Dùng cho merge, cùng luật với `Todo` |
+| `deletedAt` | Date | Không | Tombstone, cùng luật 30 ngày |
+
+Xoá danh sách **không xoá** todo trong đó: các todo liên quan chuyển `listId` về nil.
 
 ### Entity `SyncOp` (chỉ dùng trên Watch)
 
@@ -248,112 +308,155 @@ func plan(
 
 ## 7. Giao diện
 
+Bám design Figma board **"Tidy – Todo App"**. Dưới đây là cấu trúc; chi tiết pixel đọc thẳng từ Figma.
+
+### Đồ thị điều hướng — 10 đích đến
+
+```
+Onboarding (chỉ lần đầu) ──► Today
+                              │
+Tab bar:  Today · Calendar · Lists · Stats
+                              │
+          ├─ Quick add (bottom sheet)
+          ├─ Task detail
+          ├─ New list (modal)
+          ├─ List view
+          └─ Settings
+```
+
+Ràng buộc trong design: **từ bất kỳ tab nào cũng không sâu quá 2 cấp.**
+
+### Màn hình
+
+| Màn | Nội dung chính |
+|---|---|
+| **Onboarding** | Chỉ hiện lần đầu, rồi vào thẳng Today |
+| **Today** | Danh sách việc hôm nay, task row vuốt được, FAB thêm nhanh |
+| **Calendar** | Dải ngày (component `Day`), event card theo ngày |
+| **Lists** | List card, mỗi danh sách một màu nhãn; vào List view xem chi tiết |
+| **Stats** | Stat card và Progress card |
+| **Quick add** | Bottom sheet, bo góc 28 |
+| **Task detail** | Details card: tiêu đề, ưu tiên, hạn, danh sách, chu kỳ nhắc |
+| **New list** | Modal, đặt tên và chọn màu |
+| **Settings** | Chu kỳ nhắc chung, quyền thông báo, trạng thái đồng bộ, ngôn ngữ |
+
+### Component đã vẽ sẵn trong Figma
+
+Task row (2 biến thể) · Chip / Chip selected / Chip priority · Button Primary · FAB · List card ·
+Event card · Tab bar · Day · Stat card · Progress card · Details card · Bottom sheet.
+
+Dựng chúng trong `VoxoDesign` trước, rồi mới lắp màn hình.
+
+### Tương tác (DS / Rules)
+
+- **Vuốt phải** = hoàn thành · **vuốt trái** = dời sang mai / xoá · **Hoàn tác 4 giây**
+- Check task: gạch ngang + mờ dần + haptic nhẹ
+- FAB nổi trên cùng, cách tab bar 14px, đổ bóng xanh 30%
+- Ngày hiển thị theo ngôn ngữ: `T7, 07/11` ↔ `Sat, Nov 7`
+
 ### Apple Watch
 
-- **Danh sách chính:** todo chưa xong, sắp theo `createdAt` tăng dần.
-- **Thêm:** nút mở `TextField`; dictation nhập; nút Lưu tạo todo. Không tạo todo rỗng.
-- **Hoàn thành:** vuốt trái, hiển thị nút Xong.
-- **Chi tiết:** chạm để xem và sửa tiêu đề.
-- **Trạng thái:** dòng cuối "Chờ đồng bộ: N" khi có `SyncOp` chưa ACK.
+- Nền đen tuyệt đối, nhấn `#4D9AF0` / `#8CC0F7`, chữ ≥ 13pt, chạm ≥ 44pt
+- v1: danh sách việc + thêm bằng dictation hệ thống + vuốt hoàn thành
+- Nhắc có nút **Xong** và **Hoãn 10 phút**
+- Luồng voice → task tách ngữ nghĩa ở mục 05 của design: **để v2** (§1.10)
 
-### iPhone
+### Quy ước
 
-- **Tab 1, Đang làm:** todo chưa xong.
-- **Tab 2, Đã xong:** todo đã xong, có nút xóa vĩnh viễn (tombstone).
-- **Sửa todo:** tiêu đề, chu kỳ riêng (chọn "Dùng chung" hoặc một trong các giá trị hợp lệ).
-- **Cài đặt:**
-  - Chu kỳ chung (dropdown các giá trị hợp lệ).
-  - Trạng thái quyền thông báo, kèm nút mở Cài đặt nếu bị tắt.
-  - Ghi chú giới hạn: chỉ hiện khi có todo đặt chu kỳ riêng, vì chỉ những todo đó mới tốn slot.
-  - Trạng thái đồng bộ.
-  - Nút "Xóa các việc đã xong" (xóa mềm).
-
-### Quy ước giao diện
-
-- Tiếng Anh cho toàn bộ chuỗi hiển thị. Chuỗi đặt trong `Localizable.strings` để sau này thêm ngôn ngữ.
-- Hỗ trợ Dynamic Type.
-- Không dùng màu làm cách duy nhất để truyền thông tin.
+- **Song ngữ VI / EN.** Mọi chuỗi nằm trong `Localizable.xcstrings`, không hardcode
+- Hỗ trợ Dynamic Type
+- Không dùng màu làm cách duy nhất để truyền thông tin: ưu tiên phải có cả chữ hoặc hình, không chỉ chấm màu
 
 ## 8. Lộ trình thực hiện
 
-Mỗi giai đoạn kết thúc bằng: build pass, test pass, commit, và cập nhật checklist ở mục 10. **Không bắt đầu giai đoạn sau khi giai đoạn trước chưa đạt tiêu chí.**
+Giai đoạn 0–5 của bản kế hoạch đầu **đã xong** (xem mục Trạng thái ở đầu file): model, repository,
+merge, outbox, đồng bộ WCSession, bộ lên lịch nhắc. Phần đó **không phải làm lại** khi chuyển sang
+spec Tidy — chỉ lớp giao diện và vài trường trong model là mở rộng.
 
-### Giai đoạn 0: Prototype (bắt buộc, 1–2 ngày)
+Mỗi giai đoạn kết thúc bằng: build pass, test pass, commit đặt tên theo giai đoạn.
 
-Mục tiêu: kiểm chứng hai giả định nền tảng. Có thể bỏ UI, chỉ cần màn hình test tạm.
+### Giai đoạn A: Nền thiết kế (1 ngày)
 
-- [ ] Dictation tiếng Việt có dấu trên Watch: nhập ít nhất 10 câu mẫu, ghi tỉ lệ đúng.
-- [ ] **A — độ chính xác:** lên lịch 40–60 notification một lần (`repeats: false`) cách nhau 60 phút, không mở app. Ghi độ lệch từng cái.
-- [ ] **B — trigger lặp:** đặt **một** notification `repeats: true` chu kỳ 60 phút, để chạy ít nhất 6 giờ không mở app. Kiểm tra nó còn bắn và không trôi nhịp. Đây mới là cơ chế v1 thực sự dùng sau quyết định §1.7.
+- [ ] Nhúng font **Be Vietnam Pro** (các weight Regular / Medium / SemiBold / Bold) vào cả 2 target
+- [ ] Thêm bộ icon **Material Symbols Rounded** hoặc chốt dùng SF Symbols thay thế và ghi lại lý do
+- [ ] Viết lại `VoxoDesign` theo token ở §0: màu, thang chữ, bo góc, spacing
+- [ ] Bật song ngữ: mọi chuỗi vào `Localizable.xcstrings`, có đủ VI và EN
 
-**Tiêu chí qua:** dictation đúng ở mức chấp nhận được (người dùng sửa tối đa 1 từ mỗi câu); phép đo A đạt ít nhất 90% đúng giờ (±5 phút); phép đo B không bỏ nhịp nào và lần bắn cuối lệch không quá ±5 phút.
-**Nếu không qua:** dừng và báo người dùng. Không tiếp tục sang giai đoạn 1.
+**Hoàn thành khi:** đổi ngôn ngữ máy giữa VI và EN, app đổi theo, không còn chuỗi hardcode.
 
-### Giai đoạn 1: Scaffold (1 ngày)
+### Giai đoạn B: Mở rộng model — **XONG 09/11/2026**
 
-- [x] Tạo project Xcode với hai target iOS và watchOS. **App Group bỏ qua** — không dùng chung được giữa hai thiết bị, xem CLAUDE.md.
-- [x] Tạo cấu trúc thư mục ở mục 3 (`Shared/` là Swift package nội bộ).
-- [x] Core Data model với entity `Todo`, `SyncOp` và `ProcessedOp`, **viết bằng code** chứ không dùng `.xcdatamodeld`.
-- [x] Shared module build được cho cả hai target.
+- [x] Core Data **model version 2**: `Todo` thêm `priority`, `dueAt`, `listId`, `repeatRule`
+- [x] Entity `TodoList` mới
+- [x] Migration từ version 1, có test — **viết tay trong `StoreMigrator`**, vì model dựng bằng code
+      nên Core Data không tự tìm được model nguồn
+- [x] `TodoDTO` và `MergeService` cập nhật theo; xoá danh sách thì todo về `listId = nil`
 
-**Hoàn thành khi:** build pass cả hai target; app mở được, màn hình trống.
+50 test, trong đó 5 test di trú và 8 test danh sách.
 
-### Giai đoạn 2: Scheduler (2 ngày)
+### Giai đoạn C: Component — **XONG 09/11/2026**
 
-- [ ] Viết `ReminderScheduler.plan` theo mục 5.
-- [ ] `SchedulerTests` gồm: chu kỳ mặc định, chu kỳ riêng, todo đã xong bị loại, todo đã xóa bị loại, vượt `maxPending` thì giữ thời điểm sớm nhất, nhiều todo cùng thời điểm, `now` nằm giữa khoảng.
+- [x] Dựng trong `VoxoDesign`: Task row, Chip, Chip priority, Button Primary, FAB, List card,
+      Event card, Tab bar, Day, Stat card, Progress card, Details card, Bottom sheet
+- [x] Màn xem trước: chạy scheme `VoiceTodo-Dev` với cờ **`-gallery`** (thêm `-galleryBottom`
+      để xem nửa dưới mà không phải cuộn)
 
-**Hoàn thành khi:** toàn bộ test pass; không có import UIKit hay Core Data trong file scheduler.
+**Ánh xạ icon Material Symbols → SF Symbols** nằm trong `VoxoIcon.swift`, viết thành bảng để đối
+chiếu được từng cái với Figma.
 
-### Giai đoạn 3: Repository và Merge (2 ngày)
+### Giai đoạn D: Today + Quick add + Task detail — **code xong 09/11/2026, chờ thử máy thật**
 
-- [x] `TodoRepository` protocol và `CoreDataTodoRepository`.
-- [x] `MergeService` theo mục 6.
-- [x] `SyncOp` được ghi cùng transaction với `Todo`.
-- [ ] `MergeTests`: cùng `updatedAt`, `deletedAt` thắng, bản cũ bị bỏ, hai thay đổi đồng thời.
-- [ ] `OutboxTests`: ACK xóa đúng op, op không ACK được giữ lại, `opId` trùng bị bỏ.
-- [ ] `RepositoryTests` với store in-memory.
+- [x] Today theo design: header lời chào, thẻ tiến độ, nhóm Quá hạn / Hôm nay / Đã xong, FAB
+- [x] Vuốt phải hoàn thành, vuốt trái dời sang mai / xoá, **hoàn tác 4 giây** (`UndoCenter`)
+- [x] Bottom sheet Thêm nhanh
+- [x] Task detail: ưu tiên, hạn, nhắc, lặp lại, danh sách, xoá
+- [x] Thêm trường `note` vào model (design có ô ghi chú mà §4 chưa có)
 
-**Hoàn thành khi:** test pass; không view nào gọi Core Data trực tiếp.
+**Chưa làm — cần quyết:** design màn chi tiết có mục **"VIỆC CON · 2/3"** (subtask). Đây là entity
+mới, không có trong §4. Bỏ qua ở Giai đoạn D.
 
-### Giai đoạn 4: Watch UI (2–3 ngày)
+**Chưa kiểm chứng trên máy thật:** vuốt, hoàn tác, tạo việc từ Quick add. Mới chạy simulator.
 
-- [ ] Danh sách, thêm bằng dictation, vuốt để hoàn thành, chi tiết.
-- [ ] Hiển thị số `SyncOp` chờ ACK.
-- [ ] Watch hoạt động đầy đủ khi không có iPhone kết nối (thêm, xem, hoàn thành).
+### Giai đoạn E: Lists + New list — **code xong 09/11/2026**
 
-**Hoàn thành khi:** trên Watch thật, thêm được todo bằng giọng nói và thấy trạng thái chờ đồng bộ.
+- [x] Màn Lists: lưới 2 cột, thẻ nền màu riêng, ô "Danh sách mới"
+- [x] Modal New list: tên, 6 màu, 6 biểu tượng, có xem trước thẻ ngay
+- [x] List view: việc trong một danh sách, xoá danh sách kèm cảnh báo việc vẫn được giữ
+- [x] **Lọc thông minh**: Ưu tiên cao / 7 ngày tới / Đã hoàn thành — tính từ dữ liệu, không thêm entity
+- [x] Thêm trường `icon` cho `TodoList` (design ghi "Chọn màu & emoji")
 
-### Giai đoạn 5: Đồng bộ WCSession (2–3 ngày)
+- [x] Dòng "Danh sách" ở màn chi tiết đổi được danh sách (menu, có mục **Không thuộc danh sách**)
 
-- [x] `WatchSessionManager` và `PhoneSessionManager`.
-- [x] Gửi và nhận `SyncOp`, ACK, đẩy DTO từ iPhone, `updateApplicationContext` cho cài đặt.
-- [x] Xử lý khi `WCSession` chưa activate hoặc không reachable.
+### Giai đoạn F: Calendar — **code xong 09/11/2026**
 
-**Hoàn thành khi:** trên máy thật, tắt iPhone khi thêm 5 todo trên Watch, bật lại iPhone thì cả 5 xuất hiện và không bị trùng.
+- [x] Tiêu đề tháng + mũi tên `‹` `›` chuyển tuần (giữ nguyên thứ đang chọn khi nhảy tuần)
+- [x] Dải 7 ngày T2 → CN, ô đang chọn tô xanh
+- [x] Dòng ngày "Thứ Hai, 9/11 · 4 việc"
+- [x] Dòng thời gian: cột giờ 24h bên trái + `VoxoEventCard` nền tô theo màu danh sách
+- [x] Chỉ hiện việc **có `dueAt`** — lịch nói về *khi nào*, việc không hạn thì không có chỗ đứng
+- [x] Chạm vào thẻ mở màn chi tiết
+- [x] Dữ liệu mẫu (`-voxoSeed`) nay có giờ, để xem được màn này
 
-### Giai đoạn 6: iPhone UI và cài đặt (2 ngày)
+**Chưa làm:** design có dòng gợi ý "Giữ để kéo thả, đổi giờ nhanh". Cử chỉ kéo thả đổi giờ chưa
+dựng; màn đang hiện câu "Kéo thả để đổi giờ — sẽ làm sau" thay cho nó.
 
-- [ ] Hai tab, sửa, xóa mềm, chu kỳ riêng, màn hình cài đặt theo mục 7.
-- [ ] Màn hình hướng dẫn khi quyền thông báo bị tắt.
+### Giai đoạn G: Stats (1–2 ngày)
 
-**Hoàn thành khi:** đổi chu kỳ chung, Scheduler chạy lại (kiểm tra qua log hoặc debug view).
+- [ ] Stat card và Progress card, tính từ dữ liệu thật
 
-### Giai đoạn 7: Notification (2 ngày)
+### Giai đoạn H: Onboarding + Settings (1 ngày)
 
-- [ ] Gắn Scheduler vào các thời điểm ở mục 5.
-- [ ] Đăng ký category Xong và Nhắc lại sau.
-- [ ] Hủy và đặt lại notification khi todo thay đổi.
+- [ ] Onboarding chỉ hiện lần đầu
+- [ ] Settings: chu kỳ chung, quyền thông báo, trạng thái đồng bộ, đổi ngôn ngữ
 
-**Hoàn thành khi:** trên máy thật, notification đúng giờ, hai action hoạt động trên cả hai máy.
+### Giai đoạn I: Notification actions (1 ngày)
 
-### Giai đoạn 8: Kiểm thử thực tế và hoàn thiện (2–3 ngày)
+- [ ] Nút **Xong** và **Hoãn 10 phút** trên thông báo, chạy trên cả iPhone lẫn Watch
 
-- [ ] Chạy checklist mục 10.
-- [ ] Đo pin trong một ngày sử dụng.
-- [ ] Sửa lỗi phát sinh.
+### Giai đoạn J: Kiểm thử thực tế (2–3 ngày)
 
-**Hoàn thành khi:** checklist mục 10 đạt hết, hoặc các mục còn lại được ghi rõ là đã biết và chấp nhận.
+- [ ] Chạy checklist mục 10
+- [ ] Đo pin một ngày
 
 ## 9. Ngoài phạm vi v1
 
@@ -361,7 +464,9 @@ Không làm các mục sau trừ khi người dùng yêu cầu:
 - Watch tự nhắc khi không có iPhone.
 - iCloud sync.
 - Widget, Siri Shortcut, Live Activity, complication.
-- Thêm todo bằng giọng nói qua `SFSpeechRecognizer` (để v1.1).
+- **Wear OS** (§1.9) — app Android riêng, không nằm trong repo này.
+- **Tách câu nói thành tiêu đề + ngày giờ + danh sách** qua `SFSpeechRecognizer` (§1.10, mục 05 của design).
+- Widget, complication 🎙 trên mặt đồng hồ.
 - Quiet hours.
 - Đa ngôn ngữ ngoài tiếng Anh.
 - Đăng App Store, ký phát hành.

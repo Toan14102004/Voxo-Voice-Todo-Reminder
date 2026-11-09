@@ -86,6 +86,20 @@ public final class CoreDataTodoRepository: TodoRepository, SyncOutbox, Processed
         }
     }
 
+    public func reopen(id: UUID, now: Date) throws {
+        guard let existing = try entity(id: id) else { throw RepositoryError.notFound(id) }
+
+        var updated = existing.dto
+        updated.isDone = false
+        updated.completedAt = nil
+        updated.updatedAt = now
+        // nextRemindAt stays nil: the scheduler recomputes it from the task's cycle.
+
+        try write(op: .update, todo: updated, now: now) { entity in
+            entity.apply(updated)
+        }
+    }
+
     public func delete(id: UUID, now: Date) throws {
         guard let existing = try entity(id: id) else { throw RepositoryError.notFound(id) }
 
@@ -96,6 +110,15 @@ public final class CoreDataTodoRepository: TodoRepository, SyncOutbox, Processed
 
         try write(op: .delete, todo: updated, now: now) { entity in
             entity.apply(updated)
+        }
+    }
+
+    public func restore(_ todo: TodoDTO, now: Date) throws {
+        var restored = todo
+        restored.updatedAt = now
+
+        try write(op: .update, todo: restored, now: now) { entity in
+            entity.apply(restored)
         }
     }
 
@@ -110,7 +133,7 @@ public final class CoreDataTodoRepository: TodoRepository, SyncOutbox, Processed
             return nil
 
         case let .insert(winner):
-            let entity = TodoEntity(context: context)
+            let entity: TodoEntity = context.insertEntity("Todo")
             entity.apply(winner)
             try save()
             return winner
@@ -165,7 +188,7 @@ public final class CoreDataTodoRepository: TodoRepository, SyncOutbox, Processed
     public func markProcessed(opId: UUID, now: Date) throws -> Bool {
         if try hasProcessed(opId: opId) { return false }
 
-        let entry = ProcessedOpEntity(context: context)
+        let entry: ProcessedOpEntity = context.insertEntity("ProcessedOp")
         entry.opId = opId
         entry.processedAt = now
         try save()
@@ -202,12 +225,12 @@ public final class CoreDataTodoRepository: TodoRepository, SyncOutbox, Processed
 
     /// Applies a local change and, on the Watch, its outbox entry — in one `save()`.
     private func write(op type: SyncOpType, todo: TodoDTO, now: Date, mutate: (TodoEntity) -> Void) throws {
-        let entity = try self.entity(id: todo.id) ?? TodoEntity(context: context)
+        let entity = try self.entity(id: todo.id) ?? context.insertEntity("Todo")
         mutate(entity)
 
         if device == .watch {
             let op = try SyncOpDTO(type: type, todo: todo, createdAt: now)
-            let opEntity = SyncOpEntity(context: context)
+            let opEntity: SyncOpEntity = context.insertEntity("SyncOp")
             opEntity.apply(op)
         }
 
@@ -223,6 +246,120 @@ public final class CoreDataTodoRepository: TodoRepository, SyncOutbox, Processed
             // guarantee for the next write.
             context.rollback()
             throw error
+        }
+    }
+}
+
+// MARK: - TodoListRepository
+
+extension CoreDataTodoRepository: TodoListRepository {
+    public func lists() throws -> [TodoListDTO] {
+        let request = TodoListEntity.fetchRequest()
+        request.predicate = NSPredicate(format: "deletedAt == nil")
+        request.sortDescriptors = [
+            NSSortDescriptor(key: "createdAt", ascending: true),
+            NSSortDescriptor(key: "id", ascending: true)
+        ]
+        return try context.fetch(request).map(\.dto)
+    }
+
+    public func list(id: UUID) throws -> TodoListDTO? {
+        try listEntity(id: id)?.dto
+    }
+
+    @discardableResult
+    public func createList(
+        name: String,
+        colorHex: String,
+        icon: String = "folder",
+        now: Date
+    ) throws -> TodoListDTO {
+        guard let clean = TodoListDTO.sanitize(name: name) else { throw RepositoryError.emptyListName }
+
+        let dto = TodoListDTO(name: clean, colorHex: colorHex, icon: icon,
+                              createdAt: now, updatedAt: now)
+        let entity: TodoListEntity = context.insertEntity("TodoList")
+        entity.apply(dto)
+        try save()
+        return dto
+    }
+
+    public func renameList(id: UUID, to name: String, now: Date) throws {
+        guard let clean = TodoListDTO.sanitize(name: name) else { throw RepositoryError.emptyListName }
+        guard let entity = try listEntity(id: id) else { throw RepositoryError.listNotFound(id) }
+
+        var updated = entity.dto
+        updated.name = clean
+        updated.updatedAt = now
+        entity.apply(updated)
+        try save()
+    }
+
+    public func deleteList(id: UUID, now: Date) throws {
+        guard let entity = try listEntity(id: id) else { throw RepositoryError.listNotFound(id) }
+
+        var updated = entity.dto
+        updated.deletedAt = now
+        updated.updatedAt = now
+        entity.apply(updated)
+
+        // PLAN.md §4: deleting a list must not delete the work inside it.
+        try unfileTodos(ofList: id, now: now)
+        try save()
+    }
+
+    public func todos(inList listId: UUID) throws -> [TodoDTO] {
+        let request = TodoEntity.fetchRequest()
+        request.predicate = NSPredicate(format: "listId == %@ AND deletedAt == nil", listId as CVarArg)
+        request.sortDescriptors = [
+            NSSortDescriptor(key: "createdAt", ascending: true),
+            NSSortDescriptor(key: "id", ascending: true)
+        ]
+        return try context.fetch(request).map(\.dto)
+    }
+
+    @discardableResult
+    public func apply(remoteList: TodoListDTO) throws -> TodoListDTO? {
+        let existing = try listEntity(id: remoteList.id)
+
+        switch merger.merge(local: existing?.dto, incoming: remoteList) {
+        case .keepLocal:
+            return nil
+
+        case let .insert(winner):
+            let entity: TodoListEntity = context.insertEntity("TodoList")
+            entity.apply(winner)
+            try save()
+            return winner
+
+        case let .update(winner):
+            guard let existing else { return nil }
+            existing.apply(winner)
+            if winner.isDeleted {
+                try unfileTodos(ofList: winner.id, now: winner.deletedAt ?? winner.updatedAt)
+            }
+            try save()
+            return winner
+        }
+    }
+
+    // MARK: - Private
+
+    private func listEntity(id: UUID) throws -> TodoListEntity? {
+        let request = TodoListEntity.fetchRequest()
+        request.predicate = NSPredicate(format: "id == %@", id as CVarArg)
+        request.fetchLimit = 1
+        return try context.fetch(request).first
+    }
+
+    /// Clears `listId` on every todo that pointed at this list, bumping `updatedAt` so the change
+    /// wins the merge on the other device.
+    private func unfileTodos(ofList listId: UUID, now: Date) throws {
+        let request = TodoEntity.fetchRequest()
+        request.predicate = NSPredicate(format: "listId == %@", listId as CVarArg)
+        for todo in try context.fetch(request) {
+            todo.listId = nil
+            todo.updatedAt = now
         }
     }
 }

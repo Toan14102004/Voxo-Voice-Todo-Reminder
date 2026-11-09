@@ -43,7 +43,7 @@ struct VoxoSettingsView: View {
         Section {
             Picker("Remind me every", selection: $store.globalIntervalMinutes) {
                 ForEach(SyncSettings.allowedIntervals, id: \.self) { minutes in
-                    Text(minutes.intervalLabel).tag(minutes)
+                    Text(IntervalLabel.option(minutes: minutes)).tag(minutes)
                 }
             }
         } header: {
@@ -58,7 +58,7 @@ struct VoxoSettingsView: View {
             LabeledContent("Notifications") {
                 Label(viewModel.authorizationText, systemImage: viewModel.authorizationIcon)
                     .labelStyle(.titleAndIcon)
-                    .foregroundStyle(viewModel.isAuthorized ? VoxoColor.done : VoxoColor.overdue)
+                    .foregroundStyle(viewModel.isAuthorized ? VoxoColor.success : VoxoColor.danger)
             }
 
             if !viewModel.isAuthorized {
@@ -80,7 +80,7 @@ struct VoxoSettingsView: View {
                     systemImage: session.isWatchAppInstalled ? "checkmark.circle" : "exclamationmark.circle"
                 )
                 .labelStyle(.titleAndIcon)
-                .foregroundStyle(session.isWatchAppInstalled ? VoxoColor.done : VoxoColor.textSecondary)
+                .foregroundStyle(session.isWatchAppInstalled ? VoxoColor.success : VoxoColor.textSecondary)
             }
 
             LabeledContent("Last sync") {

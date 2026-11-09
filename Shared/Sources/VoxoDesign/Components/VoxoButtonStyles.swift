@@ -15,9 +15,9 @@ public struct VoxoPrimaryButtonStyle: ButtonStyle {
         configuration.label
             .font(VoxoFont.headline)
             .foregroundStyle(VoxoColor.textOnAccent)
-            .frame(maxWidth: .infinity, minHeight: VoxoHitTarget.minimum)
-            .background(VoxoColor.accent)
-            .clipShape(RoundedRectangle(cornerRadius: VoxoRadius.medium, style: .continuous))
+            .frame(maxWidth: .infinity, minHeight: 56)
+            .background(VoxoColor.primary)
+            .clipShape(RoundedRectangle(cornerRadius: VoxoRadius.button, style: .continuous))
             .opacity(isEnabled ? (configuration.isPressed ? 0.75 : 1) : 0.4)
     }
 }
@@ -31,10 +31,10 @@ public struct VoxoSecondaryButtonStyle: ButtonStyle {
     public func makeBody(configuration: Configuration) -> some View {
         configuration.label
             .font(VoxoFont.headline)
-            .foregroundStyle(VoxoColor.accent)
-            .frame(maxWidth: .infinity, minHeight: VoxoHitTarget.minimum)
-            .background(VoxoColor.accentSoft)
-            .clipShape(RoundedRectangle(cornerRadius: VoxoRadius.medium, style: .continuous))
+            .foregroundStyle(VoxoColor.primary)
+            .frame(maxWidth: .infinity, minHeight: 56)
+            .background(VoxoColor.primaryTint)
+            .clipShape(RoundedRectangle(cornerRadius: VoxoRadius.button, style: .continuous))
             .opacity(isEnabled ? (configuration.isPressed ? 0.75 : 1) : 0.4)
     }
 }

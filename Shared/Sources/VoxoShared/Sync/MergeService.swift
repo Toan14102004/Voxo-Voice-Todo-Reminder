@@ -5,12 +5,22 @@
 
 import Foundation
 
-/// What a merge concluded for one todo.
-public enum MergeOutcome: Equatable {
+/// Anything the merge rules apply to. `TodoDTO` and `TodoListDTO` both qualify, so the rules in
+/// PLAN.md §6 exist in exactly one place rather than being copied per entity.
+public protocol Mergeable {
+    var updatedAt: Date { get }
+    var deletedAt: Date? { get }
+}
+
+extension TodoDTO: Mergeable {}
+extension TodoListDTO: Mergeable {}
+
+/// What a merge concluded for one record.
+public enum MergeOutcome<Record: Equatable>: Equatable {
     /// No local copy existed; insert the incoming one.
-    case insert(TodoDTO)
+    case insert(Record)
     /// The incoming version wins; overwrite the local copy.
-    case update(TodoDTO)
+    case update(Record)
     /// The local copy wins; write nothing.
     case keepLocal
 }
@@ -26,14 +36,20 @@ public struct MergeService: Sendable {
         self.device = device
     }
 
-    public func merge(local: TodoDTO?, incoming: TodoDTO) -> MergeOutcome {
+    public func merge<Record: Mergeable & Equatable>(
+        local: Record?,
+        incoming: Record
+    ) -> MergeOutcome<Record> {
         guard let local else { return .insert(incoming) }
 
         // A tombstone always wins in v1: there is no restore flow, so a delete can never be
         // undone by a later edit arriving from the other device.
-        if local.isDeleted, !incoming.isDeleted { return .keepLocal }
-        if incoming.isDeleted, !local.isDeleted { return .update(incoming) }
-        if local.isDeleted, incoming.isDeleted {
+        let localDeleted = local.deletedAt != nil
+        let incomingDeleted = incoming.deletedAt != nil
+
+        if localDeleted, !incomingDeleted { return .keepLocal }
+        if incomingDeleted, !localDeleted { return .update(incoming) }
+        if localDeleted, incomingDeleted {
             // Both deleted: keep the earlier tombstone so the 30-day purge clock does not restart.
             let localDeletedAt = local.deletedAt ?? local.updatedAt
             let incomingDeletedAt = incoming.deletedAt ?? incoming.updatedAt
@@ -48,8 +64,8 @@ public struct MergeService: Sendable {
     }
 
     /// True once a tombstone is old enough to drop (PLAN.md §6: 30 days).
-    public func isPurgeable(_ todo: TodoDTO, olderThan maxAge: TimeInterval, now: Date) -> Bool {
-        guard let deletedAt = todo.deletedAt else { return false }
+    public func isPurgeable(_ record: some Mergeable, olderThan maxAge: TimeInterval, now: Date) -> Bool {
+        guard let deletedAt = record.deletedAt else { return false }
         return now.timeIntervalSince(deletedAt) >= maxAge
     }
 

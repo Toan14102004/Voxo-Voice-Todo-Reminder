@@ -9,12 +9,15 @@
 /* Begin PBXBuildFile section */
 		177991C8C55D6010160AF9AA /* DictationProbeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F7237511A050EA8283AB26E /* DictationProbeView.swift */; };
 		188C5769BD86D2D160B17A55 /* VoxoDesign in Frameworks */ = {isa = PBXBuildFile; productRef = 428E0DB43EE5DBB906EE604D /* VoxoDesign */; };
+		208872259BB466968A64EDB1 /* BeVietnamPro-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0FF856B6392C36219A4FBF72 /* BeVietnamPro-Medium.ttf */; };
+		2A7E79CEB924121BC9679E53 /* BeVietnamPro-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 129CA2C2B384540FB7F41361 /* BeVietnamPro-Regular.ttf */; };
 		316B57172F3C77AF003CC81A /* CoreDataKit in Frameworks */ = {isa = PBXBuildFile; productRef = 316B57162F3C77AF003CC81A /* CoreDataKit */; };
 		316B57192F3C7827003CC81A /* CoreDataKit in Frameworks */ = {isa = PBXBuildFile; productRef = 316B57182F3C7827003CC81A /* CoreDataKit */; };
 		31D13728DC3D7208149FF14C /* VoiceTodoWatch.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 1B924CA9DBB481D402305354 /* VoiceTodoWatch.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		37994BB7F0BCB80190F9DF0C /* WatchTodoStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A00CCF66D37340AC7FCCDFA /* WatchTodoStore.swift */; };
 		4C0BE3F51E3B2511F977FB2C /* VoxoShared in Frameworks */ = {isa = PBXBuildFile; productRef = 3F1295D1ABA2FB02D3A46CC2 /* VoxoShared */; };
 		60489009ACCA86433043272D /* DictationProbe.swift in Sources */ = {isa = PBXBuildFile; fileRef = 926FF717CACC94CB6EF1F068 /* DictationProbe.swift */; };
+		75E460D053F203B9F6A811FC /* BeVietnamPro-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D1B31B0E6D47D77298CF5189 /* BeVietnamPro-Bold.ttf */; };
 		77A2C7E1A99AF46D3DC0E8F7 /* VoxoDesign in Frameworks */ = {isa = PBXBuildFile; productRef = 60879D63D9AE2F88B14BA666 /* VoxoDesign */; };
 		7C0206119F39CD4333B9956D /* Pods_VoiceTodo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 90196740DAF07B4FE4315BF8 /* Pods_VoiceTodo.framework */; };
 		86BBF8F72C0318AEB4D664AF /* WatchSessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AFEA65617B6EBC7BE1B5FDD /* WatchSessionManager.swift */; };
@@ -33,6 +36,7 @@
 		B04CF2DA3654363F8A1A4A92 /* WatchAddTodoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0580A7F9A8B6C1E401D7DF5 /* WatchAddTodoView.swift */; };
 		B0D22ED790DC9B226807545F /* VoxoShared in Frameworks */ = {isa = PBXBuildFile; productRef = 23DD5D0CDE61F10B0D99455B /* VoxoShared */; };
 		C5EF7181CAB46E79D017BFA4 /* WordDiff.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E99FC341BA8CB57DB46A6A0 /* WordDiff.swift */; };
+		CB04DF70AF250499D37688E6 /* BeVietnamPro-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 59853722CBD1A9E018CCAF47 /* BeVietnamPro-SemiBold.ttf */; };
 		D01038F3DDEBEA6AE4D93323 /* WatchTodoListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B4CBC44C4A1EDBEB881C56E /* WatchTodoListView.swift */; };
 		F23483586F6605DD450B7F66 /* WatchTodoDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25B779FD1FBFC575C576BA44 /* WatchTodoDetailView.swift */; };
 		FD938112EE119E7A65F63027 /* VoiceTodoWatchApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE6C8B038E9E05328A8B7546 /* VoiceTodoWatchApp.swift */; };
@@ -63,9 +67,12 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		0FF856B6392C36219A4FBF72 /* BeVietnamPro-Medium.ttf */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = file; name = "BeVietnamPro-Medium.ttf"; path = "Fonts/BeVietnamPro-Medium.ttf"; sourceTree = "<group>"; };
+		129CA2C2B384540FB7F41361 /* BeVietnamPro-Regular.ttf */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = file; name = "BeVietnamPro-Regular.ttf"; path = "Fonts/BeVietnamPro-Regular.ttf"; sourceTree = "<group>"; };
 		1B924CA9DBB481D402305354 /* VoiceTodoWatch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VoiceTodoWatch.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		25B779FD1FBFC575C576BA44 /* WatchTodoDetailView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WatchTodoDetailView.swift; sourceTree = "<group>"; };
 		3AFEA65617B6EBC7BE1B5FDD /* WatchSessionManager.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WatchSessionManager.swift; sourceTree = "<group>"; };
+		59853722CBD1A9E018CCAF47 /* BeVietnamPro-SemiBold.ttf */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = file; name = "BeVietnamPro-SemiBold.ttf"; path = "Fonts/BeVietnamPro-SemiBold.ttf"; sourceTree = "<group>"; };
 		5E3E3CDF0B3C9BF73343CF1F /* Pods-VoiceTodo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VoiceTodo.release.xcconfig"; path = "Target Support Files/Pods-VoiceTodo/Pods-VoiceTodo.release.xcconfig"; sourceTree = "<group>"; };
 		6F7237511A050EA8283AB26E /* DictationProbeView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = DictationProbeView.swift; sourceTree = "<group>"; };
 		791B905D6C0B6ECA917A1CD5 /* Pods-VoiceTodo.dev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VoiceTodo.dev.xcconfig"; path = "Target Support Files/Pods-VoiceTodo/Pods-VoiceTodo.dev.xcconfig"; sourceTree = "<group>"; };
@@ -78,6 +85,7 @@
 		AE6C8B038E9E05328A8B7546 /* VoiceTodoWatchApp.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = VoiceTodoWatchApp.swift; sourceTree = "<group>"; };
 		AFB7AB192CEB790D007C8CD4 /* VoiceTodo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VoiceTodo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C9AFD15B86AA03570BF43629 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/WatchOS.platform/Developer/SDKs/WatchOS26.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
+		D1B31B0E6D47D77298CF5189 /* BeVietnamPro-Bold.ttf */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = file; name = "BeVietnamPro-Bold.ttf"; path = "Fonts/BeVietnamPro-Bold.ttf"; sourceTree = "<group>"; };
 		E0580A7F9A8B6C1E401D7DF5 /* WatchAddTodoView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WatchAddTodoView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -197,6 +205,10 @@
 				7B4CBC44C4A1EDBEB881C56E /* WatchTodoListView.swift */,
 				7A00CCF66D37340AC7FCCDFA /* WatchTodoStore.swift */,
 				3AFEA65617B6EBC7BE1B5FDD /* WatchSessionManager.swift */,
+				129CA2C2B384540FB7F41361 /* BeVietnamPro-Regular.ttf */,
+				0FF856B6392C36219A4FBF72 /* BeVietnamPro-Medium.ttf */,
+				59853722CBD1A9E018CCAF47 /* BeVietnamPro-SemiBold.ttf */,
+				D1B31B0E6D47D77298CF5189 /* BeVietnamPro-Bold.ttf */,
 			);
 			path = VoiceTodoWatch;
 			sourceTree = "<group>";
@@ -296,6 +308,7 @@
 				pa,
 				ru,
 				sw,
+				vi,
 				"zh-Hans",
 			);
 			mainGroup = AFB7AB102CEB790D007C8CD4;
@@ -327,6 +340,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				9D045CAE73F47D632817D410 /* Assets.xcassets in Resources */,
+				2A7E79CEB924121BC9679E53 /* BeVietnamPro-Regular.ttf in Resources */,
+				208872259BB466968A64EDB1 /* BeVietnamPro-Medium.ttf in Resources */,
+				CB04DF70AF250499D37688E6 /* BeVietnamPro-SemiBold.ttf in Resources */,
+				75E460D053F203B9F6A811FC /* BeVietnamPro-Bold.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -499,6 +516,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = VoiceTodo;
+				INFOPLIST_KEY_UIAppFonts = "BeVietnamPro-Regular.ttf BeVietnamPro-Medium.ttf BeVietnamPro-SemiBold.ttf BeVietnamPro-Bold.ttf";
 				INFOPLIST_KEY_WKApplication = YES;
 				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = com.limgrow.voxo;
 				MARKETING_VERSION = 1.0;
@@ -1046,6 +1064,7 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = VoiceTodo;
+				INFOPLIST_KEY_UIAppFonts = "BeVietnamPro-Regular.ttf BeVietnamPro-Medium.ttf BeVietnamPro-SemiBold.ttf BeVietnamPro-Bold.ttf";
 				INFOPLIST_KEY_WKApplication = YES;
 				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = com.limgrow.voxo;
 				MARKETING_VERSION = 1.0;

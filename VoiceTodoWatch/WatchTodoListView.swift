@@ -36,7 +36,7 @@ struct WatchTodoListView: View {
                         } label: {
                             Label("Done", systemImage: "checkmark")
                         }
-                        .tint(VoxoColor.done)
+                        .tint(VoxoColor.success)
                     }
                 }
 
@@ -53,7 +53,7 @@ struct WatchTodoListView: View {
                 WatchAddTodoView { title in store.add(title: title) }
             }
         }
-        .tint(VoxoColor.accent)
+        .tint(VoxoColor.primary)
     }
 
     private var addButton: some View {
@@ -64,7 +64,7 @@ struct WatchTodoListView: View {
                 .font(VoxoFont.headline)
                 .frame(maxWidth: .infinity)
         }
-        .tint(VoxoColor.accent)
+        .tint(VoxoColor.primary)
     }
 
     @ViewBuilder

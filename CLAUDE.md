@@ -16,7 +16,26 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - This is their first iPhone + Apple Watch app. Prefer a concrete example or a short walkthrough over
   an abstract definition, and say plainly what has **not** been verified on a real device.
 
-## The product being built: Voxo
+## The product being built: Tidy
+
+**Spec changed on 2026-11-09**: the product is now **Tidy — Personal Todo App**, driven by a Figma
+board, replacing the Voxo look this repo invented. `PLAN.md` §1.8 records it.
+
+- Figma file: `LA050-CDL-practice-test (Copy)` → page `🚗 UI Design` → frame **`Tidy – Todo App`**
+  (node `9155:14723`). The host file belongs to a different project; its document-level variables are
+  that project's (cyan brand) — **ignore them** and read the board's own `DS / Colors`, `DS / Typography`
+  and `DS / Rules` frames instead.
+- Read the design through the local Figma MCP (`figma-to-swiftui` skill). Tokens live in `PLAN.md` §0.
+- Scope decided for v1: **all four iOS tabs** (Today, Calendar, Lists, Stats) plus Settings and
+  Onboarding. **Wear OS is out** — it would be a separate Kotlin app. **Speech-to-structured-task
+  parsing is out** (design section 05); the Watch keeps plain system dictation.
+- Bilingual **VI / EN** now, which reverses the old English-only rule.
+- The model gains `priority`, `dueAt`, `listId`, `repeatRule` plus a `TodoList` entity, so Core Data
+  needs a **version 2** — `VoxoModel.swift` currently defines version 1 only.
+
+Everything below describes what is in the repo today; much of the UI section predates the pivot.
+
+## What the repo's UI looks like today (pre-Tidy)
 
 **`PLAN.md` at the repo root is the source of truth for what we are building** — *Voxo: Voice Todo Reminder*, an
 iPhone + Apple Watch todo app with self-managed repeating local notifications, Core Data per device, and
@@ -141,8 +160,21 @@ Three things to know before touching it:
 
 - **The Core Data model is built in Swift, not an `.xcdatamodeld`** (`Model/VoxoModel.swift`). SwiftPM's
   command-line build never runs `momc` — it copies the model bundle verbatim — so a visual model cannot be
-  loaded by `swift test`. The cost is that there is no graphical model editor. `PLAN.md` §11 still holds:
-  a schema change adds a new `version2` builder, it never edits `version1` in place.
+  loaded by `swift test`. The cost is that there is no graphical model editor.
+- **`version1` is frozen; `version2` is current** (added for the Tidy spec: `priority`, `dueAt`,
+  `listId`, `repeatRule`, plus the `TodoList` entity). Never edit `version1` — stores written by it
+  would stop migrating. A future change adds `version3` to `VoxoModel.allVersions`.
+- **Migration is explicit, in `StoreMigrator`.** Core Data's automatic lightweight migration finds
+  the *source* model by searching the bundle's compiled `.momd`, which does not exist here, so the
+  store would just fail to open. `StoreMigrator` identifies the source by comparing store metadata
+  against `VoxoModel.allVersions`, then runs an inferred mapping one version at a time, writing to a
+  temporary file and swapping it in only on success.
+- **Insert managed objects with `context.insertEntity("Todo")`, never `TodoEntity(context:)`.**
+  Two model versions declare the same subclasses, so `+[TodoEntity entity]` has no unique match; it
+  silently returns the v1 description and every write to a v2-only field dies with "unrecognized
+  selector sent to instance". This cost a full test-suite failure to find.
+- **Merge rules are generic over `Mergeable`**, so `TodoDTO` and `TodoListDTO` share one
+  implementation of PLAN.md §6 rather than two drifting copies.
 - **`ProcessedOpEntity` is not in `PLAN.md` §4.** §6.3 requires the phone to skip `opId`s it already
   applied, and that ledger has to be durable or a relaunch re-applies every unacknowledged op. Flagged for
   the user; §4 should gain this entity.
@@ -215,6 +247,92 @@ Never delete a simulator runtime image without `--keep-asset` when a duplicate e
 share one downloaded asset, and deleting either takes the asset — and the good runtime — with it.
 
 Simulator builds need none of this and work as-is.
+
+## Screens
+
+Figma frames live under `VI / …` on the board; find them with `search_nodes`, not by walking the
+root frame's children — that listing is truncated and makes the screens look like they do not exist.
+
+| Screen | Figma node | Code |
+|---|---|---|
+| Today | `9155:15036` | `Modules/Todo/Today/` |
+| Quick add | `9155:15093` | `Modules/Todo/QuickAdd/` |
+| Task detail | `9155:15170` | `Modules/Todo/Detail/` |
+| Lists / Calendar / Stats / Settings / Onboarding | `15221` / `15280` / `15342` / `15405` / `15020` | not built yet |
+
+- **Today is a `List`, not a `ScrollView`.** `.swipeActions` is a List-only modifier and does
+  nothing at all anywhere else, so the swipe gestures in DS / Rules would silently never fire.
+  Rows clear the default chrome with `.listRowSeparator(.hidden)`, `.listRowBackground(.clear)`
+  and explicit insets.
+- **Undo is `UndoCenter`**, a 4-second window per DS / Rules. It stores a closure, and every
+  swipe action captures the record *before* the change so one `store.restore(_:)` reverses a
+  complete, a delete or a postpone alike.
+- **A task row shows priority as a dot; the chip with the word appears only on the detail screen.**
+  The dot is colour-only, so it carries an accessibility label spelling the level out.
+- Subtasks ("VIỆC CON") are in the detail design but have no entity in `PLAN.md` §4 — left out,
+  flagged in the plan.
+- **Completion is a toggle, not a one-way door.** `store.toggleDone(_:)` → `complete` or
+  `reopen`; `reopen` clears `isDone` **and** `completedAt`, or the row keeps showing a stale
+  "finished at" time. The detail menu previously said "Mark as not done" while calling
+  `complete` — the label lied.
+- **Detail screens take an id, never a `TodoDTO`.** A record captured when the route was pushed is
+  a snapshot: edits made on the screen did not appear until it was closed and reopened.
+  `TaskDetailView(todoId:)` reads `store.todo(id:)` on every render instead.
+- **`TodoStore.todo(id:)` searches the `@Published` arrays before the repository.** Going straight
+  to Core Data returns a correct value that SwiftUI never observes, so the view would not re-render.
+- **Quick add is sized by `presentationDetents`, not by filling the sheet.** The first version
+  filled the full height and pushed content down with a `Spacer`, which rendered as a blank
+  white screen with everything jammed at the bottom. Let the content size itself.
+- Quick add shows 3 of the design's 5 chips: time and list need pickers, which Giai đoạn D does
+  not build. The chips that exist cycle their value on tap.
+
+Debug launch arguments, all `#if DEBUG`: `-voxoSeed`, `-lang vi|en`, `-gallery`, `-galleryBottom`,
+`-openQuickAdd`, `-phase0Probe`, `-templateUI`.
+
+## Design system components
+
+`Shared/Sources/VoxoDesign/Components/` mirrors the Figma frame `DS / Components` one for one:
+`TodoRow`, `VoxoChip`, `VoxoPriorityChip`, `VoxoPrimaryButtonStyle`, `VoxoFAB`, `VoxoListCard`,
+`VoxoEventCard`, `VoxoTabBar`, `VoxoDayCell`, `VoxoStatCard`, `VoxoProgressCard`,
+`VoxoDetailsCard` + `VoxoDetailRow`, `VoxoQuickAddSheet`.
+
+Run `VoiceTodo-Dev` with **`-gallery`** to see them all on one screen (add `-galleryBottom` to skip
+to the lower half). Compare against the Figma board before changing any of them.
+
+- **Icons are SF Symbols, not Material Symbols.** The whole substitution is the table in
+  `VoxoIcon.swift`, Figma name beside SF name. Material's variable font is 15 MB against a 3 MB
+  Watch app. `today` and `calendar_month` both map to a calendar in SF, so the Today tab uses
+  `checklist` to stay distinct from Calendar.
+- **User data is rendered with `Text(verbatim:)`**, labels with `LocalizedStringKey`. A task title
+  or list name must never go through the string catalog.
+- **`VoxoFABMetrics` holds the FAB's numbers**, `VoxoFAB` is the view — they were one name and
+  collided.
+- The gallery is **not** gated on `#if DEBUG`: the package compiles under a configuration named
+  "Dev", which Xcode treats as release-type, so `DEBUG` is not defined inside package targets. The
+  app gates the entry point instead.
+
+## Localization (VI / EN)
+
+Tidy is bilingual. Strings live in `VoiceTodo/Resources/Languages/Localizable.xcstrings`; run the app
+with **`-lang vi`** or **`-lang en`** (DEBUG only) to force a language without touching device settings.
+
+The template shipped 16 languages — Arabic, Bengali, Swahili, Punjabi and so on — **but not
+Vietnamese**, one of the two Tidy needs. `vi` was added to the project's `knownRegions` and to
+`LanguageManager.supportedCodes`.
+
+Three traps, all of which produced silently-English UI here:
+
+- **`Text(someString)` does not localize.** Only a string *literal* becomes a `LocalizedStringKey`.
+  Any component parameter that ends up inside `Text` must be typed `LocalizedStringKey`, not
+  `String` — that is why `VoxoSectionHeader`, `VoxoEmptyState` and `TodoRow.subtitle` take keys.
+- **Never resolve a translation yourself and interpolate the result.** An earlier `intervalLabel`
+  looked the string up through `Bundle` and handed `Text` a finished `String`; each row then froze
+  into whatever language was active when that row was first built, and two rows with the same
+  interval rendered in different languages in one screenshot. Interpolate the *number* into the key
+  (`IntervalLabel.key(minutes:isCustom:)`) and let SwiftUI resolve at render time.
+- **Incremental builds cache the compiled `.strings`.** After editing the catalog, a freshly added
+  key can still read as English for one build. Check `<app>/vi.lproj/Localizable.strings` with
+  `plutil -convert json` before concluding the code is wrong.
 
 ## Commands
 
@@ -341,3 +459,18 @@ it matches the bundle id, so it only needs changing if the real App Store produc
   `FlowNavigator.swift`.
 - `Common/Camera/` is a vendored camera library (MijickCamera-style, `Public/` + `Internal/`) — treat it as a
   third-party dependency rather than app code.
+
+### Calendar (`Modules/Todo/Calendar/`)
+
+- `CalendarViewModel` giữ `weekStart` + `selectedDay`; `Calendar.firstWeekday = 2` để dải ngày bắt
+  đầu từ Thứ Hai như design.
+- **Locale phải lấy từ `@Environment(\.locale)`**, truyền xuống view model, không đọc
+  `Locale.current` hay `LanguageManager` trong view model. `VoxoRootView` đặt locale từ
+  `LanguageManager`; đọc `Locale.current` sẽ định dạng ngày theo ngôn ngữ **hệ thống** trong khi
+  phần còn lại của màn hình theo nút đổi ngôn ngữ trong app — hai nửa lệch nhau.
+- Giờ dùng `.hour(.twoDigits(amPM: .omitted))`: vừa khớp design (24h), vừa đủ ngắn để không
+  xuống dòng trong cột giờ. Để mặc định sẽ ra "7:00 A / M" bị ngắt dòng.
+- Dòng "ngày · N việc" ghép **hai `Text`**: phần ngày là dữ liệu, phần đếm là key dịch được
+  (`"%lld tasks"`). Nối chuỗi rồi mới đưa vào `Text` sẽ mất bản dịch.
+- `-voxoSeed` bỏ qua hỏi quyền thông báo: alert của hệ thống che đúng màn đang cần xem.
+  Alert của SpringBoard còn sót lại **không mất khi gỡ app** — phải `simctl shutdown` rồi `boot`.

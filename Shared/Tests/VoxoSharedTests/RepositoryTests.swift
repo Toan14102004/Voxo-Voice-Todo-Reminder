@@ -155,3 +155,33 @@ extension RepositoryTests {
         XCTAssertEqual(first, first.sorted { $0.uuidString < $1.uuidString })
     }
 }
+
+extension RepositoryTests {
+    /// Ticking a done task must bring it back, not complete it a second time.
+    func testReopenUndoesACompletion() throws {
+        let repo = repository(.phone)
+        let todo = try repo.create(title: "Đổ rác", intervalOverride: 0, now: t0)
+        try repo.complete(id: todo.id, now: t0.addingTimeInterval(60))
+
+        XCTAssertTrue(try repo.activeTodos().isEmpty)
+
+        try repo.reopen(id: todo.id, now: t0.addingTimeInterval(120))
+
+        let reopened = try XCTUnwrap(try repo.todo(id: todo.id))
+        XCTAssertFalse(reopened.isDone)
+        XCTAssertNil(reopened.completedAt, "giờ hoàn thành cũ phải bị xoá, nếu không dòng meta hiện sai")
+        XCTAssertEqual(reopened.updatedAt, t0.addingTimeInterval(120))
+        XCTAssertEqual(try repo.activeTodos().count, 1)
+        XCTAssertTrue(try repo.completedTodos().isEmpty)
+    }
+
+    /// Reopening on the Watch must travel like any other change.
+    func testReopenQueuesASyncOpOnTheWatch() throws {
+        let repo = repository(.watch)
+        let todo = try repo.create(title: "Việc", intervalOverride: 0, now: t0)
+        try repo.complete(id: todo.id, now: t0.addingTimeInterval(1))
+        try repo.reopen(id: todo.id, now: t0.addingTimeInterval(2))
+
+        XCTAssertEqual(try repo.pendingOps().map(\.type), [.create, .complete, .update])
+    }
+}

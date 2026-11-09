@@ -29,15 +29,19 @@ extension TodoListView {
             navigation.presentSheet(Coordinator.FullScreen.editTodo(todo.id))
         }
 
-        /// Reminder cadence for unfinished todos, completion time for finished ones.
-        func subtitle(for todo: TodoDTO, intervalMinutes: Int) -> String? {
+        /// The row's meta line: when it was finished, or how often it nags.
+        ///
+        /// Resolved to a `String` here because it will later join user data (list name, due date)
+        /// in one line. Each localized fragment is looked up explicitly rather than interpolated
+        /// into a key, so nothing is left in the build language.
+        func meta(for todo: TodoDTO, intervalMinutes: Int) -> String? {
             if todo.isDone {
                 guard let completedAt = todo.completedAt else { return nil }
-                return "Finished \(completedAt.formatted(date: .abbreviated, time: .shortened))"
+                let format = "Finished %@".localizedString
+                return String(format: format, completedAt.formatted(date: .abbreviated, time: .shortened))
             }
 
-            let suffix = todo.intervalOverride > 0 ? " · custom" : ""
-            return "Every \(intervalMinutes.intervalLabel)\(suffix)"
+            return IntervalLabel.text(minutes: intervalMinutes, isCustom: todo.intervalOverride > 0)
         }
 
         func apply(_ title: String, interval: Int32, to todo: TodoDTO, in store: TodoStore) {

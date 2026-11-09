@@ -8,6 +8,7 @@
 import Combine
 import Foundation
 import SwiftUI
+import VoxoDesign
 
 struct RootView: View {
     @Injected var subscriptionManager: SubscriptionManager
@@ -26,6 +27,9 @@ struct RootView: View {
             // Remove together with Sources/Modules/Phase0.
             if ProcessInfo.processInfo.arguments.contains("-phase0Probe") {
                 NotificationProbeView(isRoot: true)
+            } else if ProcessInfo.processInfo.arguments.contains("-gallery") {
+                // Every design-system component on one screen, to compare against the Figma board.
+                VoxoComponentGallery()
             } else if ProcessInfo.processInfo.arguments.contains("-templateUI") {
                 // Escape hatch back to the BaseSource demo flow (splash, onboarding, paywall),
                 // kept only so the template's ad/IAP wiring can still be exercised.

@@ -22,6 +22,17 @@ public struct TodoDTO: Codable, Equatable, Identifiable, Sendable {
     public var lastRemindedAt: Date?
     public var originDevice: DeviceRole
 
+    // MARK: - Tidy spec (PLAN.md §4)
+
+    public var priority: TodoPriority
+    /// When the task is due. Nil means it is not tied to a date.
+    public var dueAt: Date?
+    /// Which list it belongs to. Nil means unfiled.
+    public var listId: UUID?
+    public var repeatRule: RepeatRule?
+    /// Free text under the title.
+    public var note: String?
+
     public init(
         id: UUID = UUID(),
         title: String,
@@ -33,7 +44,12 @@ public struct TodoDTO: Codable, Equatable, Identifiable, Sendable {
         intervalOverride: Int32 = 0,
         nextRemindAt: Date? = nil,
         lastRemindedAt: Date? = nil,
-        originDevice: DeviceRole
+        originDevice: DeviceRole,
+        priority: TodoPriority = .none,
+        dueAt: Date? = nil,
+        listId: UUID? = nil,
+        repeatRule: RepeatRule? = nil,
+        note: String? = nil
     ) {
         self.id = id
         self.title = title
@@ -46,6 +62,11 @@ public struct TodoDTO: Codable, Equatable, Identifiable, Sendable {
         self.nextRemindAt = nextRemindAt
         self.lastRemindedAt = lastRemindedAt
         self.originDevice = originDevice
+        self.priority = priority
+        self.dueAt = dueAt
+        self.listId = listId
+        self.repeatRule = repeatRule
+        self.note = note
     }
 
     /// A tombstoned todo is deleted regardless of `isDone` (PLAN.md §6).

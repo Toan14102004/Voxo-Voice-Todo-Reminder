@@ -2,11 +2,11 @@
 //  VoxoColor.swift
 //  VoxoDesign
 //
-//  One palette for both apps.
+//  Palette from the Figma board "Tidy – Todo App", frame DS / Colors.
+//  See PLAN.md §0 — these are the designer's hex values, not sampled pixels.
 //
-//  The BaseSource template shipped 46 single-appearance colorsets while forcing
-//  `.colorScheme(.dark)` and hardcoding black backgrounds, so its tokens never actually drove the
-//  look. These do: every token resolves light/dark at runtime.
+//  Do not take tokens from the host Figma file's variables: the board lives inside another
+//  project's file whose brand is cyan, and those variables are not Tidy's.
 //
 
 import SwiftUI
@@ -16,48 +16,48 @@ import SwiftUI
 #endif
 
 public enum VoxoColor {
+    // MARK: - Brand
+
+    /// #1E6FD0 — WCAG AA 4.95:1 on white.
+    public static let primary = dynamic(light: 0x1E6FD0, dark: 0x4D9AF0)
+    /// #EEF5FE — tinted fill behind selected chips and accent surfaces.
+    public static let primaryTint = dynamic(light: 0xEEF5FE, dark: 0x16263A)
+
     // MARK: - Surfaces
 
-    /// Page background.
-    public static let background = dynamic(light: 0xFFFFFF, dark: 0x0B0B0F)
-    /// Cards, rows, grouped content sitting on `background`.
-    public static let surface = dynamic(light: 0xF5F5F8, dark: 0x17171C)
-    /// A surface that needs to read as lifted off `surface` (sheets, selected rows).
-    public static let surfaceRaised = dynamic(light: 0xFFFFFF, dark: 0x22222A)
+    public static let background = dynamic(light: 0xFAFAF9, dark: 0x0C0A09)
+    /// Cards and task rows.
+    public static let surface = dynamic(light: 0xFFFFFF, dark: 0x1C1917)
+    public static let surfaceRaised = dynamic(light: 0xFFFFFF, dark: 0x292524)
 
     // MARK: - Text
 
-    public static let textPrimary = dynamic(light: 0x16161A, dark: 0xF5F5F7)
-    public static let textSecondary = dynamic(light: 0x5C5C66, dark: 0xA0A0AC)
-    public static let textTertiary = dynamic(light: 0x8E8E99, dark: 0x6E6E7A)
-    /// Text drawn on top of `accent`.
-    public static let textOnAccent = dynamic(light: 0xFFFFFF, dark: 0x0B0B0F)
+    /// "Ink" in the design.
+    public static let textPrimary = dynamic(light: 0x1C1917, dark: 0xFAFAF9)
+    public static let textSecondary = dynamic(light: 0x78716C, dark: 0xA8A29E)
+    public static let textMuted = dynamic(light: 0xA8A29E, dark: 0x78716C)
+    public static let textOnAccent = dynamic(light: 0xFFFFFF, dark: 0xFFFFFF)
 
-    // MARK: - Brand
+    // MARK: - Priority (DS / Colors)
 
-    /// Voxo's accent: an indigo that stays legible on both grounds and is distinct from the
-    /// green/red used for status, so colour is never the only signal (PLAN.md §7).
-    public static let accent = dynamic(light: 0x4F46E5, dark: 0x8B84FF)
-    /// Tinted fill for accent-coloured chips and selected states.
-    public static let accentSoft = dynamic(light: 0xEBEAFD, dark: 0x252043)
+    public static let priorityHigh = dynamic(light: 0xEF4444, dark: 0xF87171)
+    public static let priorityMedium = dynamic(light: 0xF59E0B, dark: 0xFBBF24)
+    public static let priorityLow = dynamic(light: 0x3B82F6, dark: 0x60A5FA)
 
     // MARK: - Status
 
-    public static let done = dynamic(light: 0x1F8A4C, dark: 0x4ADE80)
-    public static let doneSoft = dynamic(light: 0xE4F6EB, dark: 0x16301F)
-    /// A reminder that is past due.
-    public static let overdue = dynamic(light: 0xC2410C, dark: 0xFB923C)
-    public static let overdueSoft = dynamic(light: 0xFDEEE4, dark: 0x33200F)
-    public static let danger = dynamic(light: 0xC02626, dark: 0xF87171)
+    public static let success = dynamic(light: 0x16A34A, dark: 0x4ADE80)
+    public static let danger = dynamic(light: 0xEF4444, dark: 0xF87171)
 
     // MARK: - Lines
 
-    public static let separator = dynamic(light: 0xE4E4EA, dark: 0x2A2A33)
-    public static let border = dynamic(light: 0xD3D3DC, dark: 0x3A3A45)
+    public static let border = dynamic(light: 0xE7E5E4, dark: 0x292524)
+    public static let separator = dynamic(light: 0xE7E5E4, dark: 0x292524)
 
     // MARK: - Resolution
 
-    /// watchOS has no light appearance, so the dark value is the only one that can apply.
+    /// watchOS has no light appearance, and the design gives the watch its own brighter accents on
+    /// pure black, so the dark value is the only one that applies there.
     private static func dynamic(light: UInt32, dark: UInt32) -> Color {
         #if os(watchOS)
             return Color(hex: dark)
@@ -71,7 +71,23 @@ public enum VoxoColor {
     }
 }
 
+public extension VoxoColor {
+    /// Watch-specific accents from the design: brighter, for contrast on absolute black.
+    enum Watch {
+        public static let accent = Color(hex: 0x4D9AF0)
+        public static let accentSoft = Color(hex: 0x8CC0F7)
+        public static let background = Color(hex: 0x000000)
+    }
+}
+
 public extension Color {
+    /// "RRGGBB" as stored on a list. Falls back to the brand colour rather than crashing on a
+    /// value written by an older or newer build.
+    init(hexString: String) {
+        let cleaned = hexString.hasPrefix("#") ? String(hexString.dropFirst()) : hexString
+        self.init(hex: UInt32(cleaned, radix: 16) ?? 0x1E6FD0)
+    }
+
     /// 0xRRGGBB.
     init(hex: UInt32) {
         self.init(

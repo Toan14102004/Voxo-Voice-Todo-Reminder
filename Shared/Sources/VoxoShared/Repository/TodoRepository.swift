@@ -19,6 +19,10 @@ public protocol TodoRepository {
     func create(title: String, intervalOverride: Int32, now: Date) throws -> TodoDTO
     func update(_ todo: TodoDTO, now: Date) throws
     func complete(id: UUID, now: Date) throws
+
+    /// Undoes a completion: clears `isDone` and `completedAt` so the task returns to the list and
+    /// starts being reminded about again.
+    func reopen(id: UUID, now: Date) throws
     func delete(id: UUID, now: Date) throws
 
     /// Applies a change that arrived from the other device, after merging. Writes no `SyncOp`.
@@ -26,9 +30,32 @@ public protocol TodoRepository {
     @discardableResult
     func apply(remote: TodoDTO) throws -> TodoDTO?
 
+    /// Writes a previous version back verbatim, for undo. Bumps `updatedAt` so the restored
+    /// state wins the merge on the other device rather than losing to the change being undone.
+    func restore(_ todo: TodoDTO, now: Date) throws
+
     /// Drops tombstones older than `maxAge` (PLAN.md §6: 30 days).
     @discardableResult
     func purgeTombstones(olderThan maxAge: TimeInterval, now: Date) throws -> Int
+}
+
+/// Named, colour-coded lists (PLAN.md §4, entity `TodoList`).
+public protocol TodoListRepository {
+    func lists() throws -> [TodoListDTO]
+    func list(id: UUID) throws -> TodoListDTO?
+
+    @discardableResult
+    func createList(name: String, colorHex: String, icon: String, now: Date) throws -> TodoListDTO
+    func renameList(id: UUID, to name: String, now: Date) throws
+
+    /// Tombstones the list. Todos in it are **not** deleted — their `listId` is cleared, so the
+    /// work survives even though the grouping does not.
+    func deleteList(id: UUID, now: Date) throws
+
+    func todos(inList listId: UUID) throws -> [TodoDTO]
+
+    @discardableResult
+    func apply(remoteList: TodoListDTO) throws -> TodoListDTO?
 }
 
 /// The Watch outbox from PLAN.md §6: ops survive until the phone acknowledges them.
@@ -49,5 +76,7 @@ public protocol ProcessedOpLog {
 
 public enum RepositoryError: Error, Equatable {
     case emptyTitle
+    case emptyListName
     case notFound(UUID)
+    case listNotFound(UUID)
 }

@@ -16,7 +16,7 @@ struct TodoListView: View {
 
         var id: String { rawValue }
 
-        var title: String {
+        var title: LocalizedStringKey {
             switch self {
             case .doing: "Doing"
             case .done: "Done"
@@ -72,7 +72,7 @@ struct TodoListView: View {
     private func row(for todo: TodoDTO) -> some View {
         TodoRow(
             todo: todo,
-            subtitle: subtitle(for: todo),
+            meta: meta(for: todo),
             onToggle: todo.isDone ? nil : { store.complete(todo) }
         )
         .listRowBackground(Color.clear)
@@ -93,7 +93,7 @@ struct TodoListView: View {
                 } label: {
                     Label("Done", systemImage: "checkmark")
                 }
-                .tint(VoxoColor.done)
+                .tint(VoxoColor.success)
             }
         }
     }
@@ -138,7 +138,9 @@ struct TodoListView: View {
         }
     }
 
-    private func subtitle(for todo: TodoDTO) -> String? {
-        viewModel.subtitle(for: todo, intervalMinutes: store.interval(for: todo))
+    /// Already-formatted meta line, e.g. "Hôm qua · Cá nhân" in the design. It mixes a localized
+    /// cadence with user data, so it is resolved here rather than passed as a key.
+    private func meta(for todo: TodoDTO) -> String? {
+        viewModel.meta(for: todo, intervalMinutes: store.interval(for: todo))
     }
 }

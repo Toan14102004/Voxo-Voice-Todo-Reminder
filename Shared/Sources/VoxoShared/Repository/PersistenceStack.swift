@@ -15,13 +15,26 @@ public final class PersistenceStack {
 
     private static let modelName = "VoxoModel"
 
-    public init(inMemory: Bool = false) {
+    public init(inMemory: Bool = false, storeURL: URL? = nil) {
         container = NSPersistentContainer(name: Self.modelName, managedObjectModel: VoxoModel.current)
 
         if inMemory {
             let description = NSPersistentStoreDescription()
             description.type = NSInMemoryStoreType
             container.persistentStoreDescriptions = [description]
+        } else {
+            if let storeURL {
+                container.persistentStoreDescriptions = [NSPersistentStoreDescription(url: storeURL)]
+            }
+            // Must run before loadPersistentStores: the models are built in code, so Core Data
+            // cannot find a source model on its own and the load would fail outright.
+            if let url = container.persistentStoreDescriptions.first?.url {
+                do {
+                    try StoreMigrator.migrateIfNeeded(storeURL: url)
+                } catch {
+                    fatalError("Di trú store thất bại: \(error)")
+                }
+            }
         }
 
         var loadError: Error?
