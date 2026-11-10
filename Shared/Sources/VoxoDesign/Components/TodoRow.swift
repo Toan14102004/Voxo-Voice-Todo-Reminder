@@ -11,13 +11,13 @@ import VoxoShared
 public struct TodoRow: View {
     private let todo: TodoDTO
     /// "Hôm qua · Cá nhân" — due date and list, already formatted by the caller.
-    private let meta: String?
+    private let meta: Text?
     private let isOverdue: Bool
     private let onToggle: (() -> Void)?
 
     public init(
         todo: TodoDTO,
-        meta: String? = nil,
+        meta: Text? = nil,
         isOverdue: Bool = false,
         onToggle: (() -> Void)? = nil
     ) {
@@ -40,7 +40,7 @@ public struct TodoRow: View {
                     .lineLimit(2)
 
                 if let meta {
-                    Text(verbatim: meta)
+                    meta
                         .font(VoxoFont.overline)
                         .foregroundStyle(isOverdue ? VoxoColor.danger : VoxoColor.textSecondary)
                 }

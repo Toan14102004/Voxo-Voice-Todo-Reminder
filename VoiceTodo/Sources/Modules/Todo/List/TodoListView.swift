@@ -140,7 +140,8 @@ struct TodoListView: View {
 
     /// Already-formatted meta line, e.g. "Hôm qua · Cá nhân" in the design. It mixes a localized
     /// cadence with user data, so it is resolved here rather than passed as a key.
-    private func meta(for todo: TodoDTO) -> String? {
+    private func meta(for todo: TodoDTO) -> Text? {
         viewModel.meta(for: todo, intervalMinutes: store.interval(for: todo))
+            .map { Text(verbatim: $0) }
     }
 }

@@ -11,6 +11,7 @@ import VoxoShared
 
 struct TodayView: View {
     @EnvironmentObject private var store: TodoStore
+    @Environment(\.locale) private var locale
     @StateObject private var viewModel = ViewModel()
     @StateObject private var undo = UndoCenter()
 
@@ -77,6 +78,9 @@ struct TodayView: View {
                 if args.contains("-openDetail"), let first = store.active.first {
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.6) { viewModel.open(first) }
                 }
+                if args.contains("-openSettings") {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.6) { viewModel.openSettings() }
+                }
             }
         #endif
     }
@@ -86,7 +90,7 @@ struct TodayView: View {
     private var header: some View {
         HStack(alignment: .top) {
             VStack(alignment: .leading, spacing: VoxoSpacing.xs) {
-                Text(verbatim: viewModel.dateLine)
+                Text(verbatim: viewModel.dateLine(locale))
                     .font(VoxoFont.caption)
                     .foregroundStyle(VoxoColor.textSecondary)
                 Text(viewModel.greeting)
@@ -96,12 +100,17 @@ struct TodayView: View {
 
             Spacer(minLength: VoxoSpacing.m)
 
-            Text(verbatim: viewModel.initial)
-                .font(VoxoFont.headline)
-                .foregroundStyle(VoxoColor.primary)
-                .frame(width: 44, height: 44)
-                .background(VoxoColor.primaryTint)
-                .clipShape(Circle())
+            // The avatar is the way into Settings — the design gives the screen no other entry,
+            // and its profile card is the same circle enlarged.
+            Button { viewModel.openSettings() } label: {
+                Text(verbatim: viewModel.initial)
+                    .font(VoxoFont.headline)
+                    .foregroundStyle(VoxoColor.primary)
+                    .frame(width: 44, height: 44)
+                    .background(VoxoColor.primaryTint)
+                    .clipShape(Circle())
+            }
+            .accessibilityLabel("Settings")
         }
         .padding(.top, VoxoSpacing.s)
     }
@@ -123,7 +132,7 @@ struct TodayView: View {
     private func row(_ todo: TodoDTO, isOverdue: Bool) -> some View {
         TodoRow(
             todo: todo,
-            meta: viewModel.meta(for: todo, store: store),
+            meta: viewModel.meta(for: todo, store: store, locale: locale),
             isOverdue: isOverdue,
             onToggle: { toggleDone(todo) }
         )

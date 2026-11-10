@@ -22,12 +22,14 @@ extension TodayView {
 
         // MARK: - Header
 
-        /// "Thứ Bảy, 7 tháng 11" — formatted in the app's language, per DS / Rules.
-        var dateLine: String {
-            now().formatted(
-                .dateTime.weekday(.wide).day().month(.wide)
-                    .locale(Locale(identifier: LanguageManager.shared.currentLanguageCode))
-            )
+        /// "Thứ Ba, 10 tháng 11" — in the app's language, per DS / Rules.
+        ///
+        /// The locale is a parameter, read from the view's environment. Taken from
+        /// `LanguageManager` here instead, this line rendered in whatever language was active
+        /// when the row was first built: `Text(verbatim:)` does not depend on `\.locale`, so
+        /// switching language never invalidated the view.
+        func dateLine(_ locale: Locale) -> String {
+            now().formatted(.dateTime.weekday(.wide).day().month(.wide).locale(locale))
         }
 
         var greeting: LocalizedStringKey {
@@ -52,31 +54,38 @@ extension TodayView {
         }
 
         /// "07:00 · Sức khỏe · Lặp lại hằng ngày" — time, list, repeat, joined with "·".
-        func meta(for todo: TodoDTO, store: TodoStore) -> String? {
-            var parts: [String] = []
+        ///
+        /// A `Text`, not a `String`: the line mixes user data with translated words, and resolving
+        /// those words here would freeze the row into one language.
+        func meta(for todo: TodoDTO, store: TodoStore, locale: Locale) -> Text? {
+            var parts: [Text] = []
 
             if todo.isDone, let completedAt = todo.completedAt {
-                parts.append(String(format: "Finished %@".localizedString,
-                                    completedAt.formatted(date: .omitted, time: .shortened)))
+                parts.append(Text("Finished \(time(completedAt, locale))"))
             } else if let dueAt = todo.dueAt {
-                parts.append(dueAt.formatted(date: .omitted, time: .shortened))
+                parts.append(Text(verbatim: time(dueAt, locale)))
             }
 
             if let listId = todo.listId, let list = store.list(id: listId) {
-                parts.append(list.name)
+                parts.append(Text(verbatim: list.name))
             }
 
             if let rule = todo.repeatRule {
-                parts.append(rule == .daily ? "Repeats daily".localizedString
-                                            : "Repeats weekly".localizedString)
+                let key: LocalizedStringKey = rule == .daily ? "Repeats daily" : "Repeats weekly"
+                parts.append(Text(key))
             }
 
             if parts.isEmpty {
-                parts.append(IntervalLabel.text(minutes: store.interval(for: todo),
-                                                isCustom: todo.intervalOverride > 0))
+                parts.append(Text(IntervalLabel.key(minutes: store.interval(for: todo),
+                                                    isCustom: todo.intervalOverride > 0)))
             }
 
-            return parts.joined(separator: " · ")
+            guard let first = parts.first else { return nil }
+            return parts.dropFirst().reduce(first) { $0 + Text(verbatim: " · ") + $1 }
+        }
+
+        private func time(_ date: Date, _ locale: Locale) -> String {
+            date.formatted(.dateTime.hour().minute().locale(locale))
         }
 
         // MARK: - Routes
@@ -87,6 +96,10 @@ extension TodayView {
 
         func open(_ todo: TodoDTO) {
             navigation.push(Coordinator.Navigation.detail(todo.id))
+        }
+
+        func openSettings() {
+            navigation.push(Coordinator.Navigation.settings)
         }
     }
 }

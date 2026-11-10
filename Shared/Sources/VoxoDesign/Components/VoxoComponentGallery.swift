@@ -51,9 +51,9 @@
                     if !ProcessInfo.processInfo.arguments.contains("-galleryBottom") {
                         section("Task row") {
                         TodoRow(todo: todo("Nộp hóa đơn tiền điện", priority: .high),
-                                meta: "Hôm qua · Cá nhân", isOverdue: true, onToggle: {})
+                                meta: Text(verbatim: "Hôm qua · Cá nhân"), isOverdue: true, onToggle: {})
                         TodoRow(todo: todo("Đọc 20 trang sách", done: true),
-                                meta: "Xong lúc 06:30 · Cá nhân", onToggle: {})
+                                meta: Text(verbatim: "Xong lúc 06:30 · Cá nhân"), onToggle: {})
                     }
 
                     section("Chip") {
@@ -93,6 +93,35 @@
                                          label: "Done this week", tint: VoxoColor.success)
                         }
                         VoxoProgressCard(done: 3, total: 7)
+                    }
+
+                    section("Settings rows · Profile card") {
+                        VoxoProfileCard(title: "Your progress", streak: 12, completed: 126)
+
+                        VoxoDetailsCard {
+                            VoxoSettingsRow(icon: "globe", label: "Language",
+                                            value: "Tiếng Việt", valueStyle: .accent)
+                            VoxoSettingsRow(icon: "circle.lefthalf.filled", label: "Appearance",
+                                            value: LocalizedStringKey("Match system"))
+                            VoxoSettingsRow(icon: "bubble.left", label: "Feedback & support")
+                        }
+                    }
+
+                    section("Bar chart · List progress") {
+                        VoxoBarChart(entries: [
+                            .init(id: 0, label: "T2", value: 4, isHighlighted: false),
+                            .init(id: 1, label: "T3", value: 6, isHighlighted: false),
+                            .init(id: 2, label: "T4", value: 3, isHighlighted: false),
+                            .init(id: 3, label: "T5", value: 7, isHighlighted: false),
+                            .init(id: 4, label: "T6", value: 5, isHighlighted: false),
+                            .init(id: 5, label: "T7", value: 8, isHighlighted: true),
+                            .init(id: 6, label: "CN", value: 0, isHighlighted: false)
+                        ])
+
+                        VoxoListProgressRow(icon: "briefcase", name: "Công việc",
+                                            done: 6, total: 8, tint: VoxoColor.priorityMedium)
+                        VoxoListProgressRow(icon: "house", name: "Cá nhân",
+                                            done: 3, total: 5, tint: VoxoColor.primary)
                     }
 
                     section("Day strip") {
