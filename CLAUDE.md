@@ -148,12 +148,14 @@ A **local Swift package `VoxoShared`**, depended on by both app targets. This is
 `PLAN.md` §2 and §3 ask for: no UIKit, no WatchKit, compiler-enforced because it is a separate module.
 
 ```bash
-cd Shared && swift test     # 24 tests, ~0.02s, runs on macOS — no simulator needed
+cd Shared && swift test     # 75 tests, runs on macOS — no simulator needed
 ```
 
 - `Model/` — `TodoDTO`, `SyncOpDTO`, `DeviceRole`, the `NSManagedObject` subclasses, and `VoxoModel.swift`
 - `Repository/` — `TodoRepository` / `SyncOutbox` / `ProcessedOpLog` protocols, `CoreDataTodoRepository`, `PersistenceStack`
 - `Sync/` — `MergeService`, `SyncMessage`, `SyncSettings`
+- `Stats/` — `StatsCalculator`: the Stats tab's week arithmetic, pure and tested
+- `Export/` — `CSVExport`: the CSV text for Settings → "Xuất dữ liệu"
 - `Scheduling/` — empty until Phase 2
 
 Three things to know before touching it:
@@ -190,7 +192,7 @@ Three things to know before touching it:
 | | |
 |---|---|
 | Accent | indigo `#4F46E5` light / `#8B84FF` dark — distinct from the green/orange used for status |
-| Type | Mulish on iPhone, SF rounded on watchOS (Mulish is not in the Watch bundle, and SF reads better at watch sizes) |
+| Type | **Be Vietnam Pro on both targets** — the four weights are bundled into the Watch app too; `VoxoFont` drops every size by 2pt on watchOS, floored at 13pt |
 | Dynamic Type | every size is declared `relativeTo:` a system text style — `PLAN.md` §7 requires it, fixed sizes would break it |
 | Status | always shape + text as well as colour, never colour alone (§7) |
 
@@ -258,7 +260,11 @@ root frame's children — that listing is truncated and makes the screens look l
 | Today | `9155:15036` | `Modules/Todo/Today/` |
 | Quick add | `9155:15093` | `Modules/Todo/QuickAdd/` |
 | Task detail | `9155:15170` | `Modules/Todo/Detail/` |
-| Lists / Calendar / Stats / Settings / Onboarding | `15221` / `15280` / `15342` / `15405` / `15020` | not built yet |
+| Lists | `9155:15221` | `Modules/Todo/Lists/` |
+| Calendar | `9155:15280` | `Modules/Todo/Calendar/` |
+| Stats | `9155:15342` | `Modules/Todo/Stats/` |
+| Settings | `9155:15405` | `Modules/Todo/Settings/` |
+| Onboarding | `9155:15020` | `Modules/Todo/Onboarding/` |
 
 - **Today is a `List`, not a `ScrollView`.** `.swipeActions` is a List-only modifier and does
   nothing at all anywhere else, so the swipe gestures in DS / Rules would silently never fire.
@@ -474,3 +480,89 @@ it matches the bundle id, so it only needs changing if the real App Store produc
   (`"%lld tasks"`). Nối chuỗi rồi mới đưa vào `Text` sẽ mất bản dịch.
 - `-voxoSeed` bỏ qua hỏi quyền thông báo: alert của hệ thống che đúng màn đang cần xem.
   Alert của SpringBoard còn sót lại **không mất khi gỡ app** — phải `simctl shutdown` rồi `boot`.
+
+### Stats (`Modules/Todo/Stats/`)
+
+- **Phép tính nằm ở `VoxoShared/Stats/StatsCalculator.swift`, không ở view model.** Nó là hàm
+  thuần nên test được bằng `swift test` (13 test trong `StatsTests`); view model chỉ dựng
+  `weekStart` rồi gọi xuống.
+- **Định nghĩa "thuộc về tuần"**: hoàn thành trong tuần đó, hoặc còn dang dở và được tạo trong
+  tuần đó. Việc cũ chưa xong **không** tính vào tuần này — nếu tính, một việc bị bỏ quên sẽ kéo
+  tỷ lệ hoàn thành xuống mãi.
+- **Chuỗi liên tiếp lùi một ngày trước khi đếm** nếu hôm nay chưa xong việc nào. Không có bước
+  này thì mỗi sáng chuỗi hiện 0.
+- Bộ chọn chỉ có **Tuần này / Tuần trước** (`Period`, không đặt tên `Range` vì trùng kiểu của
+  Swift). Thêm "Tháng này" sẽ khiến biểu đồ 7 cột nói khác tiêu đề của nó.
+- **Nhãn thứ dùng `.weekday(.narrow)`** ở cả Stats lẫn Calendar: tiếng Việt ra "T2" như design,
+  `.abbreviated` ra "Thứ 2" vừa dài vừa lệch design.
+- `-voxoSeed` tạo 10 việc đã xong rải trong tuần qua, và **giãn `createdAt` của các danh sách**:
+  ba danh sách tạo cùng một thời điểm sẽ so tiếp bằng id ngẫu nhiên, nên thứ tự đổi mỗi lần chạy.
+
+### Settings (`Modules/Todo/Settings/`)
+
+- **Lối vào là nút avatar ở header Today.** Route `.settings` đã đăng ký từ lâu nhưng không màn
+  nào push nó, nên màn Cài đặt từng hoàn toàn không mở được. Design không vẽ lối nào khác.
+- **`AppSettings`** (`Data/Services/Settings/`) giữ giao diện sáng/tối, tuần bắt đầu từ, và
+  âm thanh thông báo — đều là thiết lập **riêng từng máy**, khác `globalIntervalMinutes` ở
+  `TodoStore` (cái đó đồng bộ sang Watch).
+- **"Tuần bắt đầu từ" phải đẩy vào Calendar và Stats qua `@Published var calendar`.** Hai view
+  model nhận `Calendar` trong `init`, mà `@StateObject` chỉ tạo một lần nên đổi cài đặt sau đó
+  sẽ không tới nơi; view đồng bộ lại bằng `.onAppear` + `.onChange(of: settings.weekStart)`.
+- **Đổi âm thanh phải `rescheduleReminders()`.** Thông báo đã đặt lịch mang theo cấu hình âm
+  thanh từ lúc tạo, không đổi được tại chỗ.
+- **`VoxoSettingsRow` có hai `init`**: một nhận `String` (dữ liệu người dùng), một nhận
+  `LocalizedStringKey` (lựa chọn dịch được). Có hai cái này để không ai phải tự tra bản dịch rồi
+  nhét vào — đúng cái bẫy đã ghi ở mục Localization.
+- **Ba dòng trong design bị thay vì app không có thứ đó**: thẻ hồ sơ (không có tài khoản),
+  iCloud (PLAN §9 cấm), "Giờ nhắc mặc định" (app nhắc theo chu kỳ, không theo giờ cố định).
+  Xem bảng trong `PLAN.md` §8 Giai đoạn H.
+- **Dòng "Góp ý & hỗ trợ" tự ẩn** khi `AppConfiguration.emailFeedback` còn là `REPLACE_WITH_*`.
+- `AppLanguage` ở `AppSettings.swift` là nguồn duy nhất cho cặp VI/EN; Onboarding dùng chung.
+  `LanguageManager.supportedCodes` vẫn liệt kê 17 ngôn ngữ của template — đừng lấy danh sách đó
+  làm lựa chọn hiển thị.
+- Cờ debug mới: **`-openSettings`** mở thẳng màn Cài đặt để chụp ảnh.
+
+## Apple Watch app
+
+Rebuilt to the Figma frames `Watch / Apple / …` on 10/11/2026; before that it was the pre-Tidy
+"Voxo" design. `VoiceTodoWatch/`: `WatchTodoListView` (frame 2 "Hôm nay"), `WatchAddTodoView`,
+`WatchTodoDetailView`, plus `DictationProbeView` on a second page while Phase 0 is open.
+
+Run it with **`-voxoSeed`** (same flag as the phone) for sample content.
+
+- **The strings catalog had to be added to the Watch target by hand.** `VoiceTodo/` is a
+  `PBXFileSystemSynchronizedRootGroup` belonging to the iOS target only, so the Watch bundle had
+  **no `.lproj` at all** and every string rendered as its English key. Fixed with an explicit
+  `PBXFileReference` in the Watch target's Resources phase (via the `xcodeproj` gem). Check with
+  `ls <VoiceTodoWatch.app>/vi.lproj` after any project-file surgery.
+- **The Watch follows the phone's in-app language**, carried in `updateApplicationContext` as
+  `languageCode` and persisted in `UserDefaults` on the Watch — the context only arrives when the
+  phone is in range, and the Watch has to come up in the right language alone. Reading the
+  Watch's own system language would split the two devices.
+- **`AccentColor.colorset` drives the watchOS navigation title**, not `.tint()`. It was still the
+  old indigo `#8B84FF` long after the pivot; it is now `#4D9AF0`.
+- **`VoxoColor.Watch.accentStrong` (`#1E6FD0`) is for filled surfaces**, `accent` (`#4D9AF0`) for
+  titles and rings. The bright accent behind white text falls below WCAG AA.
+- **`.listStyle(.carousel)` dims and scales every row that is not centred**, which washed the
+  blue "Nói để thêm việc" button out to pale. Use `.plain`.
+- **The row merges checkbox and priority dot into one ring** (`VoxoWatchTaskRow`) — there is no
+  width for both. Filled green when done, so shape carries the state, not colour alone.
+- **`VoxoWatchTaskRow.subtitle` is a `Text`, not a `String`.** The finished line is a translated
+  key with a time interpolated into it, and `String.localizedString` is an iOS-target helper the
+  Watch cannot reach.
+- **The Watch sorts `activeTodos()` by `dueAt` itself.** The repository sorts by `createdAt`,
+  which on a watch list reads as random order.
+- `WatchTodoStore.doneToday` is **today's** finished work only — the full history belongs on the
+  phone, and a watch list that grows forever is unusable.
+- Detail takes a `todoId`, not a record, for the same reason the iPhone's does.
+
+Two design frames are **not** built, both for reasons outside the code:
+
+- **`1 Mặt đồng hồ + complication`** needs a WidgetKit extension that reads the same Core Data
+  store, which needs an **App Group** — and a free Personal Team cannot sign one. Blocked until
+  the paid program.
+- **`6 Thông báo nhắc`** is the reminder notification with Xong / Hoãn 10 phút. That is
+  **Giai đoạn I** and it is mostly iPhone-side work: the actions live on the `UNNotificationCategory`
+  the phone schedules, and the Watch renders the forwarded notification.
+- Frames `3 Đang nghe` / `4 Xác nhận` / `5 Đã lưu` are the voice-to-fields flow that
+  `PLAN.md` §1.10 removed from scope; the Watch keeps plain system dictation.

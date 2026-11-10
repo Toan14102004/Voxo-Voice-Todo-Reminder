@@ -56,7 +56,7 @@ struct OnboardingView: View {
                 .font(VoxoFont.headline)
                 .foregroundStyle(VoxoColor.textPrimary)
 
-            ForEach(OnboardingView.ViewModel.Language.allCases) { language in
+            ForEach(AppLanguage.allCases) { language in
                 row(language)
             }
 
@@ -68,7 +68,7 @@ struct OnboardingView: View {
         }
     }
 
-    private func row(_ language: OnboardingView.ViewModel.Language) -> some View {
+    private func row(_ language: AppLanguage) -> some View {
         let isSelected = viewModel.selected == language
 
         return Button {

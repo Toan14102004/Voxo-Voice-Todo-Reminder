@@ -12,6 +12,7 @@ import VoxoShared
 struct CalendarView: View {
     @EnvironmentObject private var store: TodoStore
     @StateObject private var viewModel = ViewModel()
+    @EnvironmentObject private var settings: AppSettings
     @Navigation private var navigation
     @Environment(\.locale) private var locale
 
@@ -25,6 +26,8 @@ struct CalendarView: View {
         .padding(.top, VoxoSpacing.l)
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
         .background(VoxoColor.background)
+        .onAppear { viewModel.calendar = settings.calendar }
+        .onChange(of: settings.weekStart) { _ in viewModel.calendar = settings.calendar }
     }
 
     private var header: some View {

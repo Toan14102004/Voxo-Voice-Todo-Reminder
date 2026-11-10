@@ -14,12 +14,14 @@ extension CalendarView {
         @Published private(set) var selectedDay: Date
         @Published private(set) var weekStart: Date
 
-        private let calendar: Calendar
+        /// From Settings → "Tuần bắt đầu từ"; the design's strip starts on Monday, the default.
+        /// Published, and the visible week is rebuilt on change, because the preference can be
+        /// switched while this screen is still alive.
+        @Published var calendar: Calendar {
+            didSet { weekStart = Self.startOfWeek(for: selectedDay, calendar: calendar) }
+        }
 
-        init(now: Date = Date()) {
-            // Week starts on Monday, matching the design's T2…CN strip.
-            var calendar = Calendar.current
-            calendar.firstWeekday = 2
+        init(calendar: Calendar = .current, now: Date = Date()) {
             self.calendar = calendar
 
             let today = calendar.startOfDay(for: now)
@@ -49,8 +51,10 @@ extension CalendarView {
             return String(first).uppercased(with: locale) + raw.dropFirst()
         }
 
+        /// Narrow, not abbreviated: Vietnamese gives "T2" rather than "Thứ 2", which is what the
+        /// design's day strip shows and what fits a 44pt cell.
         func weekdayLabel(_ day: Date, locale: Locale) -> String {
-            day.formatted(.dateTime.weekday(.abbreviated).locale(locale))
+            day.formatted(.dateTime.weekday(.narrow).locale(locale))
         }
 
         func dayLabel(_ day: Date) -> String {

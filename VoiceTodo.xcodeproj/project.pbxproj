@@ -22,6 +22,7 @@
 		7C0206119F39CD4333B9956D /* Pods_VoiceTodo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 90196740DAF07B4FE4315BF8 /* Pods_VoiceTodo.framework */; };
 		86BBF8F72C0318AEB4D664AF /* WatchSessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AFEA65617B6EBC7BE1B5FDD /* WatchSessionManager.swift */; };
 		9D045CAE73F47D632817D410 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 92AD1A977D519C78F573C51E /* Assets.xcassets */; };
+		A2AB8F217FBA4EE1A6E79BF6 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 18422BB4A088A761D30C6076 /* Localizable.xcstrings */; };
 		A3730B9DC4074448AF698147 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C9AFD15B86AA03570BF43629 /* Foundation.framework */; };
 		A728730B2EFE68760092169A /* BottomSheet in Frameworks */ = {isa = PBXBuildFile; productRef = A728730A2EFE68760092169A /* BottomSheet */; };
 		A76313BF2E7170D70098E06E /* FlagAndCountryCode in Frameworks */ = {isa = PBXBuildFile; productRef = A76313BE2E7170D70098E06E /* FlagAndCountryCode */; };
@@ -69,6 +70,7 @@
 /* Begin PBXFileReference section */
 		0FF856B6392C36219A4FBF72 /* BeVietnamPro-Medium.ttf */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = file; name = "BeVietnamPro-Medium.ttf"; path = "Fonts/BeVietnamPro-Medium.ttf"; sourceTree = "<group>"; };
 		129CA2C2B384540FB7F41361 /* BeVietnamPro-Regular.ttf */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = file; name = "BeVietnamPro-Regular.ttf"; path = "Fonts/BeVietnamPro-Regular.ttf"; sourceTree = "<group>"; };
+		18422BB4A088A761D30C6076 /* Localizable.xcstrings */ = {isa = PBXFileReference; includeInIndex = 1; name = Localizable.xcstrings; path = VoiceTodo/Resources/Languages/Localizable.xcstrings; sourceTree = SOURCE_ROOT; };
 		1B924CA9DBB481D402305354 /* VoiceTodoWatch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VoiceTodoWatch.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		25B779FD1FBFC575C576BA44 /* WatchTodoDetailView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WatchTodoDetailView.swift; sourceTree = "<group>"; };
 		3AFEA65617B6EBC7BE1B5FDD /* WatchSessionManager.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WatchSessionManager.swift; sourceTree = "<group>"; };
@@ -209,6 +211,7 @@
 				0FF856B6392C36219A4FBF72 /* BeVietnamPro-Medium.ttf */,
 				59853722CBD1A9E018CCAF47 /* BeVietnamPro-SemiBold.ttf */,
 				D1B31B0E6D47D77298CF5189 /* BeVietnamPro-Bold.ttf */,
+				18422BB4A088A761D30C6076 /* Localizable.xcstrings */,
 			);
 			path = VoiceTodoWatch;
 			sourceTree = "<group>";
@@ -344,6 +347,7 @@
 				208872259BB466968A64EDB1 /* BeVietnamPro-Medium.ttf in Resources */,
 				CB04DF70AF250499D37688E6 /* BeVietnamPro-SemiBold.ttf in Resources */,
 				75E460D053F203B9F6A811FC /* BeVietnamPro-Bold.ttf in Resources */,
+				A2AB8F217FBA4EE1A6E79BF6 /* Localizable.xcstrings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

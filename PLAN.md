@@ -20,12 +20,12 @@ phần giao diện phải dựng lại theo design.
 
 Trước khi đo: tắt "Tóm tắt theo lịch trình", không bật Focus, không xoá thông báo của app.
 
-**2. Dựng lại giao diện theo Tidy** — đã xong **Giai đoạn A → F**; tiếp theo là **Giai đoạn G
-(Stats)** ở §8.
+**2. Dựng lại giao diện theo Tidy** — đã xong **Giai đoạn A → H2**: 10 màn iPhone trong §7 cộng
+app Apple Watch. Tiếp theo là **Giai đoạn I (nút Xong / Hoãn 10 phút trên thông báo)** ở §8.
 
 ### Đã xong (dùng lại được)
 
-- Core Data model, `TodoRepository`, `MergeService`, outbox — 37 test, chạy bằng `cd Shared && swift test`
+- Core Data model, `TodoRepository`, `MergeService`, outbox, `StatsCalculator`, `CSVExport` — 75 test, chạy bằng `cd Shared && swift test`
 - `ReminderScheduler` (hàm thuần) + `ReminderService` (đặt lịch thật, trigger lặp)
 - Đồng bộ WCSession hai chiều — **chưa chạy thử trên máy thật**
 - Khung giao diện iOS + Watch, điều hướng FlowStacks với Coordinator enum
@@ -440,14 +440,79 @@ mới, không có trong §4. Bỏ qua ở Giai đoạn D.
 **Chưa làm:** design có dòng gợi ý "Giữ để kéo thả, đổi giờ nhanh". Cử chỉ kéo thả đổi giờ chưa
 dựng; màn đang hiện câu "Kéo thả để đổi giờ — sẽ làm sau" thay cho nó.
 
-### Giai đoạn G: Stats (1–2 ngày)
+### Giai đoạn G: Stats — **code xong 10/11/2026**
 
-- [ ] Stat card và Progress card, tính từ dữ liệu thật
+- [x] Hai thẻ số lớn: **Chuỗi liên tiếp** và **Tỷ lệ hoàn thành**
+- [x] Biểu đồ cột "Việc hoàn thành mỗi ngày", cột hôm nay tô đậm và có số ở trên
+- [x] Dòng so sánh "N việc · +M so với tuần trước"
+- [x] "Theo danh sách": mỗi danh sách một thanh tiến độ theo màu của nó
+- [x] Bộ chọn **Tuần này / Tuần trước**
+- [x] Toàn bộ phép tính nằm trong `StatsCalculator` ở `Shared/` — **13 test**
 
-### Giai đoạn H: Onboarding + Settings (1 ngày)
+**Hai quy ước cần biết, đã chọn ở đây:**
 
-- [ ] Onboarding chỉ hiện lần đầu
-- [ ] Settings: chu kỳ chung, quyền thông báo, trạng thái đồng bộ, đổi ngôn ngữ
+- **Một việc "thuộc về" tuần nào**: tuần nó được hoàn thành, hoặc — nếu còn dang dở — tuần nó
+  được tạo. Việc cũ chưa xong không bị tính vào tuần này, nếu không một việc bị bỏ quên sẽ kéo
+  tỷ lệ xuống mãi mãi.
+- **Chuỗi liên tiếp** đếm ngược từ hôm nay; nếu hôm nay chưa xong việc nào thì bắt đầu đếm từ
+  hôm qua, nếu không mỗi sáng chuỗi sẽ về 0 cho tới khi tick việc đầu tiên.
+
+**Chỉ có hai lựa chọn Tuần này / Tuần trước, không có "Tháng này":** mọi con số trên màn đều
+định nghĩa theo tuần (7 cột, so với tuần trước, chia theo danh sách), chọn khoảng một tháng sẽ
+làm biểu đồ nói khác với chính tiêu đề của nó.
+
+### Giai đoạn H: Onboarding + Settings — **code xong 10/11/2026**
+
+- [x] Onboarding chỉ hiện lần đầu (đã xong từ Giai đoạn D, giữ nguyên)
+- [x] Settings dựng lại theo design: thẻ tiến độ, nhóm **CHUNG** / **KHÁC**, chân trang phiên bản
+- [x] Ngôn ngữ (VI / EN), **Giao diện** (Theo hệ thống / Sáng / Tối), **Chu kỳ nhắc**,
+      **Tuần bắt đầu từ** (Thứ Hai / Chủ Nhật)
+- [x] Âm thanh & rung, trạng thái quyền thông báo, trạng thái đồng bộ Apple Watch
+- [x] **Xuất dữ liệu CSV** qua `ShareLink`; chuỗi CSV sinh bởi `CSVExport` ở `Shared/` — **8 test**
+- [x] Xoá việc đã xong (giữ lại từ bản cũ, design không có)
+- [x] **Lối vào Settings**: nút avatar ở header Today — trước đây route có đăng ký nhưng
+      **không màn nào push**, nên màn Cài đặt hoàn toàn không mở được
+
+**Ba dòng trong design mô tả thứ app không có, đã thay chứ không làm giả:**
+
+| Design | Thực tế trong app | Vì sao |
+|---|---|---|
+| Thẻ hồ sơ có tên + chữ cái đầu | "Tiến độ của bạn" + chuỗi ngày và số việc đã xong | Tidy không có hệ thống tài khoản |
+| Sao lưu & đồng bộ · **iCloud** | Đồng bộ **Apple Watch** · Đã cài / Chưa cài | §9 loại iCloud khỏi v1 |
+| **Giờ nhắc mặc định · 08:00** | **Chu kỳ nhắc · mỗi N giờ** | §5 nhắc theo chu kỳ lặp, không theo giờ cố định trong ngày |
+
+**Dòng "Góp ý & hỗ trợ" tự ẩn** khi `EMAIL_FEEDBACL` trong xcconfig vẫn là `REPLACE_WITH_*` —
+hiện tại nó đang ẩn. Điền email thật vào `Enviroments/*.xcconfig` thì dòng này hiện ra.
+
+**Cài đặt "Tuần bắt đầu từ" đã nối vào cả tab Lịch lẫn tab Thống kê**; trước đó hai màn này
+hardcode `firstWeekday = 2`.
+
+### Giai đoạn H2: Apple Watch UI theo Tidy — **code xong 10/11/2026**
+
+Bổ sung vào lộ trình ngày 10/11: §8 từ A→J chỉ có màn iPhone, không giai đoạn nào nói
+app đồng hồ có dựng lại theo Tidy hay không. UI Watch khi đó vẫn là thiết kế "Voxo" tự nghĩ
+từ 06/11.
+
+- [x] Frame `Watch / Apple / 2 Hôm nay`: tiêu đề "Hôm nay · N", nút **"Nói để thêm việc"**,
+      dòng việc có vòng tròn màu theo ưu tiên + phụ đề "10:00 · Công việc"
+- [x] Mục việc **đã xong hôm nay** (vòng tròn xanh lá đặc, "Xong lúc 07:40")
+- [x] Vuốt để hoàn thành / mở lại; chạm vòng tròn cũng đổi trạng thái
+- [x] Sắp xếp theo giờ, không theo thứ tự tạo
+- [x] Màn chi tiết nhận `todoId`, hiện giờ + danh sách (chỉ đọc), sửa được tiêu đề
+- [x] **Đổi màu nhấn** `AccentColor` từ chàm `#8B84FF` (Voxo cũ) sang xanh `#4D9AF0`
+- [x] **Thêm bộ dịch vào target Watch** — app đồng hồ trước đó **không có `.lproj` nào**,
+      mọi chữ hiện ra bằng key tiếng Anh
+- [x] Watch theo ngôn ngữ chọn trong app iPhone, gửi qua `updateApplicationContext`
+- [x] `-voxoSeed` cho Watch, để xem giao diện không cần iPhone
+
+**Hai frame không dựng, lý do nằm ngoài code:**
+
+| Frame | Vì sao chưa làm |
+|---|---|
+| `1 Mặt đồng hồ + complication` | Cần widget extension đọc chung Core Data → cần **App Group**, mà **Personal Team miễn phí không ký được**. Chờ tài khoản trả phí. |
+| `6 Thông báo nhắc` | Chính là **Giai đoạn I**, và phần lớn là việc phía iPhone: nút nằm trên `UNNotificationCategory` do iPhone đặt lịch, Watch chỉ hiển thị lại. |
+
+Frame `3 Đang nghe` / `4 Xác nhận` / `5 Đã lưu` là luồng nói-thành-trường đã bị §1.10 loại.
 
 ### Giai đoạn I: Notification actions (1 ngày)
 

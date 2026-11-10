@@ -22,7 +22,8 @@ struct WatchAddTodoView: View {
         ScrollView {
             VStack(alignment: .leading, spacing: VoxoSpacing.m) {
                 // Tapping this opens the watchOS input screen, where dictation lives. PLAN.md §9
-                // keeps SFSpeechRecognizer out of v1.
+                // keeps SFSpeechRecognizer out of v1, and §1.10 keeps the design's voice-to-fields
+                // parsing out too: what is dictated becomes the title, nothing more.
                 TextField("Speak a task", text: $title)
                     .font(VoxoFont.body)
 

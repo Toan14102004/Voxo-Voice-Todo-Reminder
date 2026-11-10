@@ -35,43 +35,13 @@ struct MainTabView: View {
             case .lists:
                 ListsView()
             case .stats:
-                ComingSoonTab(
-                    icon: VoxoIcon.Tab.stats,
-                    title: "Stats",
-                    message: "Streaks and weekly totals will show up here."
-                )
+                StatsView()
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(VoxoColor.background)
         .safeAreaInset(edge: .bottom, spacing: 0) {
             VoxoTabBar(selection: $tab)
-        }
-    }
-}
-
-/// Placeholder for a tab whose screen is not written yet.
-private struct ComingSoonTab: View {
-    let icon: String
-    let title: LocalizedStringKey
-    let message: LocalizedStringKey
-
-    var body: some View {
-        VStack(spacing: 0) {
-            HStack {
-                Text(title)
-                    .font(VoxoFont.display)
-                    .foregroundStyle(VoxoColor.textPrimary)
-                Spacer()
-            }
-            .padding(.horizontal, VoxoSpacing.screenMargin)
-            .padding(.top, VoxoSpacing.l)
-
-            Spacer()
-
-            VoxoEmptyState(icon: icon, title: "Not built yet", message: message)
-
-            Spacer()
         }
     }
 }

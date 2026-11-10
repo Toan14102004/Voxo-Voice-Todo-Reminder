@@ -74,8 +74,12 @@ public enum VoxoColor {
 public extension VoxoColor {
     /// Watch-specific accents from the design: brighter, for contrast on absolute black.
     enum Watch {
+        /// Titles and rings: the brighter blue, for contrast on absolute black.
         public static let accent = Color(hex: 0x4D9AF0)
         public static let accentSoft = Color(hex: 0x8CC0F7)
+        /// Filled surfaces behind white text — the design keeps the deeper brand blue there,
+        /// where the brighter accent would drop below WCAG AA.
+        public static let accentStrong = Color(hex: 0x1E6FD0)
         public static let background = Color(hex: 0x000000)
     }
 }

@@ -10,7 +10,7 @@ và mục **Trạng thái** ở đầu file cho biết đang ở đâu và việ
 ```bash
 pod install                      # lần đầu sau khi clone
 open VoiceTodo.xcworkspace
-cd Shared && swift test          # 37 test, chạy trên macOS, không cần simulator
+cd Shared && swift test          # 75 test, chạy trên macOS, không cần simulator
 ```
 
 | Scheme | Dùng để |

@@ -19,6 +19,20 @@ final class WatchSessionManager: NSObject, ObservableObject {
     /// Shared interval pushed from the phone with `updateApplicationContext`.
     @Published private(set) var globalIntervalMinutes: Int = SyncSettings.defaultIntervalMinutes
 
+    /// The language picked in the phone app. Tidy switches language in-app, so following the
+    /// watch's own system setting would show the two devices in different languages.
+    @Published private(set) var languageCode: String = WatchSessionManager.storedLanguageCode
+
+    var locale: Locale { Locale(identifier: languageCode) }
+
+    private static let languageKey = "tidy.watch.languageCode"
+
+    private static var storedLanguageCode: String {
+        UserDefaults.standard.string(forKey: languageKey)
+            ?? Locale.current.language.languageCode?.identifier
+            ?? "en"
+    }
+
     private let repository: TodoRepository & SyncOutbox
     private let session: WCSession?
     private let onRemoteChange: () -> Void
@@ -119,6 +133,13 @@ extension WatchSessionManager: WCSessionDelegate {
 
     nonisolated func session(_: WCSession, didReceiveApplicationContext context: [String: Any]) {
         Task { @MainActor in
+            if let code = context["languageCode"] as? String, code != languageCode {
+                languageCode = code
+                // Persisted: the context is only delivered when the phone is in range, and the
+                // watch has to come up in the right language on its own.
+                UserDefaults.standard.set(code, forKey: Self.languageKey)
+            }
+
             guard let minutes = context["globalIntervalMinutes"] as? Int,
                   SyncSettings.isValid(minutes) else { return }
             globalIntervalMinutes = minutes

@@ -198,7 +198,8 @@ public struct VoxoStatCard: View {
                 .foregroundStyle(VoxoColor.textSecondary)
         }
         .padding(VoxoSpacing.l)
-        .frame(width: 165, height: 108, alignment: .leading)
+        // Two per row on the Stats tab, so it shares the width rather than fixing the design's 165.
+        .frame(maxWidth: .infinity, minHeight: 108, alignment: .leading)
         .background(tint.opacity(0.10))
         .clipShape(RoundedRectangle(cornerRadius: VoxoRadius.card, style: .continuous))
     }

@@ -14,15 +14,21 @@ import VoxoShared
 @MainActor
 final class WatchTodoStore: ObservableObject {
     @Published private(set) var active: [TodoDTO] = []
+    /// Today's finished work only. The design shows it under the open tasks; the full history
+    /// belongs on the phone, and a watch list that grows forever is unusable.
+    @Published private(set) var doneToday: [TodoDTO] = []
+    @Published private(set) var lists: [TodoListDTO] = []
     @Published private(set) var pendingSyncCount: Int = 0
     @Published private(set) var lastError: String?
 
     private let repository: TodoRepository
+    private let listRepository: TodoListRepository?
     private let outbox: SyncOutbox
     private var session: WatchSessionManager?
 
     init(repository: TodoRepository & SyncOutbox) {
         self.repository = repository
+        listRepository = repository as? TodoListRepository
         outbox = repository
         reload()
     }
@@ -33,9 +39,35 @@ final class WatchTodoStore: ObservableObject {
 
     func reload() {
         perform {
-            active = try repository.activeTodos()
+            // Ordered by time of day, as in the design: the repository sorts by createdAt, which
+            // on a watch list reads as random.
+            active = try repository.activeTodos().sorted { lhs, rhs in
+                switch (lhs.dueAt, rhs.dueAt) {
+                case let (left?, right?): left < right
+                // A task with no time sits after the scheduled ones.
+                case (nil, _?): false
+                case (_?, nil): true
+                default: lhs.createdAt < rhs.createdAt
+                }
+            }
+            let startOfDay = Calendar.current.startOfDay(for: Date())
+            doneToday = try repository.completedTodos()
+                .filter { ($0.completedAt ?? .distantPast) >= startOfDay }
+            lists = (try? listRepository?.lists()) ?? []
             pendingSyncCount = try outbox.pendingOpCount()
         }
+    }
+
+    /// Reads the published arrays first, so a detail screen re-renders when the record changes.
+    func todo(id: UUID) -> TodoDTO? {
+        active.first { $0.id == id }
+            ?? doneToday.first { $0.id == id }
+            ?? (try? repository.todo(id: id))
+    }
+
+    func list(id: UUID?) -> TodoListDTO? {
+        guard let id else { return nil }
+        return lists.first { $0.id == id }
     }
 
     func add(title: String) {
@@ -49,6 +81,19 @@ final class WatchTodoStore: ObservableObject {
     func complete(_ todo: TodoDTO) {
         perform {
             try repository.complete(id: todo.id, now: Date())
+            reload()
+            session?.flushOutbox()
+        }
+    }
+
+    /// Ticking the ring has to work both ways: the design keeps finished tasks on screen.
+    func toggleDone(_ todo: TodoDTO) {
+        todo.isDone ? reopen(todo) : complete(todo)
+    }
+
+    func reopen(_ todo: TodoDTO) {
+        perform {
+            try repository.reopen(id: todo.id, now: Date())
             reload()
             session?.flushOutbox()
         }

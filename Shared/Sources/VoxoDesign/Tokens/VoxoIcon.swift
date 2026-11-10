@@ -22,6 +22,7 @@ public enum VoxoIcon {
     public static let list = "folder"                           // folder
     public static let priority = "flag"                         // flag
     public static let streak = "flame.fill"                     // local_fire_department
+    public static let rate = "checkmark.circle"                 // check_circle
     public static let home = "house"                            // home
     public static let note = "text.alignleft"                   // (note field in Quick add)
 

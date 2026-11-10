@@ -4,8 +4,10 @@
 //
 
 import Foundation
+import SwiftUI
 import UIKit
 import UserNotifications
+import VoxoShared
 
 extension VoxoSettingsView {
     @MainActor
@@ -19,7 +21,7 @@ extension VoxoSettingsView {
 
         var isAuthorized: Bool { authorizationStatus == .authorized }
 
-        var authorizationText: String {
+        var authorizationText: LocalizedStringKey {
             switch authorizationStatus {
             case .authorized, .provisional, .ephemeral: "On"
             case .denied: "Off"
@@ -28,8 +30,22 @@ extension VoxoSettingsView {
             }
         }
 
-        var authorizationIcon: String {
-            isAuthorized ? "checkmark.circle" : "exclamationmark.circle"
+        /// The design's "Sao lưu & đồng bộ · iCloud" row, reporting what Tidy actually syncs:
+        /// the paired Watch. PLAN.md §9 rules out iCloud in v1.
+        func watchStatus(session: PhoneSessionManager) -> LocalizedStringKey {
+            session.isWatchAppInstalled ? "Installed" : "Not installed"
+        }
+
+        func streak(store: TodoStore, calendar: Calendar) -> Int {
+            StatsCalculator.streak(todos: store.completed, upTo: Date(), calendar: calendar)
+        }
+
+        /// `nil` hides the row: the template ships a `REPLACE_WITH_*` placeholder, and a mail
+        /// link to that address would just fail.
+        var feedbackURL: URL? {
+            let address = AppConfiguration.emailFeedback
+            guard AppConfiguration.isConfigured(address) else { return nil }
+            return URL(string: "mailto:\(address)")
         }
 
         func refresh(reminders: ReminderService) async {

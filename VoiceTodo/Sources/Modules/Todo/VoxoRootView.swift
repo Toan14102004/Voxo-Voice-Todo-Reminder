@@ -13,6 +13,7 @@ struct VoxoRootView: View {
     @StateObject private var store: TodoStore
     @StateObject private var session: PhoneSessionManager
     @StateObject private var reminders: ReminderService
+    @StateObject private var settings = AppSettings()
     @ObservedObject private var language = LanguageManager.shared
     @Environment(\.scenePhase) private var scenePhase
 
@@ -58,9 +59,15 @@ struct VoxoRootView: View {
                 ("Công việc", "F59E0B", "briefcase"),
                 ("Mua sắm", "16A34A", "cart")
             ]
-            let created = lists.compactMap { name, hex, icon in
-                try? (repository as? TodoListRepository)?
-                    .createList(name: name, colorHex: hex, icon: icon, now: now)
+            // Staggered createdAt: lists sort by it, and three created at the same instant fall
+            // back to comparing random ids, which reshuffles the sample on every launch.
+            let created = lists.enumerated().compactMap { index, list in
+                try? (repository as? TodoListRepository)?.createList(
+                    name: list.0,
+                    colorHex: list.1,
+                    icon: list.2,
+                    now: now.addingTimeInterval(TimeInterval(index))
+                )
             }
 
             let startOfDay = Calendar.current.startOfDay(for: now)
@@ -74,8 +81,30 @@ struct VoxoRootView: View {
                 try? repository.update(todo, now: now)
             }
 
-            if let finished = try? repository.create(title: "Book the flight to Da Nang", intervalOverride: 0, now: now.addingTimeInterval(-7200)) {
-                try? repository.complete(id: finished.id, now: now.addingTimeInterval(-3600))
+            // Finished work spread over the past week, so the Stats tab has a streak, a bar per
+            // day and a per-list split to show.
+            let history: [(String, Int)] = [
+                ("Book the flight to Da Nang", 0),
+                ("Review the sprint board", 0),
+                ("Water the plants", 1),
+                ("Reply to Linh", 1),
+                ("Buy coffee beans", 1),
+                ("Weekly report", 2),
+                ("Clean the desk", 3),
+                ("Renew the gym pass", 3),
+                ("Back up the laptop", 4),
+                ("Call the dentist", 5)
+            ]
+
+            for (index, (title, daysAgo)) in history.enumerated() {
+                let finishedAt = startOfDay
+                    .addingTimeInterval(TimeInterval(-daysAgo) * 86400)
+                    .addingTimeInterval(TimeInterval(9 + index % 8) * 3600)
+                guard var todo = try? repository.create(title: title, intervalOverride: 0, now: finishedAt)
+                else { continue }
+                todo.listId = created[safe: index % max(created.count, 1)]?.id
+                try? repository.update(todo, now: finishedAt)
+                try? repository.complete(id: todo.id, now: finishedAt)
             }
         }
     #endif
@@ -135,7 +164,10 @@ struct VoxoRootView: View {
             .environmentObject(store)
             .environmentObject(session)
             .environmentObject(reminders)
+            .environmentObject(settings)
             .tint(VoxoColor.primary)
+            // nil for "Match system", which is the default.
+            .preferredColorScheme(settings.appearance.colorScheme)
             // Tidy is bilingual VI/EN and switches in-app, so the locale comes from
             // LanguageManager rather than the system (PLAN.md §0).
             .environment(\.locale, language.currentLocale)
@@ -152,6 +184,7 @@ struct VoxoRootView: View {
                         LanguageManager.shared.changeLanguage(LanguageManager.resolve(args[i + 1]))
                     }
                 #endif
+                reminders.soundEnabled = settings.soundEnabled
                 session.start()
                 await reminders.refresh()
                 // The seeded run skips the prompt: its system alert covers the screen under review.
@@ -160,6 +193,19 @@ struct VoxoRootView: View {
                     await reminders.requestAuthorization()
                 }
                 // Re-plan after the permission answer: the attempt during init ran before it.
+                store.rescheduleReminders()
+            }
+            .onChange(of: language.currentLanguageCode) { code in
+                // The watch has no language switch of its own, so it follows this one.
+                session.pushSettings(
+                    globalIntervalMinutes: store.globalIntervalMinutes,
+                    languageCode: code
+                )
+            }
+            .onChange(of: settings.soundEnabled) { enabled in
+                reminders.soundEnabled = enabled
+                // Pending notifications carry their sound setting from when they were scheduled,
+                // so the switch only takes effect after a re-plan.
                 store.rescheduleReminders()
             }
             .onChange(of: scenePhase) { phase in

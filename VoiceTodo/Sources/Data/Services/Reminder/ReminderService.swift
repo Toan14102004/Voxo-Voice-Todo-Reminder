@@ -37,6 +37,10 @@ final class ReminderService: ObservableObject {
         }
     }
 
+    /// Mirrors `AppSettings.soundEnabled`. Read when a notification is built, so a change only
+    /// reaches already-scheduled reminders after a re-plan.
+    var soundEnabled = true
+
     @discardableResult
     func requestAuthorization() async -> Bool {
         var granted = false
@@ -135,7 +139,8 @@ final class ReminderService: ObservableObject {
         let content = UNMutableNotificationContent()
         content.title = plan.title
         content.body = plan.body
-        content.sound = .default
+        // Settings → "Âm thanh & rung". A silent reminder still shows and still badges.
+        content.sound = soundEnabled ? .default : nil
         content.userInfo = ["todoId": plan.todoId.uuidString]
 
         let request = UNNotificationRequest(

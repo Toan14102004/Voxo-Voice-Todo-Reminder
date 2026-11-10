@@ -44,10 +44,14 @@ final class PhoneSessionManager: NSObject, ObservableObject {
     }
 
     /// Shared settings use application context: only the latest value matters (PLAN.md §6).
-    func pushSettings(globalIntervalMinutes: Int) {
+    func pushSettings(globalIntervalMinutes: Int, languageCode: String? = nil) {
         guard let session, session.activationState == .activated else { return }
         do {
-            try session.updateApplicationContext(["globalIntervalMinutes": globalIntervalMinutes])
+            try session.updateApplicationContext([
+                "globalIntervalMinutes": globalIntervalMinutes,
+                // The watch has no language switch of its own; it follows the phone's.
+                "languageCode": languageCode ?? LanguageManager.shared.currentLanguageCode
+            ])
         } catch {
             lastError = error.localizedDescription
         }
