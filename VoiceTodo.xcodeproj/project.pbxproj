@@ -15,12 +15,17 @@
 		316B57192F3C7827003CC81A /* CoreDataKit in Frameworks */ = {isa = PBXBuildFile; productRef = 316B57182F3C7827003CC81A /* CoreDataKit */; };
 		31D13728DC3D7208149FF14C /* VoiceTodoWatch.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 1B924CA9DBB481D402305354 /* VoiceTodoWatch.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		37994BB7F0BCB80190F9DF0C /* WatchTodoStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A00CCF66D37340AC7FCCDFA /* WatchTodoStore.swift */; };
+		469B9ACB203FE7F8B2FDE16B /* WatchChoiceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E8E480596F645F31B8FCB6A /* WatchChoiceView.swift */; };
+		475DF3111C69B0A7B9944254 /* WatchSavedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271EA00E24232599ED000353 /* WatchSavedView.swift */; };
 		4C0BE3F51E3B2511F977FB2C /* VoxoShared in Frameworks */ = {isa = PBXBuildFile; productRef = 3F1295D1ABA2FB02D3A46CC2 /* VoxoShared */; };
+		58E7B47D55DF580B0F9B623C /* WatchSplashView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52CB9226C1264274DB65C8FB /* WatchSplashView.swift */; };
 		60489009ACCA86433043272D /* DictationProbe.swift in Sources */ = {isa = PBXBuildFile; fileRef = 926FF717CACC94CB6EF1F068 /* DictationProbe.swift */; };
 		75E460D053F203B9F6A811FC /* BeVietnamPro-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D1B31B0E6D47D77298CF5189 /* BeVietnamPro-Bold.ttf */; };
 		77A2C7E1A99AF46D3DC0E8F7 /* VoxoDesign in Frameworks */ = {isa = PBXBuildFile; productRef = 60879D63D9AE2F88B14BA666 /* VoxoDesign */; };
 		7C0206119F39CD4333B9956D /* Pods_VoiceTodo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 90196740DAF07B4FE4315BF8 /* Pods_VoiceTodo.framework */; };
+		82B23DE613C02E6B9575EDBE /* WatchDueDateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13FD5BFD35F02EBF40C3C22B /* WatchDueDateView.swift */; };
 		86BBF8F72C0318AEB4D664AF /* WatchSessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AFEA65617B6EBC7BE1B5FDD /* WatchSessionManager.swift */; };
+		91BFCD12341451C9A4724F3D /* WatchConfirmView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED9D9700972F10D54E8FC133 /* WatchConfirmView.swift */; };
 		9D045CAE73F47D632817D410 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 92AD1A977D519C78F573C51E /* Assets.xcassets */; };
 		A2AB8F217FBA4EE1A6E79BF6 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 18422BB4A088A761D30C6076 /* Localizable.xcstrings */; };
 		A3730B9DC4074448AF698147 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C9AFD15B86AA03570BF43629 /* Foundation.framework */; };
@@ -70,10 +75,14 @@
 /* Begin PBXFileReference section */
 		0FF856B6392C36219A4FBF72 /* BeVietnamPro-Medium.ttf */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = file; name = "BeVietnamPro-Medium.ttf"; path = "Fonts/BeVietnamPro-Medium.ttf"; sourceTree = "<group>"; };
 		129CA2C2B384540FB7F41361 /* BeVietnamPro-Regular.ttf */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = file; name = "BeVietnamPro-Regular.ttf"; path = "Fonts/BeVietnamPro-Regular.ttf"; sourceTree = "<group>"; };
-		18422BB4A088A761D30C6076 /* Localizable.xcstrings */ = {isa = PBXFileReference; includeInIndex = 1; name = Localizable.xcstrings; path = VoiceTodo/Resources/Languages/Localizable.xcstrings; sourceTree = SOURCE_ROOT; };
+		13FD5BFD35F02EBF40C3C22B /* WatchDueDateView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = WatchDueDateView.swift; path = VoiceTodoWatch/WatchDueDateView.swift; sourceTree = SOURCE_ROOT; };
+		18422BB4A088A761D30C6076 /* Localizable.xcstrings */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.json.xcstrings; name = Localizable.xcstrings; path = VoiceTodo/Resources/Languages/Localizable.xcstrings; sourceTree = SOURCE_ROOT; };
 		1B924CA9DBB481D402305354 /* VoiceTodoWatch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VoiceTodoWatch.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		25B779FD1FBFC575C576BA44 /* WatchTodoDetailView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WatchTodoDetailView.swift; sourceTree = "<group>"; };
+		271EA00E24232599ED000353 /* WatchSavedView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = WatchSavedView.swift; path = VoiceTodoWatch/WatchSavedView.swift; sourceTree = SOURCE_ROOT; };
+		2E8E480596F645F31B8FCB6A /* WatchChoiceView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = WatchChoiceView.swift; path = VoiceTodoWatch/WatchChoiceView.swift; sourceTree = SOURCE_ROOT; };
 		3AFEA65617B6EBC7BE1B5FDD /* WatchSessionManager.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WatchSessionManager.swift; sourceTree = "<group>"; };
+		52CB9226C1264274DB65C8FB /* WatchSplashView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = WatchSplashView.swift; path = VoiceTodoWatch/WatchSplashView.swift; sourceTree = SOURCE_ROOT; };
 		59853722CBD1A9E018CCAF47 /* BeVietnamPro-SemiBold.ttf */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = file; name = "BeVietnamPro-SemiBold.ttf"; path = "Fonts/BeVietnamPro-SemiBold.ttf"; sourceTree = "<group>"; };
 		5E3E3CDF0B3C9BF73343CF1F /* Pods-VoiceTodo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VoiceTodo.release.xcconfig"; path = "Target Support Files/Pods-VoiceTodo/Pods-VoiceTodo.release.xcconfig"; sourceTree = "<group>"; };
 		6F7237511A050EA8283AB26E /* DictationProbeView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = DictationProbeView.swift; sourceTree = "<group>"; };
@@ -89,6 +98,7 @@
 		C9AFD15B86AA03570BF43629 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/WatchOS.platform/Developer/SDKs/WatchOS26.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
 		D1B31B0E6D47D77298CF5189 /* BeVietnamPro-Bold.ttf */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = file; name = "BeVietnamPro-Bold.ttf"; path = "Fonts/BeVietnamPro-Bold.ttf"; sourceTree = "<group>"; };
 		E0580A7F9A8B6C1E401D7DF5 /* WatchAddTodoView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WatchAddTodoView.swift; sourceTree = "<group>"; };
+		ED9D9700972F10D54E8FC133 /* WatchConfirmView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = WatchConfirmView.swift; path = VoiceTodoWatch/WatchConfirmView.swift; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -212,6 +222,11 @@
 				59853722CBD1A9E018CCAF47 /* BeVietnamPro-SemiBold.ttf */,
 				D1B31B0E6D47D77298CF5189 /* BeVietnamPro-Bold.ttf */,
 				18422BB4A088A761D30C6076 /* Localizable.xcstrings */,
+				ED9D9700972F10D54E8FC133 /* WatchConfirmView.swift */,
+				271EA00E24232599ED000353 /* WatchSavedView.swift */,
+				52CB9226C1264274DB65C8FB /* WatchSplashView.swift */,
+				13FD5BFD35F02EBF40C3C22B /* WatchDueDateView.swift */,
+				2E8E480596F645F31B8FCB6A /* WatchChoiceView.swift */,
 			);
 			path = VoiceTodoWatch;
 			sourceTree = "<group>";
@@ -483,6 +498,11 @@
 				D01038F3DDEBEA6AE4D93323 /* WatchTodoListView.swift in Sources */,
 				37994BB7F0BCB80190F9DF0C /* WatchTodoStore.swift in Sources */,
 				86BBF8F72C0318AEB4D664AF /* WatchSessionManager.swift in Sources */,
+				91BFCD12341451C9A4724F3D /* WatchConfirmView.swift in Sources */,
+				475DF3111C69B0A7B9944254 /* WatchSavedView.swift in Sources */,
+				58E7B47D55DF580B0F9B623C /* WatchSplashView.swift in Sources */,
+				82B23DE613C02E6B9575EDBE /* WatchDueDateView.swift in Sources */,
+				469B9ACB203FE7F8B2FDE16B /* WatchChoiceView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -513,7 +533,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = VQ8W82PQ94;
 				ENABLE_NS_ASSERTIONS = NO;
@@ -523,7 +543,7 @@
 				INFOPLIST_KEY_UIAppFonts = "BeVietnamPro-Regular.ttf BeVietnamPro-Medium.ttf BeVietnamPro-SemiBold.ttf BeVietnamPro-Bold.ttf";
 				INFOPLIST_KEY_WKApplication = YES;
 				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = com.limgrow.voxo;
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.0.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = com.limgrow.voxo.watchkitapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -675,7 +695,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_ASSET_PATHS = "\"VoiceTodo/Preview Content\"";
 				DEVELOPMENT_TEAM = VQ8W82PQ94;
@@ -869,7 +889,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_ASSET_PATHS = "\"VoiceTodo/Preview Content\"";
 				DEVELOPMENT_TEAM = VQ8W82PQ94;
 				ENABLE_PREVIEWS = YES;
@@ -1060,7 +1080,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = VQ8W82PQ94;
 				ENABLE_PREVIEWS = YES;
@@ -1071,7 +1091,7 @@
 				INFOPLIST_KEY_UIAppFonts = "BeVietnamPro-Regular.ttf BeVietnamPro-Medium.ttf BeVietnamPro-SemiBold.ttf BeVietnamPro-Bold.ttf";
 				INFOPLIST_KEY_WKApplication = YES;
 				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = com.limgrow.voxo;
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.0.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.limgrow.voxo.watchkitapp;

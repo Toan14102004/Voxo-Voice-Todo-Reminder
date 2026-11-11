@@ -96,7 +96,7 @@ import SwiftUI
                 .foregroundStyle(VoxoColor.textOnAccent)
                 .frame(maxWidth: .infinity)
                 .padding(.vertical, VoxoSpacing.m)
-                .background(VoxoColor.Watch.accentStrong)
+                .background(VoxoColor.primaryFill)
                 .clipShape(Capsule())
             }
             .buttonStyle(.plain)

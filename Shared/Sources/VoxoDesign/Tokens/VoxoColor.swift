@@ -20,6 +20,17 @@ public enum VoxoColor {
 
     /// #1E6FD0 — WCAG AA 4.95:1 on white.
     public static let primary = dynamic(light: 0x1E6FD0, dark: 0x4D9AF0)
+
+    /// `primary` for anything filled behind white text. On watchOS the bright accent that works
+    /// for titles and rings drops below WCAG AA once it is a background, so the deeper brand
+    /// blue is used there instead.
+    public static var primaryFill: Color {
+        #if os(watchOS)
+            Watch.accentStrong
+        #else
+            primary
+        #endif
+    }
     /// #EEF5FE — tinted fill behind selected chips and accent surfaces.
     public static let primaryTint = dynamic(light: 0xEEF5FE, dark: 0x16263A)
 

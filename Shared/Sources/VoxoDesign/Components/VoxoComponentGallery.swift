@@ -107,6 +107,10 @@
                         }
                     }
 
+                    section("Waveform (voice affordance)") {
+                        VoxoWaveform()
+                    }
+
                     section("Bar chart · List progress") {
                         VoxoBarChart(entries: [
                             .init(id: 0, label: "T2", value: 4, isHighlighted: false),

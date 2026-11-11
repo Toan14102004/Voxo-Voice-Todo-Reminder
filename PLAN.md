@@ -2,7 +2,7 @@
 
 > Tài liệu này là nguồn sự thật cho việc phát triển. Khi có mâu thuẫn giữa code và tài liệu, hỏi người dùng trước khi đổi.
 
-## Trạng thái — cập nhật 09/11/2026
+## Trạng thái — cập nhật 11/11/2026
 
 **Dự án vừa đổi spec: từ "Voxo" tự thiết kế sang design Figma "Tidy".** Xem §1.8.
 Phần nền (model, repository, merge, đồng bộ, lên lịch nhắc) giữ nguyên và dùng lại được;
@@ -20,12 +20,51 @@ phần giao diện phải dựng lại theo design.
 
 Trước khi đo: tắt "Tóm tắt theo lịch trình", không bật Focus, không xoá thông báo của app.
 
-**2. Dựng lại giao diện theo Tidy** — đã xong **Giai đoạn A → H2**: 10 màn iPhone trong §7 cộng
-app Apple Watch. Tiếp theo là **Giai đoạn I (nút Xong / Hoãn 10 phút trên thông báo)** ở §8.
+**2. Dựng lại giao diện theo Tidy** — đã xong **Giai đoạn A → H3**: 10 màn iPhone trong §7, app
+Apple Watch, và tách câu nói thành việc có cấu trúc.
+
+### Việc tiếp theo — ghi 11/11/2026, chưa làm
+
+Phát hiện khi rà lại cách nhắc việc hoạt động. Xếp theo thứ tự đáng làm:
+
+**a. Nội dung thông báo cứng tiếng Anh — lỗi thật, nhanh**
+
+`ReminderScheduler.body(naming:outOf:)` ghép thẳng chuỗi `" — and N others"`, không qua bộ
+dịch. App song ngữ mà thông báo tiếng Việt sẽ ra nửa Việt nửa Anh. Và `title: "Voxo"` vẫn là
+tên cũ, sản phẩm giờ tên **Tidy**.
+
+Vướng: `ReminderScheduler` là hàm thuần trong `Shared/`, cố ý không biết gì về giao diện. Nên
+hoặc trả về key + tham số để tầng app dịch, hoặc nhận sẵn chuỗi đã dịch từ `ReminderService`.
+Cách đầu sạch hơn và vẫn test được.
+
+**b. Quiet hours — cần quyết lại phạm vi**
+
+§9 đang liệt kê là ngoài phạm vi v1. Nhưng app nhắc-lặp-tới-khi-xong mà **nổ lúc 3 giờ sáng**
+thì gần như không dùng được. Cân nhắc đưa vào v1.
+
+**c. Chu kỳ riêng cho từng việc — thiếu mỗi giao diện**
+
+`intervalOverride` đã có trong model, `ReminderScheduler` xử lý đầy đủ (việc có chu kỳ riêng
+được một thông báo riêng, phần còn lại gộp chung). Nhưng **không màn nào đặt được** — cả iPhone
+lẫn Watch chỉ hiện ra, không sửa. Thực tế mọi việc đang dùng chung một chu kỳ.
+
+**d. Thêm nhanh trên iPhone còn nghèo hơn trên Watch**
+
+Màn Thêm nhanh iPhone mới có 3 chip xoay vòng, chưa đặt được giờ và danh sách — trong khi màn
+Xác nhận trên đồng hồ giờ đặt được cả bốn trường. Ngược đời, nên làm cho đều.
+
+**e. Giai đoạn I** — nút Xong / Hoãn 10 phút trên thông báo (§8), chạy cả hai máy.
+
+### Hai điều về cách nhắc, để khỏi tưởng là lỗi
+
+- **Nhiều việc chỉ nổ MỘT thông báo**, nêu tên việc cũ nhất kèm số còn lại (§1.7). Không phải
+  mỗi việc một thông báo — iOS chỉ cho 64 thông báo chờ.
+- **Nội dung đông cứng lúc đặt lịch.** Trigger lặp nên câu chữ viết một lần rồi giữ nguyên; xong
+  bớt việc mà chưa mở lại app thì con số trong thông báo vẫn cũ.
 
 ### Đã xong (dùng lại được)
 
-- Core Data model, `TodoRepository`, `MergeService`, outbox, `StatsCalculator`, `CSVExport` — 75 test, chạy bằng `cd Shared && swift test`
+- Core Data model, `TodoRepository`, `MergeService`, outbox, `StatsCalculator`, `CSVExport`, `TaskParser` — 93 test, chạy bằng `cd Shared && swift test`
 - `ReminderScheduler` (hàm thuần) + `ReminderService` (đặt lịch thật, trigger lặp)
 - Đồng bộ WCSession hai chiều — **chưa chạy thử trên máy thật**
 - Khung giao diện iOS + Watch, điều hướng FlowStacks với Coordinator enum
@@ -514,6 +553,41 @@ từ 06/11.
 
 Frame `3 Đang nghe` / `4 Xác nhận` / `5 Đã lưu` là luồng nói-thành-trường đã bị §1.10 loại.
 
+### Giai đoạn H3: Nói thành việc có cấu trúc + intro Watch — **code xong 11/11/2026**
+
+- [x] `TaskParser` ở `Shared/` — 18 test
+- [x] Màn **Xác nhận** (frame 4): "Tidy hiểu là:" + **sửa được ngay** ưu tiên, hạn chót,
+      danh sách, lặp lại trước khi lưu; hai nút Lưu việc / Nói lại
+
+**Khác design ở đây:** frame 4 vẽ thẻ chỉ-đọc kèm nút "Sửa". Nút đó ban đầu chỉ mở lại ô nhập
+chữ — không đúng nghĩa từ "Sửa" — và mọi thuộc tính phải lưu xong, mở lại mới đổi được. Giờ các
+trường sửa trực tiếp tại đây, cùng bộ điều khiển với màn chi tiết. Parser có đoán thì phải cho
+sửa ngay chỗ nó đoán.
+- [x] Màn **Đã lưu** (frame 5): dấu tích xanh, tự đóng sau 2 giây, rung nhẹ, có **Hoàn tác**
+- [x] Màn xác nhận **luôn hiện**: nó là nơi duy nhất đặt thuộc tính trước khi việc tồn tại,
+      không còn chỉ là chỗ xem lại parser đoán gì
+- [x] **`VoxoWaveform`** + icon micro trên màn nói, đánh dấu đây là chỗ nhập bằng giọng
+- [x] **Splash ngắn trên Watch** (~0,4 giây), chỉ là dấu nhận diện lúc mở app
+- [x] **Sửa được thuộc tính ngay trên đồng hồ**: ưu tiên, hạn chót, danh sách, lặp lại
+
+**Vì sao màn chi tiết Watch phải mở rộng:** `TaskParser` đặt ưu tiên / hạn / danh sách từ câu
+nói, nên nó sẽ có lúc đoán sai. Bắt người dùng rút iPhone ra sửa một thứ đồng hồ tự đoán là
+vướng mắc do chính tính năng này tạo ra. **Nhắc nhở vẫn chỉ đọc** — §1 quy định iPhone là máy
+duy nhất đặt lịch thông báo.
+
+**Hạn chót trên đồng hồ dùng phím tắt** (Hôm nay / Mai + chọn giờ, phút theo bước 15), không
+dùng `DatePicker` đầy đủ: trên cổ tay hạn gần như luôn là hôm nay hoặc mai, ngày xa thì sửa
+trên iPhone nhanh hơn nhiều.
+
+**Quyết định 11/11:** app đồng hồ **không có onboarding**, chỉ iPhone mới có. Bản intro 3 trang
+đã dựng rồi gỡ: phiên dùng đồng hồ chỉ vài giây, không ai đọc ba trang trên cổ tay, và người
+dùng đã qua onboarding trên iPhone. Apple cũng khuyên không đặt splash trên watchOS vì cùng lý
+do — splash hiện tại cố ý ngắn và không chặn thao tác nào.
+- [x] `IntervalLabel` chuyển sang `VoxoDesign` để cả hai app dùng chung
+
+**Chưa làm:** parser mới chỉ nối vào app đồng hồ. Màn **Thêm nhanh trên iPhone chưa dùng** —
+ở đó người dùng gõ tay là chính, tự tách câu sẽ gây bất ngờ. Cần quyết riêng.
+
 ### Giai đoạn I: Notification actions (1 ngày)
 
 - [ ] Nút **Xong** và **Hoãn 10 phút** trên thông báo, chạy trên cả iPhone lẫn Watch
@@ -523,6 +597,37 @@ Frame `3 Đang nghe` / `4 Xác nhận` / `5 Đã lưu` là luồng nói-thành-t
 - [ ] Chạy checklist mục 10
 - [ ] Đo pin một ngày
 
+### 1.11. Tách câu nói thành việc có cấu trúc — mở lại 11/11/2026
+
+§1.10 trước đó loại mục 05 của design vì nghĩ rằng nó cần `SFSpeechRecognizer`. Điều đó sai:
+**dictation của hệ thống đã trả về chữ**, phần còn lại chỉ là tách chuỗi. Vì vậy tính năng được
+làm, nhưng theo cách khác với design:
+
+- `TaskParser` (`Shared/Sources/VoxoShared/Parsing/`) nhận câu đã thành chữ và trả về
+  tiêu đề + `dueAt` + `listId` + `priority`. Hàm thuần, **18 test**.
+- Giờ giấc dùng **`NSDataDetector`** của Foundation — đọc được cả tiếng Việt
+  ("2 giờ chiều", "8h tối", "ngày mai", "thứ sáu tuần sau") lẫn tiếng Anh, và **có trên watchOS**.
+- Danh sách khớp theo tên, bỏ qua hoa thường và dấu, vì dictation không phải lúc nào cũng trả
+  về dấu đầy đủ.
+- Ưu tiên chỉ nhận mức **cao** ("gấp", "khẩn", "quan trọng", "urgent", "asap") — không ai nói
+  "ưu tiên vừa" ra miệng.
+- Giờ đã trôi qua trong ngày được dời sang hôm sau: một lời nhắc trong quá khứ không bao giờ nổ.
+
+**Sóng âm:** màn "Nói để thêm việc" có **hiệu ứng sóng + icon micro** để người dùng biết đây là
+chỗ nói (`VoxoWaveform`). Đây là **gợi ý thị giác, không phải đồng hồ đo** — nó không chạy theo
+giọng, và không thể: lúc người ta nói thì màn dictation của hệ thống đã che hết.
+
+**Vẫn ngoài phạm vi:** sóng âm **chạy theo giọng** (frame 3 "Đang nghe"). Khi chạm micro,
+watchOS chiếm toàn màn hình bằng giao diện nhập liệu của hệ thống — app không vẽ được đằng sau.
+
+Đính chính 11/11: **`AVAudioEngine.inputNode` và `AVAudioRecorder` có trên watchOS**, nên app
+*tự thu âm* và vẽ sóng theo mức âm thanh thì làm được. Cái không có là `Speech.framework` — tự
+thu thì phải gửi file sang iPhone để nhận dạng, tức là **mất khả năng dùng khi không có iPhone**
+mà §8 giai đoạn 4 đặt ra. Đánh đổi đó chưa làm; cân nhắc lại sau khi chạy xong Giai đoạn 0.
+
+**Giới hạn đã biết:** "7h sáng mai" chỉ nhận ra "7h sáng", chữ "mai" bị bỏ. Luật dời-sang-hôm-sau
+vô tình chữa đúng trường hợp này, nhưng nó là may chứ không phải thiết kế.
+
 ## 9. Ngoài phạm vi v1
 
 Không làm các mục sau trừ khi người dùng yêu cầu:
@@ -530,7 +635,9 @@ Không làm các mục sau trừ khi người dùng yêu cầu:
 - iCloud sync.
 - Widget, Siri Shortcut, Live Activity, complication.
 - **Wear OS** (§1.9) — app Android riêng, không nằm trong repo này.
-- **Tách câu nói thành tiêu đề + ngày giờ + danh sách** qua `SFSpeechRecognizer` (§1.10, mục 05 của design).
+- ~~Tách câu nói thành tiêu đề + ngày giờ + danh sách~~ — **mở lại phạm vi 11/11/2026**, xem §1.11.
+- **Nhận dạng giọng nói riêng của app** qua `SFSpeechRecognizer` / `AVAudioEngine`: vẫn ngoài phạm vi,
+  và **trên Apple Watch là bất khả thi** — `Speech.framework` không có trong SDK watchOS.
 - Widget, complication 🎙 trên mặt đồng hồ.
 - Quiet hours.
 - Đa ngôn ngữ ngoài tiếng Anh.

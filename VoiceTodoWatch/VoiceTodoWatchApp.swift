@@ -33,6 +33,20 @@ struct VoiceTodoWatchApp: App {
         _session = StateObject(wrappedValue: session)
     }
 
+    @ViewBuilder
+    private var main: some View {
+        #if DEBUG
+            // Phase 0 is not signed off yet, so the dictation probe stays one page away.
+            TabView {
+                WatchTodoListView(store: store)
+                DictationProbeView()
+            }
+            .tabViewStyle(.verticalPage)
+        #else
+            WatchTodoListView(store: store)
+        #endif
+    }
+
     #if DEBUG
         private static func seed(into repository: CoreDataTodoRepository) {
             let now = Date()
@@ -73,24 +87,21 @@ struct VoiceTodoWatchApp: App {
         }
     #endif
 
+    /// Shown once per launch, then never again until the app is reopened.
+    @State private var showSplash = true
+
     var body: some Scene {
         WindowGroup {
-            #if DEBUG
-                // Phase 0 is not signed off yet, so the dictation probe stays one tab away.
-                TabView {
-                    WatchTodoListView(store: store)
-                    DictationProbeView()
+            Group {
+                if showSplash {
+                    WatchSplashView { showSplash = false }
+                } else {
+                    main
                 }
-                .tabViewStyle(.verticalPage)
-                .environmentObject(session)
-                .environment(\.locale, session.locale)
-                .task { session.start() }
-            #else
-                WatchTodoListView(store: store)
-                    .environmentObject(session)
-                    .environment(\.locale, session.locale)
-                    .task { session.start() }
-            #endif
+            }
+            .environmentObject(session)
+            .environment(\.locale, session.locale)
+            .task { session.start() }
         }
     }
 }

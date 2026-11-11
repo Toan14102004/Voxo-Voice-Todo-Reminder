@@ -78,6 +78,36 @@ final class WatchTodoStore: ObservableObject {
         }
     }
 
+    /// Saves what `TaskParser` made of a dictated sentence. Returns the stored todo so the
+    /// confirmation screen can undo it.
+    @discardableResult
+    func add(parsed: ParsedTask) -> TodoDTO? {
+        var stored: TodoDTO?
+        perform {
+            let now = Date()
+            var created = try repository.create(title: parsed.title, intervalOverride: 0, now: now)
+            if parsed.isStructured {
+                created.dueAt = parsed.dueAt
+                created.listId = parsed.listId
+                created.priority = parsed.priority
+                try repository.update(created, now: now)
+            }
+            stored = created
+            reload()
+            session?.flushOutbox()
+        }
+        return stored
+    }
+
+    /// A tombstone, not a hard delete, so the phone learns the task is gone (PLAN.md §6).
+    func delete(_ todo: TodoDTO) {
+        perform {
+            try repository.delete(id: todo.id, now: Date())
+            reload()
+            session?.flushOutbox()
+        }
+    }
+
     func complete(_ todo: TodoDTO) {
         perform {
             try repository.complete(id: todo.id, now: Date())
@@ -94,6 +124,16 @@ final class WatchTodoStore: ObservableObject {
     func reopen(_ todo: TodoDTO) {
         perform {
             try repository.reopen(id: todo.id, now: Date())
+            reload()
+            session?.flushOutbox()
+        }
+    }
+
+    /// Writes a whole edited record. The outbox carries the full DTO, so changing a field on the
+    /// watch reaches the phone the same way a rename does.
+    func update(_ todo: TodoDTO) {
+        perform {
+            try repository.update(todo, now: Date())
             reload()
             session?.flushOutbox()
         }

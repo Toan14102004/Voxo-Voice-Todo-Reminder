@@ -13,6 +13,7 @@ struct WatchTodoListView: View {
     @StateObject private var store: WatchTodoStore
     @EnvironmentObject private var session: WatchSessionManager
     @State private var isAdding = false
+    @State private var openedDetail: UUID?
 
     init(store: WatchTodoStore) {
         _store = StateObject(wrappedValue: store)
@@ -43,10 +44,24 @@ struct WatchTodoListView: View {
                 syncStatus
             }
             .listStyle(.plain)
+            .navigationDestination(item: $openedDetail) { id in
+                WatchTodoDetailView(todoId: id, store: store)
+            }
             .navigationTitle(Text("Today · \(store.active.count)"))
             .sheet(isPresented: $isAdding) {
-                WatchAddTodoView { title in store.add(title: title) }
+                WatchAddTodoView(store: store)
             }
+            #if DEBUG
+                .onAppear {
+                    let args = ProcessInfo.processInfo.arguments
+                    if args.contains("-confirmPreview") || args.contains("-openAdd") {
+                        isAdding = true
+                    }
+                    if args.contains("-openDetail"), let first = store.active.first {
+                        openedDetail = first.id
+                    }
+                }
+            #endif
         }
         .tint(VoxoColor.Watch.accent)
     }

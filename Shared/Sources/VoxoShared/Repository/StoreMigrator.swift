@@ -33,9 +33,14 @@ public enum StoreMigrator {
     /// Brings the store at `storeURL` up to `VoxoModel.current`.
     ///
     /// Does nothing when the file does not exist yet (a fresh install) or is already current.
+    /// `versions` is an autoclosure on purpose. Every launch calls this, and almost every launch
+    /// finds the store already current — but naming `VoxoModel.allVersions` as a plain default
+    /// argument built *every* model version in code before the check could run, on the main
+    /// thread, before any UI existed. Now the old versions are only built when one is needed.
     public static func migrateIfNeeded(
         storeURL: URL,
-        versions: [NSManagedObjectModel] = VoxoModel.allVersions,
+        current: NSManagedObjectModel = VoxoModel.current,
+        versions: @autoclosure () -> [NSManagedObjectModel] = VoxoModel.allVersions,
         type: NSPersistentStore.StoreType = .sqlite
     ) throws {
         guard FileManager.default.fileExists(atPath: storeURL.path) else { return }
@@ -45,6 +50,10 @@ public enum StoreMigrator {
             at: storeURL
         )
 
+        // The common path: already current, nothing else needs building.
+        if current.isConfiguration(withName: nil, compatibleWithStoreMetadata: metadata) { return }
+
+        let versions = versions()
         guard let target = versions.last else { return }
         if target.isConfiguration(withName: nil, compatibleWithStoreMetadata: metadata) { return }
 

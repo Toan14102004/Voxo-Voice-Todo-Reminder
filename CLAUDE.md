@@ -148,7 +148,7 @@ A **local Swift package `VoxoShared`**, depended on by both app targets. This is
 `PLAN.md` §2 and §3 ask for: no UIKit, no WatchKit, compiler-enforced because it is a separate module.
 
 ```bash
-cd Shared && swift test     # 75 tests, runs on macOS — no simulator needed
+cd Shared && swift test     # 93 tests, runs on macOS — no simulator needed
 ```
 
 - `Model/` — `TodoDTO`, `SyncOpDTO`, `DeviceRole`, the `NSManagedObject` subclasses, and `VoxoModel.swift`
@@ -156,6 +156,7 @@ cd Shared && swift test     # 75 tests, runs on macOS — no simulator needed
 - `Sync/` — `MergeService`, `SyncMessage`, `SyncSettings`
 - `Stats/` — `StatsCalculator`: the Stats tab's week arithmetic, pure and tested
 - `Export/` — `CSVExport`: the CSV text for Settings → "Xuất dữ liệu"
+- `Parsing/` — `TaskParser`: one dictated sentence → title + time + list + priority
 - `Scheduling/` — empty until Phase 2
 
 Three things to know before touching it:
@@ -522,6 +523,32 @@ it matches the bundle id, so it only needs changing if the real App Store produc
   làm lựa chọn hiển thị.
 - Cờ debug mới: **`-openSettings`** mở thẳng màn Cài đặt để chụp ảnh.
 
+## Installing on a real Apple Watch
+
+**Run the `VoiceTodoWatch` scheme.** Do not install the iPhone app and wait for it to push the
+watch app across — that is the App Store delivery path, and for development builds it either
+takes forever or fails on the watch with *"Không thể cài đặt — Vui lòng thử lại sau"*, with no
+usable diagnosis anywhere. Cost an afternoon on 11/11/2026 before the user found it.
+
+Order that works:
+
+1. Scheme `VoiceTodo-Dev` → the paired iPhone. The watch app needs its companion installed or
+   `WCSession` has nothing to talk to.
+2. Scheme `VoiceTodoWatch` → the watch. Unlocked, on the wrist or charging.
+
+Things that are **not** the problem when the watch refuses to install, all verified once already:
+the embed phase (`VoiceTodo.app/Watch/VoiceTodoWatch.app` is produced correctly),
+`WKCompanionAppBundleIdentifier`, the `arm64_32` slice, the watch UDID inside
+`embedded.mobileprovision`, Developer Mode on the watch, or the app icon.
+
+**Both targets must carry the same `MARKETING_VERSION`.** They drifted to `1.0.0` / `1.0`, which
+watchOS rejects outright. Checked with:
+
+```bash
+/usr/libexec/PlistBuddy -c 'Print :CFBundleShortVersionString' <App>.app/Info.plist
+/usr/libexec/PlistBuddy -c 'Print :CFBundleShortVersionString' <App>.app/Watch/<Watch>.app/Info.plist
+```
+
 ## Apple Watch app
 
 Rebuilt to the Figma frames `Watch / Apple / …` on 10/11/2026; before that it was the pre-Tidy
@@ -555,6 +582,25 @@ Run it with **`-voxoSeed`** (same flag as the phone) for sample content.
 - `WatchTodoStore.doneToday` is **today's** finished work only — the full history belongs on the
   phone, and a watch list that grows forever is unusable.
 - Detail takes a `todoId`, not a record, for the same reason the iPhone's does.
+- **`Menu` does not exist on watchOS.** Editable fields are `Picker` with
+  `.pickerStyle(.navigationLink)`, which pushes a full-screen list — the right size for a wrist.
+  The detail screen is a `List` for the same reason.
+- **Do not use `Picker` + `.pickerStyle(.navigationLink)` here.** Inside the add sheet its
+  pushed screen rendered see-through: the options and the rows underneath were both visible at
+  once. Adding a `NavigationStack` to the sheet did not help — the push works, the background
+  does not. `WatchChoiceView` replaces it: a plain `List` of options with a tick, pushed by a
+  `NavigationLink`, with an explicit `.background(VoxoColor.background.ignoresSafeArea())`.
+  Confirmation and detail share it through `WatchChoices` so they cannot drift.
+- **`-choicePreview` pushes a choice screen programmatically**, so a pushed view can be checked
+  from a script. Three guesses at this bug were wrong because a screenshot of the unpushed
+  screen looks fine; pushing without a tap is what settled it.
+- **The watch detail edits priority, due date, list and repeat**, added once `TaskParser` began
+  guessing those from speech: a wrong guess has to be fixable where it was made. **Reminder
+  cadence stays read-only** — PLAN.md §1 makes the phone the only scheduler, and a control here
+  would imply otherwise.
+- Due date on the watch is **shortcuts, not a `DatePicker`**: Today / Tomorrow plus hour and
+  quarter-hour pickers. A full picker is a long crown spin for a case that barely happens.
+- `-openDetail` opens the first task's detail directly, for screenshots.
 
 Two design frames are **not** built, both for reasons outside the code:
 
@@ -566,3 +612,45 @@ Two design frames are **not** built, both for reasons outside the code:
   the phone schedules, and the Watch renders the forwarded notification.
 - Frames `3 Đang nghe` / `4 Xác nhận` / `5 Đã lưu` are the voice-to-fields flow that
   `PLAN.md` §1.10 removed from scope; the Watch keeps plain system dictation.
+
+## Speech to structured task (`TaskParser`)
+
+Scope reopened 11/11/2026 (`PLAN.md` §1.11). Watch flow: dictate → `TaskParser` → confirm screen
+→ saved screen with undo.
+
+- **`Speech.framework` does not exist in the watchOS SDK.** Check before promising anything built
+  on `SFSpeechRecognizer`: `ls $(xcrun --sdk watchos --show-sdk-path)/System/Library/Frameworks`.
+  It is also not needed — system dictation already returns text.
+- **Dates come from `NSDataDetector`**, which is in Foundation (so it works on watchOS) and reads
+  Vietnamese well: "2 giờ chiều" → 14:00, "8h tối" → 20:00, "ngày mai", "thứ sáu tuần sau".
+  **Known gap:** "7h sáng mai" only matches "7h sáng" — the "mai" is dropped.
+- **A time already past today is moved to tomorrow.** A reminder in the past never fires. An
+  explicit past date ("thứ sáu tuần trước") is left alone.
+- **List names match ignoring case and diacritics** — dictation does not always return the marks.
+  Longest name first, so "Mua sắm gia dụng" beats "Mua sắm".
+- **The confirmation screen always shows.** It is the only place to set an attribute before the
+  task exists, not merely a review of the parse — it was skipped for plain titles until that
+  became the reason attributes could only be set after saving.
+- **The reminder row resolves `intervalOverride` before the shared cycle**, the same rule the
+  phone uses (PLAN.md §5 rule 2). It printed the shared figure unconditionally at first, which
+  was simply the wrong number for any task with its own cycle.
+- The design's bell row says "Nhắc lúc 08:00". Tidy reminds on a repeating cycle (PLAN.md §5),
+  not once at the due time, so the row shows the cycle instead.
+- **`VoxoWaveform` is an affordance, not a meter.** It marks the field as voice input; it does
+  not follow the voice and the doc comment says so. Anyone wiring it to a microphone should read
+  the next point first.
+- **Frame 3 "Đang nghe" (a wave that follows the voice) is not built.** Not because it is
+  impossible — `AVAudioEngine.inputNode` and `AVAudioRecorder` metering *are* available on
+  watchOS — but because `Speech.framework` is not. Recording ourselves means shipping the audio
+  to the phone to transcribe, which costs the Watch its standalone operation. The waveform also
+  cannot appear *during* system dictation: that screen belongs to watchOS.
+- The parser is **wired into the Watch only**. Quick add on the phone is mostly typed, where
+  silently restructuring the text would surprise people.
+- `VoxoColor.primaryFill` is `primary` on iOS and the deeper `Watch.accentStrong` on watchOS —
+  the bright watch accent drops below WCAG AA once it sits behind white text.
+- Watch debug flags: `-openAdd`, and `-confirmPreview "<câu>"`, which opens the confirmation
+  screen directly because the dictation step cannot be driven from a script.
+- **The watch has no onboarding, by decision (11/11/2026).** A three-page intro was built and
+  then removed: a watch session is a few seconds long and the user has already been onboarded on
+  the phone. `WatchSplashView` replaced it — ~0.9s, drawn shapes rather than an asset, and short
+  because Apple's guidance is to have no launch screen on watchOS at all.

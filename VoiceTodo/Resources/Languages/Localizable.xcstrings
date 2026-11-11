@@ -1625,6 +1625,22 @@
         }
       }
     },
+    "Add a task" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add a task"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Thêm việc"
+          }
+        }
+      }
+    },
     "Add a task here, or speak one into your Apple Watch." : {
       "localizations" : {
         "en" : {
@@ -1756,6 +1772,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "添加到 "
+          }
+        }
+      }
+    },
+    "Added!" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Added!"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Đã thêm!"
           }
         }
       }
@@ -4037,6 +4069,22 @@
         }
       }
     },
+    "Continue" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Continue"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tiếp tục"
+          }
+        }
+      }
+    },
     "Copy" : {
       "extractionState" : "stale",
       "localizations" : {
@@ -4906,6 +4954,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "天"
+          }
+        }
+      }
+    },
+    "Day" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Day"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ngày"
           }
         }
       }
@@ -5827,6 +5891,12 @@
             "value" : "Bearbeiten"
           }
         },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Edit"
+          }
+        },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5897,6 +5967,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Hariri"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sửa"
           }
         },
         "zh-Hans" : {
@@ -6464,6 +6540,7 @@
       }
     },
     "Every %lld hours" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -6480,6 +6557,7 @@
       }
     },
     "Every %lld hours · custom" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -6496,6 +6574,7 @@
       }
     },
     "Every %lld minutes" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -6512,6 +6591,7 @@
       }
     },
     "Every %lld minutes · custom" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -6528,6 +6608,7 @@
       }
     },
     "Every day" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -6544,6 +6625,7 @@
       }
     },
     "Every day · custom" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -6560,6 +6642,7 @@
       }
     },
     "Every hour" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -6576,6 +6659,7 @@
       }
     },
     "Every hour · custom" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -6978,7 +7062,6 @@
       }
     },
     "Finished %@" : {
-      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -7624,6 +7707,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "首页"
+          }
+        }
+      }
+    },
+    "Hour" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hour"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Giờ"
           }
         }
       }
@@ -9571,6 +9670,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ưu tiên vừa"
+          }
+        }
+      }
+    },
+    "Minute" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Minute"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Phút"
           }
         }
       }
@@ -14712,6 +14827,38 @@
         }
       }
     },
+    "Save task" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Save task"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lưu việc"
+          }
+        }
+      }
+    },
+    "Say again" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Say again"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nói lại"
+          }
+        }
+      }
+    },
     "Send" : {
       "comment" : "First part of the toolbar title for the feedback view.",
       "localizations" : {
@@ -15592,6 +15739,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Nói để thêm việc"
+          }
+        }
+      }
+    },
+    "Speak or type" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Speak or type"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nói hoặc gõ"
           }
         }
       }
@@ -17709,6 +17872,22 @@
         }
       }
     },
+    "Tidy understood:" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tidy understood:"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tidy hiểu là:"
+          }
+        }
+      }
+    },
     "Tip: type \"tomorrow 8am\" to set the date automatically" : {
       "extractionState" : "stale",
       "localizations" : {
@@ -17758,6 +17937,22 @@
         }
       }
     },
+    "Today %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Today %@"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hôm nay %@"
+          }
+        }
+      }
+    },
     "Today's progress" : {
       "extractionState" : "stale",
       "localizations" : {
@@ -17787,6 +17982,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Mai"
+          }
+        }
+      }
+    },
+    "Tomorrow %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tomorrow %@"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mai %@"
           }
         }
       }

@@ -16,7 +16,7 @@ public struct VoxoPrimaryButtonStyle: ButtonStyle {
             .font(VoxoFont.headline)
             .foregroundStyle(VoxoColor.textOnAccent)
             .frame(maxWidth: .infinity, minHeight: 56)
-            .background(VoxoColor.primary)
+            .background(VoxoColor.primaryFill)
             .clipShape(RoundedRectangle(cornerRadius: VoxoRadius.button, style: .continuous))
             .opacity(isEnabled ? (configuration.isPressed ? 0.75 : 1) : 0.4)
     }
